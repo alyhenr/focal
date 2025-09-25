@@ -1,0 +1,1 @@
+Read the ./session-context.md file to understand the current state of the project and what we are working on/core points of the last session. Then check the backlog at ./tasks.md

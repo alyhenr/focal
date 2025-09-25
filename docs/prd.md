@@ -81,7 +81,7 @@ Create a mindful productivity platform that transforms overwhelming workdays int
 - **FR-LATER-004**: List shows all items captured today
 - **FR-LATER-005**: Process items: convert to tomorrow's focus, archive, or delete
 - **FR-LATER-006**: Auto-clear option at day's end
-- **FR-LATER-007**: Maximum 50 items per day
+- **FR-LATER-007**: Nice UI that motivates and gives a sensation of brain activity and "building myself up", in a notebook style.
 
 #### Technical Requirements
 - Local storage for offline capture
@@ -97,7 +97,7 @@ Create a mindful productivity platform that transforms overwhelming workdays int
 - As a user, I want to see how today's work contributes to my goals
 
 #### Functional Requirements
-- **FR-GOAL-001**: Create up to 3 North Star goals
+- **FR-GOAL-001**: Create up to 3 North Star goals for free plan, and unlimited for premium.
 - **FR-GOAL-002**: Goal includes title, description, and target date
 - **FR-GOAL-003**: Link daily focus to a goal (optional)
 - **FR-GOAL-004**: Visual progress indicator per goal

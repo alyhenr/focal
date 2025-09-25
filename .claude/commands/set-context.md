@@ -1,0 +1,3 @@
+The context of this session is low, so it'll be cleaned.
+To start a new session and pick it up from where we left, please update the ./session-context.md file, with relevant information about what we just did like any core concept change, pending on progress task or what we've discovered and might guide us when starting a new session to continue some unfinished task, small fixes, hotfixes, on going tasks that had a successfully step finished and don't need further explanations.
+After that, update the ./docs/tasks.md file, with the status of what we're doing, critical points, and next steps.
