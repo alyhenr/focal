@@ -1,50 +1,39 @@
 # Focal - Session Context
 
-## Last Session Summary (Phase 3 Complete - Ready for Next Phase)
+## Last Session Summary (Professional UI Redesign Complete)
 
 ### ✅ Completed Setup (Previous Sessions)
 1. **Authentication System** - Magic links + Google OAuth working
 2. **Database Schema** - All tables with RLS policies
-3. **Gradient Backgrounds** - Beautiful animated backgrounds with particles
+3. **Core Focus Management** - Complete CRUD with optimistic updates
+4. **Professional UI Redesign** - Forest Calm palette, borderless design
 
-### 🎯 Phase 3 Implementation (This Session)
+### 🎯 Recent Improvements (This Session)
 
-#### **Major Dashboard Transformation**
-1. **Loading States System**
-   - Created `useLoadingState` hook for universal loading management
-   - `LoadingButton` component replaces all buttons
-   - `SignOutButton` with proper loading feedback (no more multiple clicks!)
-   - All async operations now show visual feedback
+#### **1. Bug Fixes & UX Improvements**
+- **ESC key** to exit focus mode
+- **Pause/Resume** functionality with proper state management
+- **Session completion** without starting (can complete anytime)
+- **Session review modal** with beautiful stats and completion summary
+- **Stop vs Delete** - Stop ends session, Delete removes it
+- **Optimistic checkpoint creation** - No page reloads
+- **Fixed selection bug** - Sessions with same title don't swap
 
-2. **Removed All Alerts/Prompts**
-   - `InlineEditor` component for elegant inline editing
-   - Checkpoint creation with inline input (no popups)
-   - Click-to-edit for checkpoint text
-   - Double-click confirmation for deletes
-   - Everything uses toast notifications
+#### **2. Professional UI Redesign - "Forest Calm"**
+- **Color Palette**: Switched from blue to sage green (#62C12 145 oklch)
+- **Borderless Design**: 90% borders removed, using shadows instead
+- **Typography**: Tighter letter-spacing, better hierarchy
+- **Cards**: White on gray-50 background, layered shadows
+- **Header**: Frosted glass effect with backdrop blur
+- **Micro-interactions**: 150ms transitions, hover elevations
+- **Result**: Looks like Linear/Notion meets Headspace
 
-3. **Notebook-Style Dashboard**
-   - `FocusBlocksGrid` - Card-based notebook pages
-   - Visual states: Active (pulsing), Selected (highlighted), Completed (muted)
-   - Session numbering, energy indicators, progress stats
-   - Click blocks to expand and work on them
-
-4. **Enhanced Focus Management**
-   - New `FocusCard` component (replaced active-focus-card)
-   - Inline checkpoint CRUD operations
-   - Progress bar and timer placeholder
-   - Auto-complete message when all checkpoints done
-
-5. **Focus Mode Experience**
-   - When starting session: other elements fade (30% opacity + blur)
-   - Active card scales up slightly
-   - Subtle gradient overlay creates "time to work" atmosphere
-   - Visual transformation for deep focus
-
-6. **State Management**
-   - Zustand store (`focus-store.ts`) for global state
-   - Optimistic updates for instant feedback
-   - Proper TypeScript types throughout
+#### **3. Component Updates**
+- **FocusBlocksGrid**: Minimal cards with status dots
+- **FocusCard**: Clean paper-like feel, thin progress bars
+- **Quick Actions**: Icon containers with hover states
+- **Buttons**: Solid green, no gradients
+- **Focus Mode**: Cleaner exit button with keyboard hint
 
 ### 🔧 Technical Details
 
@@ -73,30 +62,35 @@
 4. **Notebook Metaphor** - Focus blocks as pages you can work on
 5. **Focus Mode** - Visual transformation when entering work mode
 
-### 🚀 Next Session - Phase 3.3 & 3.4 Implementation
+### 🚀 Next Session - Ready for Core Features
 
-**Ready to Build:**
-1. **Later List Panel (Phase 3.3)**
-   - Slide-out panel from right side
-   - Quick capture with Cmd+K shortcut
-   - Session-based grouping of items
-   - Process/convert/archive items
-   - Auto-clear at day end option
-   - Local storage for offline capture
+**Priority 1: Later List (Phase 3.3)**
+- Slide-out panel from right side
+- Cmd+K global keyboard shortcut
+- Quick capture with autofocus
+- Session-based grouping
+- Process items (convert/archive/delete)
+- Local storage for offline
+- Sync with Supabase
 
-2. **Timer System (Phase 3.4)**
-   - Horizontal progress bars (not circular)
-   - Two-tier: Main focus + current checkpoint
-   - Pomodoro presets (25/50/90 min)
-   - Pause/resume functionality
-   - Audio/visual notifications
-   - Web Workers for background timing
+**Priority 2: Timer System (Phase 3.4)**
+- Horizontal progress bars (already styled)
+- Web Workers for background timing
+- Pomodoro presets (25/50/90 min)
+- Pause/resume integration (state already exists)
+- Audio notifications
+- Timer persistence
 
-3. **Mobile & Keyboard UX**
-   - Collapsible sidebar for desktop
-   - Bottom navigation for mobile
-   - Global keyboard shortcuts
-   - Command palette foundation
+**Priority 3: North Star Goals**
+- Goal creation/management
+- Link focuses to goals
+- Progress tracking
+- 3 goals limit for free tier
+
+**Priority 4: Stripe Integration**
+- Products: Free vs Pro ($9/month)
+- Feature gating (checkpoints, goals, later items)
+- Webhook handling
 
 ### 🎨 Design Principles Established
 - **Calm over energetic** - Subtle animations, soft colors

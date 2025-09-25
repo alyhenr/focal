@@ -3,8 +3,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
-import { Badge } from '@/components/ui/badge'
 import { LoadingButton } from '@/components/common/loading-button'
 import { InlineEditor } from '@/components/common/inline-editor'
 import {
@@ -113,32 +111,33 @@ export function FocusCard({
 
   return (
     <Card className={cn(
-      'transition-all duration-300',
-      isFocusMode && 'shadow-2xl border-primary/20 bg-gradient-to-br from-background via-background to-primary/5'
+      'transition-all duration-150 border-0',
+      'bg-white shadow-sm',
+      isFocusMode && 'shadow-lg ring-2 ring-primary/30'
     )}>
-      <CardHeader>
+      <CardHeader className="pb-4">
         <div className="space-y-4">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex-1 space-y-2">
               <div className="flex items-center gap-2">
-                <Badge variant="default" className="bg-primary/10 text-primary border-primary/20">
+                <span className="text-xs font-medium text-gray-500">
                   Session {focus.session_number}
-                </Badge>
+                </span>
                 {energyConfig && EnergyIcon && (
-                  <Badge variant="outline" className={cn(energyConfig.bg, 'border-0')}>
-                    <EnergyIcon className={cn('h-3 w-3 mr-1', energyConfig.color)} />
-                    <span className="text-xs capitalize">{focus.energy_level}</span>
-                  </Badge>
+                  <div className="flex items-center gap-1">
+                    <EnergyIcon className={cn('h-3 w-3', energyConfig.color)} />
+                    <span className="text-xs text-gray-500 capitalize">{focus.energy_level}</span>
+                  </div>
                 )}
                 {focus.north_star && (
-                  <Badge variant="outline" className="text-xs">
-                    <Target className="h-3 w-3 mr-1" />
+                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <Target className="h-3 w-3" />
                     {focus.north_star.title}
-                  </Badge>
+                  </div>
                 )}
               </div>
-              <h2 className="text-xl font-bold">{focus.title}</h2>
+              <h2 className="text-lg font-semibold text-foreground">{focus.title}</h2>
               {focus.description && (
                 <p className="text-sm text-muted-foreground">{focus.description}</p>
               )}
@@ -153,30 +152,35 @@ export function FocusCard({
                 {completedCount} of {checkpoints.length} checkpoints
               </span>
             </div>
-            <Progress value={progress} className="h-2" />
+            <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary transition-all duration-300 rounded-full"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
 
-          {/* Timer Bar (placeholder for now) */}
+          {/* Timer Bar - Cleaner */}
           {isActive && (
-            <div className="bg-muted/50 rounded-lg p-3 flex items-center justify-between">
+            <div className="bg-gray-50 rounded-md p-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium">00:00:00</span>
+                <Clock className="h-4 w-4 text-gray-400" />
+                <span className="text-sm font-medium text-foreground">00:00:00</span>
                 {isPaused && (
-                  <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/20">
+                  <span className="text-xs text-warning px-2 py-0.5 bg-warning/10 rounded">
                     Paused
-                  </Badge>
+                  </span>
                 )}
               </div>
-              <div className="text-xs text-muted-foreground">
-                {isPaused ? 'Session paused' : 'Timer coming soon...'}
+              <div className="text-xs text-gray-500">
+                {isPaused ? 'Session paused' : 'Timer coming soon'}
               </div>
             </div>
           )}
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pt-0">
         {/* Checkpoints */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -198,7 +202,7 @@ export function FocusCard({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-6 border-2 border-dashed rounded-lg"
+                className="text-center py-6 bg-gray-50 rounded-lg"
               >
                 <p className="text-sm text-muted-foreground mb-3">
                   Break down your focus into smaller steps
@@ -235,15 +239,15 @@ export function FocusCard({
                       placeholder="Checkpoint title..."
                     />
                   ) : (
-                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-50 transition-colors">
                       <button
                         onClick={() => onToggleCheckpoint(checkpoint.id)}
-                        className="flex-shrink-0 cursor-pointer transition-transform hover:scale-110"
+                        className="flex-shrink-0 cursor-pointer transition-all hover:scale-110"
                       >
                         {checkpoint.completed_at ? (
-                          <CheckCircle2 className="h-5 w-5 text-success" />
+                          <CheckCircle2 className="h-4 w-4 text-success" />
                         ) : (
-                          <Circle className="h-5 w-5 text-muted-foreground hover:text-primary" />
+                          <Circle className="h-4 w-4 text-gray-400 hover:text-primary" />
                         )}
                       </button>
                       <span
@@ -258,7 +262,7 @@ export function FocusCard({
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
                         <button
                           onClick={() => setEditingCheckpointId(checkpoint.id)}
-                          className="p-1 hover:bg-muted rounded"
+                          className="p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-600"
                         >
                           <Edit2 className="h-3 w-3" />
                         </button>
@@ -268,7 +272,7 @@ export function FocusCard({
                             'p-1 rounded transition-colors',
                             deletingCheckpointId === checkpoint.id
                               ? 'bg-destructive/20 text-destructive'
-                              : 'hover:bg-muted'
+                              : 'hover:bg-gray-100 text-gray-400 hover:text-destructive'
                           )}
                         >
                           <X className="h-3 w-3" />
@@ -382,15 +386,16 @@ export function FocusCard({
           )}
         </div>
 
-        {/* Auto-complete message */}
+        {/* Auto-complete message - Cleaner */}
         {allCompleted && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center p-3 bg-success/10 rounded-lg border border-success/20"
+            className="text-center p-3 bg-success/5 rounded-md"
           >
-            <p className="text-sm font-medium text-success">
-              🎉 All checkpoints complete! Ready to finish?
+            <p className="text-sm font-medium text-success flex items-center justify-center gap-2">
+              <CheckCircle2 className="h-4 w-4" />
+              All checkpoints complete
             </p>
           </motion.div>
         )}

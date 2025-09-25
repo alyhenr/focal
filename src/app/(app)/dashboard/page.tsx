@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { DashboardContent } from '@/components/dashboard/dashboard-content'
 import { SignOutButton } from '@/components/common/sign-out-button'
-import { GradientBackground } from '@/components/ui/gradient-background'
 import { getTodayFocuses, getActiveFocus, getNorthStars } from '@/app/actions/focus'
 import { Toaster } from 'sonner'
 
@@ -24,21 +23,22 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Subtle Gradient Background */}
-      <div className="fixed inset-0 -z-10">
-        <GradientBackground />
-        {/* Additional subtle overlay for dashboard */}
-        <div className="absolute inset-0 bg-background/95" />
+      {/* Flowing Gradient Background */}
+      <div className="gradient-bg">
+        <div className="gradient-orb gradient-orb-1" />
+        <div className="gradient-orb gradient-orb-2" />
+        <div className="gradient-orb gradient-orb-3" />
+        <div className="gradient-mesh" />
       </div>
 
-      {/* Header */}
-      <header className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+      {/* Header - Frosted Glass */}
+      <header className="border-b border-gray-100/50 bg-white/70 backdrop-blur-md sticky top-0 z-40">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-6">
+            <h1 className="text-xl font-semibold text-foreground tracking-tight">
               Focal
             </h1>
-            <span className="text-sm text-muted-foreground hidden sm:inline">
+            <span className="text-xs text-gray-500 hidden sm:inline">
               {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
             </span>
           </div>

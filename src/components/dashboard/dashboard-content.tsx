@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Target, ListTodo, Calendar, History, Flame, TrendingUp, X } from 'lucide-react'
+import { Target, ListTodo, Calendar, History, X } from 'lucide-react'
 import { NewFocusModal } from '@/components/focus/new-focus-modal'
 import { FocusBlocksGrid } from '@/components/focus/focus-blocks-grid'
 import { FocusCard } from '@/components/focus/focus-card'
@@ -356,30 +355,30 @@ export function DashboardContent({
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h2 className="text-3xl font-bold mb-2">
-              Welcome back, {user.email?.split('@')[0]}!
+            <h2 className="text-2xl font-semibold text-foreground mb-1">
+              Welcome back, {user.email?.split('@')[0]}
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm text-gray-600">
               {todayFocuses.length === 0
                 ? 'Ready to start your first focus session?'
                 : `${todayFocuses.filter(f => f.completed_at).length} of ${todayFocuses.length} sessions completed today`
               }
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <div className="text-center">
-              <div className="flex items-center gap-1">
-                <Flame className="h-5 w-5 text-orange-500" />
-                <span className="text-2xl font-bold">0</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                <span className="text-xl font-semibold text-foreground">0</span>
               </div>
-              <p className="text-xs text-muted-foreground">Day Streak</p>
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider">Streak</p>
             </div>
             <div className="text-center">
-              <div className="flex items-center gap-1">
-                <TrendingUp className="h-5 w-5 text-green-500" />
-                <span className="text-2xl font-bold">{todayFocuses.length}</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-success"></div>
+                <span className="text-xl font-semibold text-foreground">{todayFocuses.length}</span>
               </div>
-              <p className="text-xs text-muted-foreground">Sessions</p>
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider">Today</p>
             </div>
           </div>
         </div>
@@ -447,41 +446,49 @@ export function DashboardContent({
           isFocusMode && 'opacity-30 blur-sm pointer-events-none'
         )}
       >
-        <Card className="hover:border-primary/50 transition-colors cursor-pointer group">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
           <CardHeader className="pb-3">
-            <Target className="h-8 w-8 text-primary mb-2 group-hover:scale-110 transition-transform" />
-            <CardTitle className="text-base">Goals</CardTitle>
-            <CardDescription className="text-xs">
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+              <Target className="h-5 w-5 text-primary" />
+            </div>
+            <CardTitle className="text-sm font-medium text-foreground">Goals</CardTitle>
+            <CardDescription className="text-xs text-gray-500">
               Set long-term targets
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card className="hover:border-secondary/50 transition-colors cursor-pointer group">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
           <CardHeader className="pb-3">
-            <ListTodo className="h-8 w-8 text-secondary mb-2 group-hover:scale-110 transition-transform" />
-            <CardTitle className="text-base">Later List</CardTitle>
-            <CardDescription className="text-xs">
+            <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mb-3 group-hover:bg-secondary/20 transition-colors">
+              <ListTodo className="h-5 w-5 text-secondary" />
+            </div>
+            <CardTitle className="text-sm font-medium text-foreground">Later List</CardTitle>
+            <CardDescription className="text-xs text-gray-500">
               Review captured items
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card className="hover:border-success/50 transition-colors cursor-pointer group">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
           <CardHeader className="pb-3">
-            <Calendar className="h-8 w-8 text-success mb-2 group-hover:scale-110 transition-transform" />
-            <CardTitle className="text-base">Calendar</CardTitle>
-            <CardDescription className="text-xs">
+            <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center mb-3 group-hover:bg-success/20 transition-colors">
+              <Calendar className="h-5 w-5 text-success" />
+            </div>
+            <CardTitle className="text-sm font-medium text-foreground">Calendar</CardTitle>
+            <CardDescription className="text-xs text-gray-500">
               View weekly progress
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card className="hover:border-warning/50 transition-colors cursor-pointer group">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
           <CardHeader className="pb-3">
-            <History className="h-8 w-8 text-warning mb-2 group-hover:scale-110 transition-transform" />
-            <CardTitle className="text-base">History</CardTitle>
-            <CardDescription className="text-xs">
+            <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center mb-3 group-hover:bg-warning/20 transition-colors">
+              <History className="h-5 w-5 text-warning" />
+            </div>
+            <CardTitle className="text-sm font-medium text-foreground">History</CardTitle>
+            <CardDescription className="text-xs text-gray-500">
               Past sessions
             </CardDescription>
           </CardHeader>
@@ -522,22 +529,21 @@ export function DashboardContent({
               <div className="absolute inset-0 backdrop-blur-[1px]" />
             </motion.div>
 
-            {/* Exit Focus Mode Button */}
+            {/* Exit Focus Mode Button - Cleaner */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="fixed top-20 right-4 z-50"
+              className="fixed top-20 right-6 z-50"
             >
-              <Button
-                variant="outline"
-                size="sm"
+              <button
                 onClick={handlePauseSession}
-                className="bg-background/95 backdrop-blur-sm shadow-lg"
+                className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-all hover:shadow-xl text-sm font-medium text-gray-700"
               >
-                <X className="h-4 w-4 mr-2" />
-                Exit Focus Mode (ESC)
-              </Button>
+                <X className="h-4 w-4" />
+                <span>Exit Focus</span>
+                <kbd className="px-1.5 py-0.5 text-xs bg-gray-100 rounded text-gray-600">ESC</kbd>
+              </button>
             </motion.div>
           </>
         )}

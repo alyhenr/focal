@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Plus, CheckCircle2, Play, Zap, Battery, BatteryLow, Trophy } from 'lucide-react'
+import { Plus, CheckCircle2, Zap, Battery, BatteryLow } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Focus } from '@/types/focus'
 
@@ -78,62 +78,46 @@ export function FocusBlocksGrid({
             whileTap={{ scale: 0.98 }}
             onClick={() => onSelectFocus(isSelected ? null : focus.id)}
             className={cn(
-              'relative cursor-pointer rounded-lg border-2 p-4 transition-all duration-200',
-              'shadow-md hover:shadow-lg',
-              // Base states
-              !isCompleted && !isSelected && !isActive && 'border-border bg-gradient-to-br from-background to-background/80 hover:border-primary/50',
+              'relative cursor-pointer rounded-lg p-5 transition-all duration-150 h-24',
+              'bg-white',
+              // Base shadow
+              'shadow-sm hover:shadow-md',
               // Selected state
-              isSelected && !isCompleted && 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 shadow-lg',
-              // Active state
-              isActive && !isCompleted && 'border-success bg-gradient-to-br from-success/10 to-success/5 animate-pulse',
+              isSelected && !isCompleted && 'ring-2 ring-primary/40 shadow-md',
+              // Active state (pulsing replaced with breathing scale)
+              isActive && !isCompleted && 'ring-2 ring-success/50 shadow-lg',
               // Completed state
-              isCompleted && 'border-success/30 bg-gradient-to-br from-success/5 to-success/10',
-              isCompleted && isSelected && 'border-success/50 shadow-lg',
-              isCompleted && allCheckpointsComplete && 'border-success/40 bg-gradient-to-br from-success/10 to-warning/10'
+              isCompleted && 'opacity-75 bg-gray-50',
+              isCompleted && isSelected && 'opacity-100',
+              isCompleted && allCheckpointsComplete && 'bg-gradient-to-br from-white to-success/5'
             )}
             style={{
-              backgroundImage: isActive && !isCompleted
-                ? 'linear-gradient(135deg, transparent 0%, transparent 40%, rgba(134, 239, 172, 0.05) 100%)'
-                : undefined,
+              transform: isActive && !isCompleted ? 'scale(1.01)' : undefined,
             }}
           >
-            {/* Session Number Badge */}
-            <div className="absolute top-2 right-2">
-              <span className="text-xs font-medium text-muted-foreground">
-                #{focus.session_number}
+            {/* Session Number - More subtle */}
+            <div className="absolute top-3 right-3">
+              <span className="text-[10px] font-medium text-gray-400">
+                {focus.session_number}
               </span>
             </div>
 
-            {/* Status Icon */}
-            {isActive && !isCompleted && (
-              <motion.div
-                className="absolute top-2 left-2"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-              >
-                <Play className="h-4 w-4 text-success" />
-              </motion.div>
-            )}
-            {isCompleted && (
-              <div className="absolute top-2 left-2">
-                {allCheckpointsComplete ? (
-                  <Trophy className="h-4 w-4 text-warning" />
-                ) : (
-                  <CheckCircle2 className="h-4 w-4 text-success" />
-                )}
+            {/* Status Indicator - Minimal dot */}
+            {(isActive || isCompleted) && (
+              <div className="absolute top-3 left-3">
+                <div className={cn(
+                  'w-2 h-2 rounded-full',
+                  isActive && !isCompleted && 'bg-success animate-pulse',
+                  isCompleted && !allCheckpointsComplete && 'bg-gray-400',
+                  isCompleted && allCheckpointsComplete && 'bg-success'
+                )} />
               </div>
             )}
 
-            {/* Completed Overlay */}
-            {isCompleted && (
-              <div className="absolute inset-0 rounded-lg pointer-events-none">
-                <div className="absolute inset-0 bg-gradient-to-t from-success/5 to-transparent rounded-lg" />
-              </div>
-            )}
 
             {/* Content */}
-            <div className="space-y-2 mt-4">
-              <h3 className="font-semibold text-sm line-clamp-2">{focus.title}</h3>
+            <div className="flex flex-col justify-between h-full">
+              <h3 className="font-semibold text-sm line-clamp-2 text-foreground">{focus.title}</h3>
 
               {focus.description && (
                 <p className="text-xs text-muted-foreground line-clamp-2">
@@ -151,11 +135,11 @@ export function FocusBlocksGrid({
                     'text-xs',
                     isCompleted
                       ? allCheckpointsComplete
-                        ? 'text-warning font-semibold'
-                        : 'text-success font-medium'
-                      : 'text-muted-foreground'
+                        ? 'text-success font-medium'
+                        : 'text-gray-500'
+                      : 'text-gray-500'
                   )}>
-                    {isCompleted && allCheckpointsComplete ? '✓ ' : ''}{checkpointStats} done
+                    {checkpointStats}
                   </span>
                 </div>
                 {!isCompleted && !isActive && (
@@ -164,25 +148,17 @@ export function FocusBlocksGrid({
                       e.stopPropagation()
                       onStartSession(focus.id)
                     }}
-                    className="text-xs text-primary hover:text-primary/80 font-medium"
+                    className="text-xs text-primary hover:text-primary/80 font-medium cursor-pointer hover:underline"
                   >
                     Start →
                   </button>
                 )}
                 {isCompleted && (
-                  <span className="text-xs text-success font-medium">
-                    Completed
-                  </span>
+                  <CheckCircle2 className="h-3 w-3 text-success" />
                 )}
               </div>
             </div>
 
-            {/* Paper texture effect */}
-            <div className="absolute inset-0 rounded-lg opacity-5 pointer-events-none"
-              style={{
-                backgroundImage: 'repeating-linear-gradient(0deg, #e5e5e5, #e5e5e5 1px, transparent 1px, transparent 20px)',
-              }}
-            />
           </motion.div>
         )
       })}
@@ -193,11 +169,13 @@ export function FocusBlocksGrid({
         whileHover={{ scale: 1.02, y: -2 }}
         whileTap={{ scale: 0.98 }}
         onClick={onNewFocus}
-        className="relative cursor-pointer rounded-lg border-2 border-dashed border-border p-4 transition-all duration-200 hover:border-primary/50 hover:bg-primary/5 min-h-[140px] flex items-center justify-center"
+        className="relative cursor-pointer rounded-lg p-5 transition-all duration-150 bg-gray-50 hover:bg-gray-100 h-24 flex items-center justify-center group"
       >
         <div className="text-center space-y-2">
-          <Plus className="h-8 w-8 mx-auto text-muted-foreground" />
-          <p className="text-sm font-medium text-muted-foreground">New Focus Block</p>
+          <div className="w-10 h-10 mx-auto rounded-full bg-gray-200 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
+            <Plus className="h-5 w-5 text-gray-600 group-hover:text-primary" />
+          </div>
+          <p className="text-xs font-medium text-gray-600 group-hover:text-primary">New Focus</p>
         </div>
       </motion.div>
     </motion.div>
