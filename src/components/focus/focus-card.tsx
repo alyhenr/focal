@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { LoadingButton } from '@/components/common/loading-button'
 import { InlineEditor } from '@/components/common/inline-editor'
+import { FocusTimer } from '@/components/timer/focus-timer'
 import {
   CheckCircle2,
   Circle,
@@ -17,7 +18,6 @@ import {
   Play,
   Pause,
   Square,
-  Clock,
   Edit2,
 } from 'lucide-react'
 import { Focus } from '@/types/focus'
@@ -160,21 +160,10 @@ export function FocusCard({
             </div>
           </div>
 
-          {/* Timer Bar - Cleaner */}
+          {/* Timer Bar */}
           {isActive && (
-            <div className="bg-gray-50 rounded-md p-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-gray-400" />
-                <span className="text-sm font-medium text-foreground">00:00:00</span>
-                {isPaused && (
-                  <span className="text-xs text-warning px-2 py-0.5 bg-warning/10 rounded">
-                    Paused
-                  </span>
-                )}
-              </div>
-              <div className="text-xs text-gray-500">
-                {isPaused ? 'Session paused' : 'Timer coming soon'}
-              </div>
+            <div className="bg-gray-50 rounded-md p-3">
+              <FocusTimer focusId={focus.id} minimal />
             </div>
           )}
         </div>

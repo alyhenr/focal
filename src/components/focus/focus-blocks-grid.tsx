@@ -120,7 +120,7 @@ export function FocusBlocksGrid({
               <h3 className="font-semibold text-sm line-clamp-2 text-foreground">{focus.title}</h3>
 
               {focus.description && (
-                <p className="text-xs text-muted-foreground line-clamp-2">
+                <p className="text-xs text-muted-foreground line-clamp-1 md:line-clamp-2">
                   {focus.description}
                 </p>
               )}

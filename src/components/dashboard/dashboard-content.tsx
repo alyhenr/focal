@@ -11,6 +11,7 @@ import { SessionReviewModal } from '@/components/focus/session-review-modal'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useFocusStore } from '@/stores/focus-store'
+import { useLaterListSync } from '@/hooks/use-later-list-sync'
 import {
   createFocusSession,
   completeFocusSession,
@@ -43,6 +44,9 @@ export function DashboardContent({
     open: false,
     mode: 'complete',
   })
+
+  // Initialize Later List sync
+  useLaterListSync()
 
   // Zustand store
   const {
@@ -458,7 +462,17 @@ export function DashboardContent({
           </CardHeader>
         </Card>
 
-        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
+        <Card
+          className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white"
+          onClick={() => {
+            // Trigger Later List from sidebar
+            const event = new KeyboardEvent('keydown', {
+              key: 'l',
+              metaKey: true,
+            })
+            document.dispatchEvent(event)
+          }}
+        >
           <CardHeader className="pb-3">
             <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mb-3 group-hover:bg-secondary/20 transition-colors">
               <ListTodo className="h-5 w-5 text-secondary" />
