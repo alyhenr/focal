@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -56,9 +57,8 @@ const navigation = [
     name: 'Goals',
     href: '/goals',
     icon: Target,
-    shortcut: null,
+    shortcut: '⌘G',
     action: null,
-    badge: 'Soon',
   },
   {
     name: 'Calendar',
@@ -110,10 +110,9 @@ const bottomNav = [
 export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const router = useRouter()
   const pathname = usePathname()
 
-  const handleAction = (action: string | null, href: string | null) => {
+  const handleAction = (action: string | null) => {
     if (action === 'newFocus') {
       onNewFocus?.()
     } else if (action === 'laterList') {
@@ -128,8 +127,6 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
         ctrlKey: false,
       })
       document.dispatchEvent(event)
-    } else if (href) {
-      router.push(href)
     }
 
     // Close mobile menu after action
@@ -185,26 +182,62 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
           const isActive = item.href && pathname === item.href
           const Icon = item.icon
 
+          // For items with href, use Link for better performance
+          if (item.href && !item.badge) {
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group relative',
+                  isActive
+                    ? 'bg-primary/10 text-primary'
+                    : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                )}
+              >
+                <Icon className={cn(
+                  'h-4 w-4 flex-shrink-0',
+                  isActive && 'text-primary'
+                )} />
+
+                <AnimatePresence initial={false}>
+                  {!collapsed && (
+                    <motion.div
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: 'auto' }}
+                      exit={{ opacity: 0, width: 0 }}
+                      className="flex-1 flex items-center justify-between"
+                    >
+                      <span className="text-sm font-medium">{item.name}</span>
+                      {item.shortcut && (
+                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
+                          {item.shortcut}
+                        </kbd>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Link>
+            )
+          }
+
+          // For action items or disabled items, use button
           return (
             <motion.button
               key={item.name}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => handleAction(item.action, item.href)}
+              onClick={() => handleAction(item.action)}
               className={cn(
                 'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group relative',
-                isActive
-                  ? 'bg-primary/10 text-primary'
-                  : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900',
                 item.accent === 'primary' && 'hover:bg-primary/5 hover:text-primary',
-                item.badge && 'opacity-60 cursor-not-allowed'
+                item.badge && 'opacity-60 cursor-not-allowed',
+                !item.badge && 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
               )}
               disabled={!!item.badge}
             >
-              <Icon className={cn(
-                'h-4 w-4 flex-shrink-0',
-                isActive && 'text-primary'
-              )} />
+              <Icon className="h-4 w-4 flex-shrink-0" />
 
               <AnimatePresence initial={false}>
                 {!collapsed && (
@@ -257,7 +290,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                 key={item.name}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => handleAction(item.action, null)}
+                onClick={() => handleAction(item.action)}
                 className="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors hover:bg-gray-50 text-gray-600 hover:text-gray-900"
               >
                 <Icon className="h-4 w-4 flex-shrink-0" />
@@ -292,13 +325,12 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
           const isActive = pathname === item.href
 
           return (
-            <motion.button
+            <Link
               key={item.name}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => router.push(item.href)}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
               className={cn(
-                'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
                 isActive
                   ? 'bg-primary/10 text-primary'
                   : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
@@ -323,7 +355,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.button>
+            </Link>
           )
         })}
       </div>

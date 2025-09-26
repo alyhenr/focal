@@ -361,6 +361,8 @@ async function updateUserStreak(userId: string) {
   }
 }
 
+// North Star Goals Management
+
 // Get user's north stars
 export async function getNorthStars() {
   const supabase = await createClient()
@@ -378,6 +380,244 @@ export async function getNorthStars() {
     .order('display_order')
 
   return data || []
+}
+
+// Create a new north star goal
+export async function createNorthStar(data: {
+  title: string
+  description?: string
+  target_date?: string
+}) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  // Check if user can add more goals (limit 3 for free tier)
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('subscription_status')
+    .eq('id', user.id)
+    .single()
+
+  const { count } = await supabase
+    .from('north_stars')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .is('archived_at', null)
+
+  if (profile?.subscription_status === 'free' && count && count >= 3) {
+    throw new Error('Free users can only have 3 active goals. Please upgrade to create more.')
+  }
+
+  // Get the highest display order
+  const { data: existingGoals } = await supabase
+    .from('north_stars')
+    .select('display_order')
+    .eq('user_id', user.id)
+    .order('display_order', { ascending: false })
+    .limit(1)
+
+  const displayOrder = existingGoals && existingGoals[0]
+    ? existingGoals[0].display_order + 1
+    : 0
+
+  const { data: newGoal, error } = await supabase
+    .from('north_stars')
+    .insert({
+      user_id: user.id,
+      title: data.title,
+      description: data.description,
+      target_date: data.target_date,
+      display_order: displayOrder,
+    })
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error('Failed to create goal: ' + error.message)
+  }
+
+  revalidatePath('/goals')
+  revalidatePath('/dashboard')
+  return newGoal
+}
+
+// Update a north star goal
+export async function updateNorthStar(
+  goalId: string,
+  data: {
+    title?: string
+    description?: string
+    target_date?: string
+  }
+) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  const { error } = await supabase
+    .from('north_stars')
+    .update(data)
+    .eq('id', goalId)
+    .eq('user_id', user.id)
+
+  if (error) {
+    throw new Error('Failed to update goal: ' + error.message)
+  }
+
+  revalidatePath('/goals')
+  revalidatePath('/dashboard')
+}
+
+// Archive a north star goal
+export async function archiveNorthStar(goalId: string) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  const { error } = await supabase
+    .from('north_stars')
+    .update({
+      archived_at: new Date().toISOString(),
+    })
+    .eq('id', goalId)
+    .eq('user_id', user.id)
+
+  if (error) {
+    throw new Error('Failed to archive goal: ' + error.message)
+  }
+
+  revalidatePath('/goals')
+  revalidatePath('/dashboard')
+}
+
+// Complete a north star goal
+export async function completeNorthStar(goalId: string) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  const { error } = await supabase
+    .from('north_stars')
+    .update({
+      completed_at: new Date().toISOString(),
+    })
+    .eq('id', goalId)
+    .eq('user_id', user.id)
+
+  if (error) {
+    throw new Error('Failed to complete goal: ' + error.message)
+  }
+
+  revalidatePath('/goals')
+  revalidatePath('/dashboard')
+}
+
+// Reorder north star goals
+export async function reorderNorthStars(goalIds: string[]) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  // Update display order for each goal
+  const updates = goalIds.map((id, index) =>
+    supabase
+      .from('north_stars')
+      .update({ display_order: index })
+      .eq('id', id)
+      .eq('user_id', user.id)
+  )
+
+  await Promise.all(updates)
+
+  revalidatePath('/goals')
+  revalidatePath('/dashboard')
+}
+
+// Get progress for a specific north star
+export async function getNorthStarProgress(goalId: string) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { total: 0, completed: 0, percentage: 0 }
+  }
+
+  // Get all focuses linked to this goal
+  const { data: linkedFocuses } = await supabase
+    .from('focuses')
+    .select('id, completed_at')
+    .eq('user_id', user.id)
+    .eq('north_star_id', goalId)
+
+  if (!linkedFocuses || linkedFocuses.length === 0) {
+    return { total: 0, completed: 0, percentage: 0 }
+  }
+
+  const total = linkedFocuses.length
+  const completed = linkedFocuses.filter(f => f.completed_at).length
+  const percentage = Math.round((completed / total) * 100)
+
+  return { total, completed, percentage }
+}
+
+// Get all north stars with their progress
+export async function getNorthStarsWithProgress() {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return []
+  }
+
+  const { data: northStars } = await supabase
+    .from('north_stars')
+    .select(`
+      *,
+      focuses!focuses_north_star_id_fkey(
+        id,
+        completed_at
+      )
+    `)
+    .eq('user_id', user.id)
+    .is('archived_at', null)
+    .order('display_order')
+
+  if (!northStars) {
+    return []
+  }
+
+  // Calculate progress for each goal
+  return northStars.map(star => {
+    const linkedFocuses = star.focuses || []
+    const total = linkedFocuses.length
+    const completed = linkedFocuses.filter((f: any) => f.completed_at).length
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0
+
+    return {
+      ...star,
+      progress: {
+        total,
+        completed,
+        percentage
+      }
+    }
+  })
 }
 
 // Get today's focuses
