@@ -672,3 +672,218 @@ export async function getActiveFocus() {
 
   return data
 }
+
+// Get focuses by date range with optional pagination
+export async function getFocusesByDateRange(
+  startDate: string,
+  endDate: string,
+  limit = 50,
+  offset = 0
+) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { focuses: [], hasMore: false, total: 0 }
+  }
+
+  // Get total count for pagination
+  const { count } = await supabase
+    .from('focuses')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .gte('date', startDate)
+    .lte('date', endDate)
+
+  // Get paginated data
+  const { data } = await supabase
+    .from('focuses')
+    .select(`
+      *,
+      north_star:north_stars(*),
+      checkpoints(*)
+    `)
+    .eq('user_id', user.id)
+    .gte('date', startDate)
+    .lte('date', endDate)
+    .order('date', { ascending: false })
+    .order('session_number', { ascending: false })
+    .range(offset, offset + limit - 1)
+
+  return {
+    focuses: data || [],
+    hasMore: (count || 0) > offset + limit,
+    total: count || 0
+  }
+}
+
+// Get focus statistics for a date range
+export async function getFocusStats(startDate: string, endDate: string) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return {
+      totalSessions: 0,
+      completedSessions: 0,
+      completionRate: 0,
+      totalCheckpoints: 0,
+      completedCheckpoints: 0,
+      avgCheckpointsPerSession: 0,
+      mostProductiveTime: null,
+      energyDistribution: { high: 0, medium: 0, low: 0 }
+    }
+  }
+
+  // Get all focuses in date range
+  const { data: focuses } = await supabase
+    .from('focuses')
+    .select(`
+      *,
+      checkpoints(*)
+    `)
+    .eq('user_id', user.id)
+    .gte('date', startDate)
+    .lte('date', endDate)
+
+  if (!focuses || focuses.length === 0) {
+    return {
+      totalSessions: 0,
+      completedSessions: 0,
+      completionRate: 0,
+      totalCheckpoints: 0,
+      completedCheckpoints: 0,
+      avgCheckpointsPerSession: 0,
+      mostProductiveTime: null,
+      energyDistribution: { high: 0, medium: 0, low: 0 }
+    }
+  }
+
+  // Calculate statistics
+  const totalSessions = focuses.length
+  const completedSessions = focuses.filter(f => f.completed_at).length
+  const completionRate = totalSessions > 0 ? (completedSessions / totalSessions) * 100 : 0
+
+  let totalCheckpoints = 0
+  let completedCheckpoints = 0
+  const hourCounts: Record<number, number> = {}
+  const energyDistribution = { high: 0, medium: 0, low: 0 }
+
+  focuses.forEach(focus => {
+    // Count checkpoints
+    if (focus.checkpoints) {
+      totalCheckpoints += focus.checkpoints.length
+      completedCheckpoints += focus.checkpoints.filter((c: any) => c.completed_at).length
+    }
+
+    // Track hour of day
+    if (focus.started_at) {
+      const hour = new Date(focus.started_at).getHours()
+      hourCounts[hour] = (hourCounts[hour] || 0) + 1
+    }
+
+    // Track energy levels
+    if (focus.energy_level) {
+      energyDistribution[focus.energy_level as keyof typeof energyDistribution]++
+    }
+  })
+
+  // Find most productive hour
+  let mostProductiveTime = null
+  let maxCount = 0
+  Object.entries(hourCounts).forEach(([hour, count]) => {
+    if (count > maxCount) {
+      maxCount = count
+      mostProductiveTime = parseInt(hour)
+    }
+  })
+
+  return {
+    totalSessions,
+    completedSessions,
+    completionRate,
+    totalCheckpoints,
+    completedCheckpoints,
+    avgCheckpointsPerSession: totalSessions > 0 ? totalCheckpoints / totalSessions : 0,
+    mostProductiveTime,
+    energyDistribution
+  }
+}
+
+// Get goal progress over time
+export async function getGoalProgressOverTime(
+  goalId: string,
+  startDate: string,
+  endDate: string
+) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return []
+  }
+
+  const { data } = await supabase
+    .from('focuses')
+    .select(`
+      date,
+      completed_at,
+      checkpoints(completed_at)
+    `)
+    .eq('user_id', user.id)
+    .eq('north_star_id', goalId)
+    .gte('date', startDate)
+    .lte('date', endDate)
+    .order('date')
+
+  if (!data) return []
+
+  // Group by date and calculate daily progress
+  const progressByDate: Record<string, { sessions: number, completed: number, checkpoints: number, completedCheckpoints: number }> = {}
+
+  data.forEach(focus => {
+    const date = focus.date
+    if (!progressByDate[date]) {
+      progressByDate[date] = { sessions: 0, completed: 0, checkpoints: 0, completedCheckpoints: 0 }
+    }
+
+    progressByDate[date].sessions++
+    if (focus.completed_at) progressByDate[date].completed++
+
+    if (focus.checkpoints) {
+      progressByDate[date].checkpoints += focus.checkpoints.length
+      progressByDate[date].completedCheckpoints += focus.checkpoints.filter((c: any) => c.completed_at).length
+    }
+  })
+
+  return Object.entries(progressByDate).map(([date, stats]) => ({
+    date,
+    ...stats
+  }))
+}
+
+// Get current streak data
+export async function getStreakData() {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { currentStreak: 0, longestStreak: 0, lastFocusDate: null }
+  }
+
+  const { data } = await supabase
+    .from('streaks')
+    .select('*')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!data) {
+    return { currentStreak: 0, longestStreak: 0, lastFocusDate: null }
+  }
+
+  return {
+    currentStreak: data.current_streak,
+    longestStreak: data.longest_streak,
+    lastFocusDate: data.last_focus_date
+  }
+}
