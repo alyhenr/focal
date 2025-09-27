@@ -85,20 +85,28 @@ export function DayGroupedList({ focuses, onFocusClick }: DayGroupedListProps) {
       const today = new Date().toISOString().split('T')[0]
       const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
 
+      const toExpand = new Set<string>()
       dayGroups.forEach(group => {
         if (group.date === today || group.date === yesterday) {
-          setExpandedDays(prev => {
-            return new Set(prev.add(group.date))
-          })
+          toExpand.add(group.date)
         }
       })
+
+      if (toExpand.size > 0) {
+        setExpandedDays(toExpand)
+      }
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focuses.length])
 
   const toggleDay = (date: string) => {
     setExpandedDays(prev => {
       const newExpanded = new Set(prev)
-      newExpanded.has(date) ? newExpanded.delete(date) : newExpanded.add(date)
+      if (newExpanded.has(date)) {
+        newExpanded.delete(date)
+      } else {
+        newExpanded.add(date)
+      }
       return newExpanded
     })
   }

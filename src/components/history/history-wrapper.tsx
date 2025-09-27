@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { DayGroupedList } from './day-grouped-list'
+import { useState, useTransition, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { DateRangeSelector } from './date-range-selector'
 import { HistoryStats } from './history-stats'
+import { DayGroupedList } from './day-grouped-list'
 import { EmptyHistoryState } from './empty-history-state'
 import { FocusDetailModal } from './focus-detail-modal'
 import { Button } from '@/components/ui/button'
@@ -11,9 +12,9 @@ import { Download, Filter, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Focus, NorthStar } from '@/types/focus'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { Skeleton } from '@/components/ui/skeleton'
 
-interface HistoryContentProps {
+interface HistoryWrapperProps {
   initialFocuses: Focus[]
   stats: {
     totalSessions: number
@@ -39,35 +40,34 @@ interface HistoryContentProps {
   totalCount: number
 }
 
-export function HistoryContent({
-  initialFocuses,
-  stats,
-  streakData,
-  northStars,
-  dateRange,
-  totalCount
-}: HistoryContentProps) {
+export function HistoryWrapper(props: HistoryWrapperProps) {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
+  const [currentRange, setCurrentRange] = useState(props.dateRange.preset)
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null)
   const [selectedFocus, setSelectedFocus] = useState<Focus | null>(null)
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Filter focuses by selected goal and search
-  const filteredFocuses = initialFocuses.filter(focus => {
-    const matchesGoal = !selectedGoalId || focus.north_star_id === selectedGoalId
-    const matchesSearch = !searchQuery ||
-      focus.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      focus.description?.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesGoal && matchesSearch
-  })
+  // Update current range when URL changes (after data loads)
+  useEffect(() => {
+    const range = searchParams.get('range') || '7days'
+    setCurrentRange(range)
+  }, [searchParams])
 
   const handleDateRangeChange = (range: string, customStart?: string, customEnd?: string) => {
-    const params = new URLSearchParams()
-    params.set('range', range)
-    if (customStart) params.set('start', customStart)
-    if (customEnd) params.set('end', customEnd)
-    router.push(`/history?${params.toString()}`)
+    // Update UI immediately
+    setCurrentRange(range)
+
+    // Navigate with transition
+    startTransition(() => {
+      const params = new URLSearchParams()
+      params.set('range', range)
+      if (customStart) params.set('start', customStart)
+      if (customEnd) params.set('end', customEnd)
+      router.push(`/history?${params.toString()}`)
+    })
   }
 
   const handleFocusClick = (focus: Focus) => {
@@ -76,6 +76,15 @@ export function HistoryContent({
   }
 
   const handleExport = async (format: 'csv' | 'json') => {
+    // Filter focuses by selected goal and search
+    const filteredFocuses = props.initialFocuses.filter(focus => {
+      const matchesGoal = !selectedGoalId || focus.north_star_id === selectedGoalId
+      const matchesSearch = !searchQuery ||
+        focus.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        focus.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesGoal && matchesSearch
+    })
+
     try {
       const dataToExport = filteredFocuses.map(focus => ({
         date: focus.date,
@@ -96,7 +105,7 @@ export function HistoryContent({
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = `focal-history-${dateRange.start}-to-${dateRange.end}.json`
+        a.download = `focal-history-${props.dateRange.start}-to-${props.dateRange.end}.json`
         a.click()
       } else {
         // CSV export
@@ -108,7 +117,7 @@ export function HistoryContent({
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = `focal-history-${dateRange.start}-to-${dateRange.end}.csv`
+        a.download = `focal-history-${props.dateRange.start}-to-${props.dateRange.end}.csv`
         a.click()
       }
 
@@ -118,15 +127,32 @@ export function HistoryContent({
     }
   }
 
+  // Filter focuses by selected goal and search
+  const filteredFocuses = props.initialFocuses.filter(focus => {
+    const matchesGoal = !selectedGoalId || focus.north_star_id === selectedGoalId
+    const matchesSearch = !searchQuery ||
+      focus.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      focus.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesGoal && matchesSearch
+  })
+
   // Empty state
-  if (initialFocuses.length === 0) {
-    return <EmptyHistoryState dateRange={dateRange} />
+  if (!isPending && props.initialFocuses.length === 0) {
+    return <EmptyHistoryState dateRange={props.dateRange} />
   }
 
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <HistoryStats stats={stats} streakData={streakData} />
+      {isPending ? (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-24 rounded-lg bg-white/80" />
+          ))}
+        </div>
+      ) : (
+        <HistoryStats stats={props.stats} streakData={props.streakData} />
+      )}
 
       {/* Controls Bar */}
       <div className="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 p-4">
@@ -139,15 +165,16 @@ export function HistoryContent({
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search focus sessions..."
               className="pl-10"
+              disabled={isPending}
             />
           </div>
 
           {/* Filters Row */}
           <div className="flex flex-wrap gap-3 items-center justify-between">
             <div className="flex flex-wrap gap-3 items-center">
-              {/* Date Range */}
+              {/* Date Range - This now updates instantly */}
               <DateRangeSelector
-                currentRange={dateRange.preset}
+                currentRange={currentRange}
                 onRangeChange={handleDateRangeChange}
               />
 
@@ -158,9 +185,10 @@ export function HistoryContent({
                   value={selectedGoalId || ''}
                   onChange={(e) => setSelectedGoalId(e.target.value || null)}
                   className="text-sm border border-gray-200 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  disabled={isPending}
                 >
                   <option value="">All Goals</option>
-                  {northStars.map(goal => (
+                  {props.northStars.map(goal => (
                     <option key={goal.id} value={goal.id}>
                       {goal.title}
                     </option>
@@ -171,7 +199,7 @@ export function HistoryContent({
 
             {/* Export Button */}
             <div className="relative group">
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2" disabled={isPending}>
                 <Download className="h-4 w-4" />
                 Export
               </Button>
@@ -194,18 +222,44 @@ export function HistoryContent({
 
           {/* Results Count */}
           <div className="text-sm text-gray-600">
-            Showing {filteredFocuses.length} of {totalCount} sessions
-            {selectedGoalId && ` for "${northStars.find(g => g.id === selectedGoalId)?.title}"`}
-            {searchQuery && ` matching "${searchQuery}"`}
+            {isPending ? (
+              <span className="animate-pulse">Loading sessions...</span>
+            ) : (
+              <>
+                Showing {filteredFocuses.length} of {props.totalCount} sessions
+                {selectedGoalId && ` for "${props.northStars.find(g => g.id === selectedGoalId)?.title}"`}
+                {searchQuery && ` matching "${searchQuery}"`}
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Day Grouped List */}
-      <DayGroupedList
-        focuses={filteredFocuses}
-        onFocusClick={handleFocusClick}
-      />
+      {/* Day Grouped List with Loading State */}
+      {isPending ? (
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100">
+              <div className="px-4 py-3 flex items-center justify-between">
+                <div>
+                  <Skeleton className="h-5 w-32 mb-2" />
+                  <Skeleton className="h-4 w-48" />
+                </div>
+                <Skeleton className="h-8 w-24" />
+              </div>
+              <div className="border-t border-gray-100 p-4 space-y-3">
+                <Skeleton className="h-20 w-full" />
+                <Skeleton className="h-20 w-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <DayGroupedList
+          focuses={filteredFocuses}
+          onFocusClick={handleFocusClick}
+        />
+      )}
 
       {/* Detail Modal */}
       <FocusDetailModal

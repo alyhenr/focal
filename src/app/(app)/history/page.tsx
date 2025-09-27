@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { AppShell } from '@/components/layout/app-shell'
-import { HistoryContent } from '@/components/history/history-content'
+import { HistoryWrapper } from '@/components/history/history-wrapper'
 import { getNorthStars, getFocusesByDateRange, getFocusStats, getStreakData } from '@/app/actions/focus'
 import { Toaster } from 'sonner'
 
@@ -32,7 +32,8 @@ export default async function HistoryPage({
   // Calculate start date based on range
   switch (range) {
     case 'today':
-      startDate = endDate
+      // For today, use the same date for both start and end
+      startDate = today.toISOString().split('T')[0]
       break
     case '3days':
       const threeDaysAgo = new Date(today)
@@ -60,8 +61,8 @@ export default async function HistoryPage({
       startDate = threeMonthsAgo.toISOString().split('T')[0]
       break
     case 'custom':
-      startDate = searchParams.start || endDate
-      endDate = searchParams.end || endDate
+      startDate = params.start || endDate
+      endDate = params.end || endDate
       break
     case 'all':
       // Get all time data - set a very early start date
@@ -110,7 +111,7 @@ export default async function HistoryPage({
         {/* Main Content */}
         <main className="px-4 lg:px-8 py-8">
           <div className="max-w-7xl mx-auto">
-            <HistoryContent
+            <HistoryWrapper
               initialFocuses={focusData.focuses}
               stats={stats}
               streakData={streakData}

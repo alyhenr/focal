@@ -52,7 +52,7 @@ export function FocusListItem({
     const mins = minutes % 60
     duration = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`
   }
-  console.log('focus.checkpoints', focus.checkpoints)
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
