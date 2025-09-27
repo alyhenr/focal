@@ -176,9 +176,6 @@ export function EditGoalModal({ open, onOpenChange, goal, onSubmit }: EditGoalMo
                         mode="single"
                         selected={field.value || undefined}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date(new Date().setHours(0, 0, 0, 0))
-                        }
                         initialFocus
                       />
                     </PopoverContent>

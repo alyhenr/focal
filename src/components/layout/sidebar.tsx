@@ -35,16 +35,16 @@ const navigation = [
     name: 'Dashboard',
     href: '/dashboard',
     icon: Home,
-    shortcut: '⌘D',
     action: null,
+    shortcut: null,
   },
   {
     name: 'New Focus',
     href: null,
     icon: Plus,
-    shortcut: '⌘N',
     action: 'newFocus',
     accent: 'primary',
+    shortcut: null,
   },
   {
     name: 'Later List',
@@ -57,8 +57,8 @@ const navigation = [
     name: 'Goals',
     href: '/goals',
     icon: Target,
-    shortcut: '⌘G',
     action: null,
+    shortcut: null,
   },
   {
     name: 'Calendar',
@@ -81,8 +81,8 @@ const tools = [
   {
     name: 'Timer',
     icon: Timer,
-    shortcut: '⌘T',
     action: 'timer',
+    shortcut: null,
   },
   {
     name: 'Command',
@@ -97,13 +97,13 @@ const bottomNav = [
     name: 'Settings',
     href: '/settings',
     icon: Settings,
-    shortcut: '⌘,',
+    shortcut: null,
   },
   {
     name: 'Help',
     href: '/help',
     icon: HelpCircle,
-    shortcut: '⌘?',
+    shortcut: null,
   },
 ]
 
@@ -210,11 +210,6 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                       className="flex-1 flex items-center justify-between"
                     >
                       <span className="text-sm font-medium">{item.name}</span>
-                      {item.shortcut && (
-                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
-                          {item.shortcut}
-                        </kbd>
-                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>

@@ -480,17 +480,19 @@
 - **Animations** - Fixed double animation issues
 - **North Star Goals** - Complete implementation with progress tracking
 - **Navigation Performance** - Loading states and Link optimization
+- **Goals Page Redesign** - Clean functional layout with grid/list views
+- **Calendar Fix** - Working date picker with proper styling
 
-#### ✅ NORTH STAR GOALS COMPLETE (Phase 4.1):
-- [x] Goals page at `/app/(app)/goals/page.tsx`
-- [x] Goal card component with progress visualization
-- [x] Create/Edit modals with calendar date picker
-- [x] Complete CRUD server actions in `/app/actions/focus.ts`
-- [x] Progress calculation from linked focuses
-- [x] Free tier limit (3 goals max) with upgrade prompts
-- [x] Integration with focus sessions via dropdown
-- [x] Archive and complete functionality
-- [x] Loading states for better UX
+#### ✅ GOALS PAGE IMPROVEMENTS (Latest):
+- [x] Removed constellation theme for standard design
+- [x] Documented constellation vision at `/docs/stories/goals-constellation.md`
+- [x] Added grid/list view toggle
+- [x] Implemented sorting (recent, progress, target, name)
+- [x] Added quick stats cards
+- [x] Fixed calendar weekday headers alignment
+- [x] Fixed calendar date selection functionality
+- [x] Added react-day-picker styles import
+- [x] Placeholder for future constellation mode
 
 #### 🚀 NEXT PRIORITY - Analytics & History (Phase 4.2):
 
@@ -514,9 +516,14 @@
 - [ ] Date range filtering
 - [ ] Include checkpoints option
 
+### 🐛 Known Issues:
+- TypeScript warnings for 'any' types in goals components (non-critical)
+- Calendar shows year 2025 (date logic needs review)
+
 ### 📝 Important Notes:
 - Using bun instead of npm
 - Supabase project is live and configured
 - Google OAuth needs to be enabled in Supabase dashboard
 - Multiple sessions per day supported in schema
 - Design guidelines documented in CLAUDE.md
+- Constellation mode documented for post-MVP implementation

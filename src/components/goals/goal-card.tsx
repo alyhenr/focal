@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
+import { CircularProgress } from '@/components/ui/circular-progress'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   Trophy,
   Zap,
+  Focus,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
@@ -30,9 +31,10 @@ interface GoalCardProps {
   goal: any
   onUpdate: (goalId: string, updates: any) => void
   onArchive: (goalId: string) => void
+  viewMode?: 'grid' | 'list'
 }
 
-export function GoalCard({ goal, onUpdate, onArchive }: GoalCardProps) {
+export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalCardProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [isCompleting, setIsCompleting] = useState(false)
 
@@ -76,12 +78,13 @@ export function GoalCard({ goal, onUpdate, onArchive }: GoalCardProps) {
   return (
     <>
       <motion.div
-        whileHover={{ y: -4 }}
+        whileHover={{ y: -2 }}
         className={cn(
           'group relative bg-white rounded-xl border transition-all duration-200',
           isCompleted
             ? 'border-primary/30 bg-primary/5'
-            : 'border-gray-100 hover:border-primary/20 hover:shadow-lg'
+            : 'border-gray-100 hover:border-primary/20 hover:shadow-lg',
+          viewMode === 'list' && 'flex items-center gap-4'
         )}
       >
         {/* Completion Badge */}
@@ -97,7 +100,7 @@ export function GoalCard({ goal, onUpdate, onArchive }: GoalCardProps) {
           </motion.div>
         )}
 
-        <div className="p-6 space-y-4">
+        <div className="p-6 space-y-4 w-full">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -150,35 +153,37 @@ export function GoalCard({ goal, onUpdate, onArchive }: GoalCardProps) {
             </DropdownMenu>
           </div>
 
-          {/* Progress Section */}
+          {/* Progress Section with Circular Ring */}
           {progress.total > 0 && (
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Progress</span>
-                <span className="font-medium">
-                  {progress.completed}/{progress.total} sessions
-                </span>
-              </div>
-              <div className="relative">
-                <Progress
-                  value={progress.percentage}
-                  className="h-2"
-                />
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex-1 space-y-1 text-center sm:text-left">
+                <div className="text-sm text-gray-600">Journey Progress</div>
+                <div className="flex items-center gap-2 justify-center sm:justify-start">
+                  <Focus className="h-3 w-3 text-gray-400" />
+                  <span className="text-xs text-gray-500">
+                    {progress.completed} of {progress.total} sessions
+                  </span>
+                </div>
                 {progress.percentage === 100 && !isCompleted && (
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -right-1 -top-1"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-1 mt-2"
                   >
-                    <Zap className="h-4 w-4 text-yellow-500" />
+                    <Zap className="h-3 w-3 text-yellow-400" />
+                    <span className="text-xs text-yellow-400/90 font-medium">
+                      Ready to complete!
+                    </span>
                   </motion.div>
                 )}
               </div>
-              <div className="text-right">
-                <span className="text-sm font-medium text-primary">
-                  {progress.percentage}%
-                </span>
-              </div>
+
+              <CircularProgress
+                value={progress.percentage}
+                size={70}
+                strokeWidth={5}
+                showValue={true}
+              />
             </div>
           )}
 

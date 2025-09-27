@@ -156,30 +156,40 @@
 - **Command Palette**: Global keyboard shortcuts for power users
 - **Offline First**: Later List syncs in background
 
-## Latest Session Updates (North Stars & Navigation Performance)
+## Latest Session Updates (Goals Page Redesign & Calendar Fix)
 
-### ✅ North Stars Feature Implementation
-- **Complete CRUD operations** for goals in `/app/actions/focus.ts`
-- **Goals page** at `/app/(app)/goals/page.tsx` with server-side data
-- **Goal cards** with progress visualization and animations
-- **Free tier limits** - Enforces 3 goals max with upgrade prompts
-- **Create/Edit modals** with calendar date picker
-- **Progress tracking** - Auto-calculates from linked focus sessions
-- **Integration** - Focus sessions can be linked to goals via dropdown
+### ✅ Goals Page Complete Redesign
+- **Removed constellation theme** - Reverted to standard gradient matching dashboard
+- **Documented future vision** at `/docs/stories/goals-constellation.md` - Comprehensive plan for immersive constellation mode post-MVP
+- **New functional layout**:
+  - Grid/List view toggle for flexibility
+  - Sorting options (recent, progress, target date, name)
+  - Quick stats cards (Active, Avg Progress, Sessions, Completed)
+  - Clean header with actions bar
+  - "Constellation View - Coming Soon" placeholder for future feature
 
-### ✅ Navigation Performance Optimizations
-- **Replaced router.push() with Link components** for prefetching
-- **Loading.tsx files** for instant feedback during navigation
-- **Polished loading skeletons** matching actual page layouts
-- **Production optimization** in `next.config.ts` with package imports
-- **Key insight**: Slow navigation in dev is expected, production is faster
-- **Solution**: loading.tsx provides immediate visual feedback
+### ✅ Calendar Component Fixed
+- **Fixed weekday headers** - Properly spaced and aligned (was showing "MoTuWeThFrSa" concatenated)
+- **Fixed date selection** - Calendar now correctly allows selecting future dates
+- **Added react-day-picker styles** - Import added to globals.css
+- **Visual improvements**:
+  - Past dates disabled (grayed out)
+  - Today and future dates selectable
+  - Selected date highlighted with orange circle
+  - Selected date appears in button text
 
-### 🔑 Technical Discoveries
-- Next.js App Router fetches data server-side before rendering
-- Loading states are crucial for perceived performance
-- Production build shows true performance (test on port 3001)
-- Link components with prefetching significantly improve navigation
+### 🔑 Technical Changes
+- Removed `/src/components/goals/constellation-canvas.tsx`
+- Cleaned up celestial CSS classes from `globals.css`
+- Updated calendar component with better flexbox layouts
+- Fixed circular progress component (removed isPrimary prop)
+- Goals page now seamlessly integrates with app design
+
+### 🎯 Design Philosophy Established
+- **Functional MVP first** - Clean, efficient task management
+- **Constellation mode later** - Documented for future major update
+- **Consistent UI** - Goals page now matches dashboard style
+- **No jarring transitions** - Smooth navigation between pages
 
 ## Environment Status
 - Dev server: Run with `bun run dev` on port 3000

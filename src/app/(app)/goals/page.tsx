@@ -30,7 +30,7 @@ export default async function GoalsPage() {
   return (
     <AppShell northStars={northStars}>
       <div className="min-h-screen relative">
-        {/* Flowing Gradient Background */}
+        {/* Standard Gradient Background - matching dashboard */}
         <div className="gradient-bg">
           <div className="gradient-orb gradient-orb-1" />
           <div className="gradient-orb gradient-orb-2" />
@@ -38,7 +38,7 @@ export default async function GoalsPage() {
           <div className="gradient-mesh" />
         </div>
 
-        {/* Header */}
+        {/* Header - Standard Theme */}
         <header className="border-b border-gray-100/50 bg-white/70 backdrop-blur-md sticky top-0 z-20">
           <div className="px-6 lg:pl-4 py-4 flex justify-between items-center">
             <div className="flex items-center gap-6">

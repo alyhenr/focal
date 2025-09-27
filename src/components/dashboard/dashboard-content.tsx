@@ -127,7 +127,6 @@ export function DashboardContent({
       const newFocus = await createFocusSession(data)
       if (newFocus) {
         addFocus({ ...newFocus, checkpoints: [] })
-        setSelectedFocusId(newFocus.id)
         toast.success('Focus session created!', {
           description: `Session ${sessionNumber} is ready to go`,
         })
