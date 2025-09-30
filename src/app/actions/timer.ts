@@ -1,7 +1,6 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
 import { TimerSession, SessionType } from '@/types/focus'
 
 export async function createTimerSession(
@@ -30,7 +29,7 @@ export async function createTimerSession(
     return null
   }
 
-  revalidatePath('/dashboard')
+  // Don't revalidate to avoid UI delays
   return data
 }
 
@@ -56,7 +55,7 @@ export async function completeTimerSession(
     return false
   }
 
-  revalidatePath('/dashboard')
+  // Don't revalidate to avoid UI delays
   return true
 }
 

@@ -75,7 +75,7 @@ export function CircularProgress({
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-gray-700 font-semibold"
+            className="text-foreground font-semibold"
             style={{ fontSize: size / 4 }}
           >
             {value}%
