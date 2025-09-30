@@ -104,15 +104,15 @@ export function HistoryStats({ stats, streakData }: HistoryStatsProps) {
         <motion.div
           key={stat.title}
           variants={itemVariants}
-          className="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 p-4"
+          className="bg-card/80 backdrop-blur-sm rounded-lg border border-border p-4"
         >
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <p className="text-xs text-gray-600 mb-1">{stat.title}</p>
+              <p className="text-xs text-muted-foreground mb-1">{stat.title}</p>
               <p className="text-xl font-semibold text-foreground">
                 {stat.value}
               </p>
-              <p className="text-xs text-gray-500 mt-1">{stat.subValue}</p>
+              <p className="text-xs text-muted-foreground mt-1">{stat.subValue}</p>
             </div>
             <div className={cn('p-2 rounded-lg', stat.bgColor)}>
               <stat.icon className={cn('h-4 w-4', stat.color)} />

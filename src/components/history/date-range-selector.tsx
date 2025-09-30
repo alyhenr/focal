@@ -56,7 +56,7 @@ export function DateRangeSelector({ currentRange, onRangeChange }: DateRangeSele
 
   return (
     <div className="flex items-center gap-2">
-      <CalendarIcon className="h-4 w-4 text-gray-500" />
+      <CalendarIcon className="h-4 w-4 text-muted-foreground" />
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -75,7 +75,7 @@ export function DateRangeSelector({ currentRange, onRangeChange }: DateRangeSele
               key={range.value}
               onClick={() => onRangeChange(range.value)}
               className={cn(
-                currentRange === range.value && 'bg-gray-100'
+                currentRange === range.value && 'bg-muted'
               )}
             >
               {range.label}
@@ -85,7 +85,7 @@ export function DateRangeSelector({ currentRange, onRangeChange }: DateRangeSele
           <DropdownMenuItem
             onClick={() => setShowCustom(true)}
             className={cn(
-              currentRange === 'custom' && 'bg-gray-100'
+              currentRange === 'custom' && 'bg-muted'
             )}
           >
             Custom Range...

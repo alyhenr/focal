@@ -31,7 +31,7 @@ export function EmptyHistoryState({ dateRange }: EmptyHistoryStateProps) {
         No Focus Sessions Yet
       </h2>
 
-      <p className="text-gray-600 max-w-md mb-8">
+      <p className="text-muted-foreground max-w-md mb-8">
         {dateRange.preset === 'today'
           ? "You haven't created any focus sessions today. Start your first session to begin tracking your progress."
           : dateRange.preset === 'all'
@@ -69,12 +69,12 @@ export function EmptyHistoryState({ dateRange }: EmptyHistoryStateProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="mt-12 p-6 bg-gray-50 rounded-lg max-w-md"
+        className="mt-12 p-6 bg-muted rounded-lg max-w-md"
       >
-        <p className="text-sm text-gray-600 italic">
+        <p className="text-sm text-muted-foreground italic">
           &ldquo;A journey of a thousand miles begins with a single step.&rdquo;
         </p>
-        <p className="text-xs text-gray-500 mt-2">— Lao Tzu</p>
+        <p className="text-xs text-muted-foreground mt-2">— Lao Tzu</p>
       </motion.div>
     </motion.div>
   )

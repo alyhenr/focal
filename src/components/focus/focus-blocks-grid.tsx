@@ -17,7 +17,7 @@ interface FocusBlocksGridProps {
 const energyIcons = {
   high: { icon: Zap, color: 'text-yellow-500' },
   medium: { icon: Battery, color: 'text-blue-500' },
-  low: { icon: BatteryLow, color: 'text-gray-500' },
+  low: { icon: BatteryLow, color: 'text-muted-foreground' },
 }
 
 export function FocusBlocksGrid({
@@ -79,7 +79,7 @@ export function FocusBlocksGrid({
             onClick={() => onSelectFocus(isSelected ? null : focus.id)}
             className={cn(
               'relative cursor-pointer rounded-lg p-5 transition-all duration-150 h-24',
-              'bg-white',
+              'bg-card',
               // Base shadow
               'shadow-sm hover:shadow-md',
               // Selected state
@@ -87,7 +87,7 @@ export function FocusBlocksGrid({
               // Active state (pulsing replaced with breathing scale)
               isActive && !isCompleted && 'ring-2 ring-success/50 shadow-lg',
               // Completed state
-              isCompleted && 'opacity-75 bg-gray-50',
+              isCompleted && 'opacity-75 bg-muted',
               isCompleted && isSelected && 'opacity-100',
               isCompleted && allCheckpointsComplete && 'bg-gradient-to-br from-white to-success/5'
             )}
@@ -97,7 +97,7 @@ export function FocusBlocksGrid({
           >
             {/* Session Number - More subtle */}
             <div className="absolute top-3 right-3">
-              <span className="text-[10px] font-medium text-gray-400">
+              <span className="text-[10px] font-medium text-muted-foreground">
                 {focus.session_number}
               </span>
             </div>
@@ -116,7 +116,7 @@ export function FocusBlocksGrid({
 
 
             {/* Content */}
-            <div className="flex flex-col justify-between h-full">
+            <div className="flex flex-col justify-between h-fit">
               <h3 className="font-semibold text-sm line-clamp-2 text-foreground">{focus.title}</h3>
 
               {focus.description && (
@@ -136,8 +136,8 @@ export function FocusBlocksGrid({
                     isCompleted
                       ? allCheckpointsComplete
                         ? 'text-success font-medium'
-                        : 'text-gray-500'
-                      : 'text-gray-500'
+                        : 'text-muted-foreground'
+                      : 'text-muted-foreground'
                   )}>
                     {checkpointStats}
                   </span>
@@ -169,13 +169,13 @@ export function FocusBlocksGrid({
         whileHover={{ scale: 1.02, y: -2 }}
         whileTap={{ scale: 0.98 }}
         onClick={onNewFocus}
-        className="relative cursor-pointer rounded-lg p-5 transition-all duration-150 bg-gray-50 hover:bg-gray-100 h-24 flex items-center justify-center group"
+        className="relative cursor-pointer rounded-lg p-5 transition-all duration-150 bg-muted hover:bg-muted h-24 flex items-center justify-center group"
       >
         <div className="text-center space-y-2">
-          <div className="w-10 h-10 mx-auto rounded-full bg-gray-200 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
-            <Plus className="h-5 w-5 text-gray-600 group-hover:text-primary" />
+          <div className="w-10 h-10 mx-auto rounded-full bg-muted group-hover:bg-primary/20 flex items-center justify-center transition-colors">
+            <Plus className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
           </div>
-          <p className="text-xs font-medium text-gray-600 group-hover:text-primary">New Focus</p>
+          <p className="text-xs font-medium text-muted-foreground group-hover:text-primary">New Focus</p>
         </div>
       </motion.div>
     </motion.div>

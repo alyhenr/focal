@@ -27,7 +27,7 @@ interface FocusListItemProps {
 const energyIcons = {
   high: { icon: Zap, color: 'text-yellow-500', bg: 'bg-yellow-50' },
   medium: { icon: Battery, color: 'text-blue-500', bg: 'bg-blue-50' },
-  low: { icon: BatteryLow, color: 'text-gray-500', bg: 'bg-gray-50' }
+  low: { icon: BatteryLow, color: 'text-muted-foreground', bg: 'bg-muted' }
 }
 
 export function FocusListItem({
@@ -60,7 +60,7 @@ export function FocusListItem({
       transition={{ delay, type: 'spring', stiffness: 200, damping: 20 }}
       className={cn(
         "rounded-lg border transition-all",
-        isCompleted ? "bg-gray-50/50 border-gray-200" : "bg-white border-gray-200",
+        isCompleted ? "bg-muted/50 border-border" : "bg-card border-border",
         "hover:shadow-sm"
       )}
     >
@@ -74,7 +74,7 @@ export function FocusListItem({
           {isCompleted ? (
             <CheckCircle2 className="h-5 w-5 text-success" />
           ) : (
-            <Circle className="h-5 w-5 text-gray-400" />
+            <Circle className="h-5 w-5 text-muted-foreground" />
           )}
         </div>
 
@@ -85,15 +85,15 @@ export function FocusListItem({
               <div className="flex items-center gap-2">
                 <h4 className={cn(
                   "font-medium text-sm",
-                  isCompleted ? "text-gray-700" : "text-foreground"
+                  isCompleted ? "text-foreground" : "text-foreground"
                 )}>
                   {focus.title}
                 </h4>
-                <span className="text-xs text-gray-500">#{focus.session_number}</span>
+                <span className="text-xs text-muted-foreground">#{focus.session_number}</span>
               </div>
 
               {focus.description && (
-                <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">
+                <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
                   {focus.description}
                 </p>
               )}
@@ -104,14 +104,14 @@ export function FocusListItem({
                 {EnergyIcon && energyConfig && (
                   <div className="flex items-center gap-1">
                     <EnergyIcon className={cn('h-3 w-3', energyConfig.color)} />
-                    <span className="text-xs capitalize text-gray-600">{focus.energy_level}</span>
+                    <span className="text-xs capitalize text-muted-foreground">{focus.energy_level}</span>
                   </div>
                 )}
 
                 {/* Time */}
                 <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3 text-gray-400" />
-                  <span className="text-xs text-gray-600">
+                  <Clock className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">
                     {format(parseISO(focus.started_at), 'h:mm a')}
                     {duration && ` • ${duration}`}
                   </span>
@@ -128,10 +128,10 @@ export function FocusListItem({
                 {/* Checkpoints */}
                 {totalCheckpoints > 0 && (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-gray-600">
+                    <span className="text-xs font-medium text-muted-foreground">
                       {completedCheckpoints.length}/{totalCheckpoints}
                     </span>
-                    <div className="w-12 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="w-12 h-1.5 bg-muted rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
@@ -151,17 +151,17 @@ export function FocusListItem({
                   e.stopPropagation()
                   onDetailClick()
                 }}
-                className="p-1 hover:bg-gray-100 rounded transition-colors"
+                className="p-1 hover:bg-muted rounded transition-colors"
                 title="View details"
               >
-                <ExternalLink className="h-4 w-4 text-gray-500" />
+                <ExternalLink className="h-4 w-4 text-muted-foreground" />
               </button>
 
               <motion.div
                 animate={{ rotate: isExpanded ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <ChevronDown className="h-4 w-4 text-gray-500" />
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </motion.div>
             </div>
           </div>
@@ -176,10 +176,10 @@ export function FocusListItem({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="border-t border-gray-100"
+            className="border-t border-border"
           >
             <div className="px-4 py-3 space-y-2">
-              <p className="text-xs font-medium text-gray-600 mb-2">Checkpoints:</p>
+              <p className="text-xs font-medium text-muted-foreground mb-2">Checkpoints:</p>
               {focus.checkpoints.map((checkpoint) => (
                 <div
                   key={checkpoint.id}
@@ -188,11 +188,11 @@ export function FocusListItem({
                   {checkpoint.completed_at ? (
                     <CheckCircle2 className="h-3.5 w-3.5 text-success flex-shrink-0" />
                   ) : (
-                    <Circle className="h-3.5 w-3.5 text-gray-400 flex-shrink-0" />
+                    <Circle className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                   )}
                   <span className={cn(
                     "text-xs",
-                    checkpoint.completed_at && "line-through text-gray-500"
+                    checkpoint.completed_at && "line-through text-muted-foreground"
                   )}>
                     {checkpoint.title}
                   </span>
@@ -206,10 +206,10 @@ export function FocusListItem({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="border-t border-gray-100"
+            className="border-t border-border"
           >
             <div className="px-4 py-3 space-y-2">
-              <p className="text-xs font-bold text-gray-600 mb-2">No checkpoints created in this session</p>
+              <p className="text-xs font-bold text-muted-foreground mb-2">No checkpoints created in this session</p>
             </div>
           </motion.div>
         ))

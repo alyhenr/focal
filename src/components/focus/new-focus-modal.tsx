@@ -55,7 +55,7 @@ interface NewFocusModalProps {
 const energyLevelOptions = [
   { value: 'high', label: 'High Energy', icon: Zap, color: 'text-yellow-500' },
   { value: 'medium', label: 'Medium Energy', icon: Battery, color: 'text-blue-500' },
-  { value: 'low', label: 'Low Energy', icon: BatteryLow, color: 'text-gray-500' },
+  { value: 'low', label: 'Low Energy', icon: BatteryLow, color: 'text-muted-foreground' },
 ]
 
 export function NewFocusModal({

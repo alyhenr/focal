@@ -127,6 +127,7 @@ export function DashboardContent({
       const newFocus = await createFocusSession(data)
       if (newFocus) {
         addFocus({ ...newFocus, checkpoints: [] })
+        setSelectedFocusId(newFocus.id)
         toast.success('Focus session created!', {
           description: `Session ${sessionNumber} is ready to go`,
         })
@@ -361,7 +362,7 @@ export function DashboardContent({
             <h2 className="text-2xl font-semibold text-foreground mb-1">
               Welcome back, {user.email?.split('@')[0]}
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               {todayFocuses.length === 0
                 ? 'Ready to start your first focus session?'
                 : `${todayFocuses.filter(f => f.completed_at).length} of ${todayFocuses.length} sessions completed today`
@@ -374,14 +375,14 @@ export function DashboardContent({
                 <div className="w-2 h-2 rounded-full bg-orange-500"></div>
                 <span className="text-xl font-semibold text-foreground">0</span>
               </div>
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider">Streak</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Streak</p>
             </div>
             <div className="text-center">
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-success"></div>
                 <span className="text-xl font-semibold text-foreground">{todayFocuses.length}</span>
               </div>
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider">Today</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Today</p>
             </div>
           </div>
         </div>
@@ -449,20 +450,20 @@ export function DashboardContent({
           isFocusMode && 'opacity-30 blur-sm pointer-events-none'
         )}
       >
-        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card">
           <CardHeader className="pb-3">
             <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
               <Target className="h-5 w-5 text-primary" />
             </div>
             <CardTitle className="text-sm font-medium text-foreground">Goals</CardTitle>
-            <CardDescription className="text-xs text-gray-500">
+            <CardDescription className="text-xs text-muted-foreground">
               Set long-term targets
             </CardDescription>
           </CardHeader>
         </Card>
 
         <Card
-          className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white"
+          className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card"
           onClick={() => {
             // Trigger Later List from sidebar
             const event = new KeyboardEvent('keydown', {
@@ -477,31 +478,31 @@ export function DashboardContent({
               <ListTodo className="h-5 w-5 text-secondary" />
             </div>
             <CardTitle className="text-sm font-medium text-foreground">Later List</CardTitle>
-            <CardDescription className="text-xs text-gray-500">
+            <CardDescription className="text-xs text-muted-foreground">
               Review captured items
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card">
           <CardHeader className="pb-3">
             <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center mb-3 group-hover:bg-success/20 transition-colors">
               <Calendar className="h-5 w-5 text-success" />
             </div>
             <CardTitle className="text-sm font-medium text-foreground">Calendar</CardTitle>
-            <CardDescription className="text-xs text-gray-500">
+            <CardDescription className="text-xs text-muted-foreground">
               View weekly progress
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-white">
+        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card">
           <CardHeader className="pb-3">
             <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center mb-3 group-hover:bg-warning/20 transition-colors">
               <History className="h-5 w-5 text-warning" />
             </div>
             <CardTitle className="text-sm font-medium text-foreground">History</CardTitle>
-            <CardDescription className="text-xs text-gray-500">
+            <CardDescription className="text-xs text-muted-foreground">
               Past sessions
             </CardDescription>
           </CardHeader>
@@ -551,11 +552,11 @@ export function DashboardContent({
             >
               <button
                 onClick={handlePauseSession}
-                className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg hover:bg-white transition-all hover:shadow-xl text-sm font-medium text-gray-700"
+                className="flex items-center gap-2 px-4 py-2 bg-card/90 backdrop-blur-sm rounded-lg shadow-lg hover:bg-card transition-all hover:shadow-xl text-sm font-medium text-foreground"
               >
                 <X className="h-4 w-4" />
                 <span>Exit Focus</span>
-                <kbd className="px-1.5 py-0.5 text-xs bg-gray-100 rounded text-gray-600">ESC</kbd>
+                <kbd className="px-1.5 py-0.5 text-xs bg-muted rounded text-muted-foreground">ESC</kbd>
               </button>
             </motion.div>
           </>

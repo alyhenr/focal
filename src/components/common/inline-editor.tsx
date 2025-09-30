@@ -83,16 +83,34 @@ export function InlineEditor({
           variant="ghost"
           onClick={handleSave}
           disabled={isLoading || !value.trim() || value === initialValue}
-          className="h-8 w-8"
+          className={cn(
+            "h-8 w-8 transition-all",
+            isLoading || !value.trim() || value === initialValue
+              ? "opacity-50 cursor-not-allowed hover:bg-transparent"
+              : "hover:bg-success/10"
+          )}
+          title={
+            !value.trim()
+              ? "Enter some text"
+              : value === initialValue
+              ? "No changes to save"
+              : "Save changes (Enter)"
+          }
         >
-          <Check className="h-4 w-4 text-success" />
+          <Check className={cn(
+            "h-4 w-4 transition-colors",
+            isLoading || !value.trim() || value === initialValue
+              ? "text-muted-foreground"
+              : "text-success"
+          )} />
         </Button>
         <Button
           size="icon"
           variant="ghost"
           onClick={handleCancel}
           disabled={isLoading}
-          className="h-8 w-8"
+          className="h-8 w-8 hover:bg-destructive/10 transition-all"
+          title="Cancel (Esc)"
         >
           <X className="h-4 w-4 text-destructive" />
         </Button>

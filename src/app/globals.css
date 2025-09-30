@@ -105,10 +105,6 @@
   --color-input: oklch(0.98 0.002 110);   /* Very light input backgrounds */
   --color-ring: oklch(0.62 0.12 145);     /* Sage green focus ring */
   --color-muted-foreground: oklch(0.55 0.01 110);
-  --color-card: oklch(0.995 0 0);
-  --color-card-foreground: oklch(0.25 0.015 110);
-  --color-popover: oklch(0.995 0 0);
-  --color-popover-foreground: oklch(0.25 0.015 110);
 
   /* Professional Shadow System */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -127,79 +123,196 @@
 
 /* CSS Variables for shadcn/ui compatibility */
 :root {
-  /* Light mode - Forest Calm */
-  --background: oklch(0.98 0.003 110);
-  --foreground: oklch(0.25 0.015 110);
+  /* Light mode - Forest Morning */
+  --background: oklch(0.985 0.004 145);  /* Soft warm white with green undertone */
+  --foreground: oklch(0.22 0.018 145);   /* Deep forest gray */
 
-  --primary: oklch(0.62 0.12 145);
-  --primary-foreground: oklch(0.99 0 0);
+  --primary: oklch(0.62 0.12 145);       /* Sage green */
+  --primary-foreground: oklch(0.99 0 0);  /* White */
 
-  --secondary: oklch(0.72 0.08 220);
-  --secondary-foreground: oklch(0.25 0.015 110);
+  --secondary: oklch(0.72 0.08 200);      /* Soft teal */
+  --secondary-foreground: oklch(0.22 0.018 145);
 
-  --muted: oklch(0.96 0.005 110);
-  --muted-foreground: oklch(0.55 0.01 110);
+  --muted: oklch(0.97 0.003 145);        /* Very light sage */
+  --muted-foreground: oklch(0.50 0.012 145);
 
-  --accent: oklch(0.78 0.12 85);
-  --accent-foreground: oklch(0.25 0.015 110);
+  --accent: oklch(0.78 0.10 85);         /* Warm sand */
+  --accent-foreground: oklch(0.22 0.018 145);
 
-  --destructive: oklch(0.65 0.15 35);
+  --destructive: oklch(0.65 0.15 35);    /* Soft terracotta */
   --destructive-foreground: oklch(0.99 0 0);
 
-  --success: oklch(0.75 0.15 165);
-  --success-foreground: oklch(0.25 0.015 110);
+  --success: oklch(0.75 0.15 165);       /* Fresh mint */
+  --success-foreground: oklch(0.22 0.018 145);
 
-  --warning: oklch(0.78 0.12 85);
-  --warning-foreground: oklch(0.25 0.015 110);
+  --warning: oklch(0.78 0.12 85);        /* Warm amber */
+  --warning-foreground: oklch(0.22 0.018 145);
 
-  --card: oklch(0.995 0 0);
-  --card-foreground: oklch(0.25 0.015 110);
+  --card: oklch(1 0 0);                  /* Pure white - no transparency */
+  --card-foreground: oklch(0.22 0.018 145);
 
-  --popover: oklch(0.995 0 0);
-  --popover-foreground: oklch(0.25 0.015 110);
+  --popover: rgb(255 255 255);           /* Solid white - no transparency */
+  --popover-foreground: oklch(0.22 0.018 145);
 
-  --border: oklch(0.92 0.002 110);
-  --input: oklch(0.98 0.002 110);
-  --ring: oklch(0.62 0.12 145);
+  --border: oklch(0.93 0.003 145);       /* Subtle sage border */
+  --input: oklch(0.99 0.002 145);        /* Almost white input */
+  --ring: oklch(0.62 0.12 145);          /* Sage focus ring */
 
   --radius: 0.375rem;
 }
 
+/* Accent Color: Sage (default) */
+[data-accent="sage"] {
+  --primary: oklch(0.62 0.12 145);
+  --primary-foreground: oklch(0.99 0 0);
+  --ring: oklch(0.62 0.12 145);
+  --color-primary: oklch(0.62 0.12 145);
+  --color-primary-hover: oklch(0.58 0.13 145);
+  --color-primary-muted: oklch(0.72 0.08 145);
+}
+
+/* Accent Color: Teal */
+[data-accent="teal"] {
+  --primary: oklch(0.72 0.12 200);
+  --primary-foreground: oklch(0.99 0 0);
+  --ring: oklch(0.72 0.12 200);
+  --color-primary: oklch(0.72 0.12 200);
+  --color-primary-hover: oklch(0.68 0.13 200);
+  --color-primary-muted: oklch(0.82 0.08 200);
+  --secondary: oklch(0.62 0.08 145);
+}
+
+/* Accent Color: Rose */
+[data-accent="rose"] {
+  --primary: oklch(0.68 0.15 20);
+  --primary-foreground: oklch(0.99 0 0);
+  --ring: oklch(0.68 0.15 20);
+  --color-primary: oklch(0.68 0.15 20);
+  --color-primary-hover: oklch(0.64 0.16 20);
+  --color-primary-muted: oklch(0.78 0.10 20);
+  --secondary: oklch(0.75 0.08 350);
+}
+
+/* Font Size: Small */
+[data-font-size="small"] {
+  --text-xs: 0.65rem;
+  --text-sm: 0.7rem;
+  --text-base: 0.8rem;
+  --text-lg: 0.9rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.25rem;
+  --text-3xl: 1.5rem;
+  --text-4xl: 1.875rem;
+}
+
+/* Font Size: Medium (default) */
+[data-font-size="medium"] {
+  --text-xs: 0.7rem;
+  --text-sm: 0.8rem;
+  --text-base: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.125rem;
+  --text-2xl: 1.375rem;
+  --text-3xl: 1.75rem;
+  --text-4xl: 2.125rem;
+}
+
+/* Font Size: Large */
+[data-font-size="large"] {
+  --text-xs: 0.8rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+}
+
 .dark {
-  /* Dark mode - Professional & Calm */
-  --background: oklch(0.15 0.03 250);
-  --foreground: oklch(0.95 0.005 250);
+  /* Dark mode - Forest Night */
+  --background: oklch(0.13 0.01 220);     /* Deep charcoal with blue undertone */
+  --foreground: oklch(0.96 0.002 90);     /* Bright warm white for better contrast */
 
-  --primary: oklch(0.65 0.16 250);
-  --primary-foreground: oklch(0.15 0.03 250);
+  --primary: oklch(0.55 0.12 145);        /* Muted sage for dark mode */
+  --primary-foreground: oklch(0.98 0 0);
 
-  --secondary: oklch(0.70 0.09 145);
-  --secondary-foreground: oklch(0.15 0.03 145);
+  --secondary: oklch(0.50 0.10 200);      /* Muted teal */
+  --secondary-foreground: oklch(0.96 0.002 90);
 
-  --accent: oklch(0.70 0.10 45);
-  --accent-foreground: oklch(0.15 0.03 45);
+  --muted: oklch(0.17 0.01 220);          /* Slightly lighter than background */
+  --muted-foreground: oklch(0.75 0.005 90);  /* Much brighter for better contrast */
 
-  --destructive: oklch(0.70 0.16 25);
-  --destructive-foreground: oklch(0.95 0.005 250);
+  --accent: oklch(0.45 0.08 85);          /* Muted warm sand */
+  --accent-foreground: oklch(0.96 0.002 90);
 
-  --success: oklch(0.70 0.13 165);
-  --success-foreground: oklch(0.15 0.03 165);
+  --destructive: oklch(0.55 0.14 25);     /* Muted terracotta */
+  --destructive-foreground: oklch(0.96 0.002 90);
 
-  --warning: oklch(0.75 0.13 85);
-  --warning-foreground: oklch(0.15 0.03 85);
+  --success: oklch(0.50 0.13 165);        /* Muted mint */
+  --success-foreground: oklch(0.96 0.002 90);
 
-  --muted: oklch(0.20 0.02 250);
-  --muted-foreground: oklch(0.60 0.015 250);
+  --warning: oklch(0.55 0.11 85);         /* Muted amber */
+  --warning-foreground: oklch(0.13 0.01 220);
 
-  --card: oklch(0.17 0.025 250);
-  --card-foreground: oklch(0.95 0.005 250);
+  --card: oklch(0.16 0.01 220);           /* Solid dark card - no transparency */
+  --card-foreground: oklch(0.96 0.002 90);
 
-  --popover: oklch(0.17 0.025 250);
-  --popover-foreground: oklch(0.95 0.005 250);
+  --popover: rgb(33 39 55);                /* Solid dark popover - no transparency */
+  --popover-foreground: oklch(0.96 0.002 90);
 
-  --border: oklch(0.22 0.015 250);
-  --input: oklch(0.19 0.02 250);
-  --ring: oklch(0.65 0.16 250);
+  --border: oklch(0.24 0.008 220);        /* Slightly brighter border for visibility */
+  --input: oklch(0.18 0.01 220);          /* Input background */
+  --ring: oklch(0.55 0.12 145);           /* Sage focus ring */
+
+  /* Override theme colors in dark mode */
+  --color-background: oklch(0.13 0.01 220);
+  --color-surface: oklch(0.16 0.01 220);
+  --color-surface-hover: oklch(0.18 0.01 220);
+  --color-muted: oklch(0.17 0.01 220);
+  --color-foreground: oklch(0.96 0.002 90);      /* Brighter main text */
+  --color-foreground-muted: oklch(0.75 0.005 90); /* Much brighter muted text */
+  --color-foreground-subtle: oklch(0.62 0.006 90); /* Brighter subtle text */
+  --color-border: oklch(0.24 0.008 220);
+  --color-input: oklch(0.18 0.01 220);
+  --color-muted-foreground: oklch(0.75 0.005 90);
+
+  /* Primary colors for dark mode */
+  --color-primary: oklch(0.55 0.12 145);
+  --color-primary-hover: oklch(0.60 0.13 145);
+  --color-primary-muted: oklch(0.35 0.08 145);
+}
+
+/* Dark Mode Accent: Sage */
+.dark[data-accent="sage"] {
+  --primary: oklch(0.55 0.12 145);
+  --primary-foreground: oklch(0.98 0 0);
+  --ring: oklch(0.55 0.12 145);
+  --color-primary: oklch(0.55 0.12 145);
+  --color-primary-hover: oklch(0.60 0.13 145);
+  --color-primary-muted: oklch(0.35 0.08 145);
+}
+
+/* Dark Mode Accent: Teal */
+.dark[data-accent="teal"] {
+  --primary: oklch(0.55 0.12 200);
+  --primary-foreground: oklch(0.98 0 0);
+  --ring: oklch(0.55 0.12 200);
+  --color-primary: oklch(0.55 0.12 200);
+  --color-primary-hover: oklch(0.60 0.13 200);
+  --color-primary-muted: oklch(0.35 0.08 200);
+  --secondary: oklch(0.45 0.08 145);
+}
+
+/* Dark Mode Accent: Rose */
+.dark[data-accent="rose"] {
+  --primary: oklch(0.55 0.15 20);
+  --primary-foreground: oklch(0.98 0 0);
+  --ring: oklch(0.55 0.15 20);
+  --color-primary: oklch(0.55 0.15 20);
+  --color-primary-hover: oklch(0.60 0.16 20);
+  --color-primary-muted: oklch(0.35 0.10 20);
+  --secondary: oklch(0.50 0.08 350);
 }
 
 * {
@@ -325,16 +438,31 @@ h1, h2, h3, h4, h5, h6 {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    135deg,
-    oklch(0.98 0.02 145 / 0.4),
-    oklch(0.97 0.03 110 / 0.6),
-    oklch(0.975 0.02 85 / 0.3)
-  );
   overflow: hidden;
+  transition: background 0.3s ease;
 }
 
-/* Flowing gradient layers */
+/* Light mode gradient - subtle and calming */
+:root .gradient-bg {
+  background: linear-gradient(
+    135deg,
+    oklch(0.985 0.004 145 / 1),  /* Solid base matching --background */
+    oklch(0.99 0.003 200 / 0.8),  /* Subtle teal tint */
+    oklch(0.985 0.004 145 / 1)    /* Back to base */
+  );
+}
+
+/* Dark mode gradient - deep and mysterious */
+.dark .gradient-bg {
+  background: linear-gradient(
+    135deg,
+    oklch(0.13 0.01 220 / 1),     /* Solid base matching dark --background */
+    oklch(0.14 0.01 200 / 0.95),  /* Subtle blue-green variation */
+    oklch(0.13 0.01 220 / 1)      /* Back to base */
+  );
+}
+
+/* Subtle atmospheric gradient layers */
 .gradient-bg::before {
   content: '';
   position: absolute;
@@ -342,102 +470,113 @@ h1, h2, h3, h4, h5, h6 {
   left: -50%;
   right: -50%;
   bottom: -50%;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
   background: linear-gradient(
     60deg,
     transparent 0%,
-    oklch(0.62 0.12 145 / 0.15) 20%,
-    oklch(0.72 0.08 220 / 0.1) 40%,
-    oklch(0.78 0.12 85 / 0.12) 60%,
-    oklch(0.75 0.15 165 / 0.1) 80%,
+    oklch(0.62 0.12 145 / 0.08) 20%,
+    oklch(0.72 0.08 200 / 0.06) 40%,
+    oklch(0.78 0.10 85 / 0.05) 60%,
     transparent 100%
   );
-  animation: gradient-wave 25s ease-in-out infinite;
+  animation: gradient-wave 40s ease-in-out infinite;
   background-size: 200% 200%;
 }
 
-.gradient-bg::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
+/* Make gradient even subtler in dark mode */
+.dark .gradient-bg::before {
+  opacity: 0.15;
   background: linear-gradient(
-    -60deg,
+    60deg,
     transparent 0%,
-    oklch(0.75 0.15 165 / 0.1) 15%,
-    oklch(0.62 0.12 145 / 0.12) 35%,
-    oklch(0.72 0.08 220 / 0.1) 55%,
-    oklch(0.78 0.12 85 / 0.08) 75%,
+    oklch(0.55 0.12 145 / 0.05) 20%,
+    oklch(0.50 0.10 200 / 0.04) 40%,
+    oklch(0.45 0.08 85 / 0.03) 60%,
     transparent 100%
   );
-  animation: gradient-wave 30s ease-in-out infinite reverse;
-  background-size: 200% 200%;
-  animation-delay: -5s;
 }
 
-/* Floating orbs for depth */
+/* Subtle atmospheric orbs */
 .gradient-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.7;
-  animation: gradient-flow 20s ease-in-out infinite;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: gradient-flow 30s ease-in-out infinite;
   mix-blend-mode: normal;
+  transition: opacity 0.3s ease;
 }
 
-.gradient-orb-1 {
+/* Light mode orbs */
+:root .gradient-orb-1 {
   top: 10%;
   left: 5%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(
-    circle at center,
-    oklch(0.62 0.12 145 / 0.5),
-    transparent 60%
-  );
-  animation-duration: 25s;
-}
-
-.gradient-orb-2 {
-  bottom: 10%;
-  right: 5%;
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(
-    circle at center,
-    oklch(0.78 0.12 85 / 0.4),
-    transparent 60%
-  );
-  animation-duration: 30s;
-  animation-delay: -10s;
-}
-
-.gradient-orb-3 {
-  top: 50%;
-  left: 50%;
   width: 400px;
   height: 400px;
   background: radial-gradient(
     circle at center,
-    oklch(0.72 0.08 220 / 0.35),
-    transparent 65%
+    oklch(0.62 0.12 145 / 0.2),
+    transparent 70%
   );
   animation-duration: 35s;
-  animation-delay: -15s;
-  transform: translate(-50%, -50%);
 }
 
-/* Subtle mesh gradient overlay */
+:root .gradient-orb-2 {
+  bottom: 10%;
+  right: 5%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle at center,
+    oklch(0.72 0.08 200 / 0.15),
+    transparent 70%
+  );
+  animation-duration: 40s;
+  animation-delay: -10s;
+}
+
+/* Dark mode orbs - even more subtle */
+.dark .gradient-orb {
+  opacity: 0.2;
+}
+
+.dark .gradient-orb-1 {
+  background: radial-gradient(
+    circle at center,
+    oklch(0.55 0.12 145 / 0.1),
+    transparent 70%
+  );
+}
+
+.dark .gradient-orb-2 {
+  background: radial-gradient(
+    circle at center,
+    oklch(0.50 0.10 200 / 0.08),
+    transparent 70%
+  );
+}
+
+/* Very subtle mesh gradient overlay */
 .gradient-mesh {
   position: absolute;
   inset: 0;
-  opacity: 0.6;
-  background-image:
-    radial-gradient(ellipse 800px 400px at 50% -20%, oklch(0.62 0.12 145 / 0.2), transparent),
-    radial-gradient(ellipse 600px 300px at 20% 80%, oklch(0.78 0.12 85 / 0.15), transparent),
-    radial-gradient(ellipse 700px 500px at 80% 60%, oklch(0.72 0.08 220 / 0.12), transparent);
+  opacity: 0.3;
   pointer-events: none;
-  animation: gradient-wave 40s ease-in-out infinite alternate;
+  animation: gradient-wave 50s ease-in-out infinite alternate;
+  transition: opacity 0.3s ease;
+}
+
+:root .gradient-mesh {
+  background-image:
+    radial-gradient(ellipse 800px 400px at 50% -20%, oklch(0.62 0.12 145 / 0.1), transparent),
+    radial-gradient(ellipse 600px 300px at 20% 80%, oklch(0.72 0.08 200 / 0.08), transparent);
+}
+
+.dark .gradient-mesh {
+  opacity: 0.15;
+  background-image:
+    radial-gradient(ellipse 800px 400px at 50% -20%, oklch(0.55 0.12 145 / 0.05), transparent),
+    radial-gradient(ellipse 600px 300px at 20% 80%, oklch(0.50 0.10 200 / 0.04), transparent);
 }
 

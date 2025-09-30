@@ -147,7 +147,7 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
       {isPending ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24 rounded-lg bg-white/80" />
+            <Skeleton key={i} className="h-24 rounded-lg bg-card/80" />
           ))}
         </div>
       ) : (
@@ -155,11 +155,11 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
       )}
 
       {/* Controls Bar */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 p-4">
+      <div className="bg-card/80 backdrop-blur-sm rounded-lg border border-border p-4">
         <div className="flex flex-col gap-4">
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -180,11 +180,11 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
 
               {/* Goal Filter */}
               <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-gray-500" />
+                <Filter className="h-4 w-4 text-muted-foreground" />
                 <select
                   value={selectedGoalId || ''}
                   onChange={(e) => setSelectedGoalId(e.target.value || null)}
-                  className="text-sm border border-gray-200 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="text-sm border border-border rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/50"
                   disabled={isPending}
                 >
                   <option value="">All Goals</option>
@@ -203,16 +203,16 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
                 <Download className="h-4 w-4" />
                 Export
               </Button>
-              <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+              <div className="absolute right-0 top-full mt-1 bg-card rounded-lg shadow-lg border border-border py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
                 <button
                   onClick={() => handleExport('csv')}
-                  className="px-4 py-2 text-sm hover:bg-gray-50 w-full text-left whitespace-nowrap"
+                  className="px-4 py-2 text-sm hover:bg-muted w-full text-left whitespace-nowrap"
                 >
                   Export as CSV
                 </button>
                 <button
                   onClick={() => handleExport('json')}
-                  className="px-4 py-2 text-sm hover:bg-gray-50 w-full text-left whitespace-nowrap"
+                  className="px-4 py-2 text-sm hover:bg-muted w-full text-left whitespace-nowrap"
                 >
                   Export as JSON
                 </button>
@@ -221,7 +221,7 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
           </div>
 
           {/* Results Count */}
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-muted-foreground">
             {isPending ? (
               <span className="animate-pulse">Loading sessions...</span>
             ) : (
@@ -239,7 +239,7 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
       {isPending ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100">
+            <div key={i} className="bg-card/80 backdrop-blur-sm rounded-lg border border-border">
               <div className="px-4 py-3 flex items-center justify-between">
                 <div>
                   <Skeleton className="h-5 w-32 mb-2" />
@@ -247,7 +247,7 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
                 </div>
                 <Skeleton className="h-8 w-24" />
               </div>
-              <div className="border-t border-gray-100 p-4 space-y-3">
+              <div className="border-t border-border p-4 space-y-3">
                 <Skeleton className="h-20 w-full" />
                 <Skeleton className="h-20 w-full" />
               </div>

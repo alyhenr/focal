@@ -222,24 +222,24 @@ export function LaterList({ open, onOpenChange, activeFocus }: LaterListProps) {
         {/* Items list */}
         <div className="mt-6 space-y-2 max-h-[60vh] overflow-y-auto">
           <div className="flex justify-between items-center mb-2">
-            <p className="text-sm text-gray-500">Things I want to think about later...</p>
+            <p className="text-sm text-muted-foreground">Things I want to think about later...</p>
             <Button variant="ghost" size="sm" onClick={loadItems}>
               <RefreshCcw className="h-3 w-3 text-primary" />
             </Button>
           </div>
           <AnimatePresence>
             {loading ? (
-              <div className="text-center py-12 text-gray-400">
+              <div className="text-center py-12 text-muted-foreground">
                 <Loader2 className="h-12 w-12 mx-auto mb-3 opacity-30 animate-spin" />
                 <p className="text-sm">Loading your notes...</p>
               </div>
             ) : items.length === 0 ? (
-              <div className="text-center py-12 text-gray-400">
+              <div className="text-center py-12 text-muted-foreground">
                 <Inbox className="h-12 w-12 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">Your Later List is empty</p>
                 <p className="text-xs mt-1">
                   Press{' '}
-                  <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-gray-100 border border-gray-200 rounded">
+                  <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-muted border border-border rounded">
                     ⌘K
                   </kbd>{' '}
                   to quick capture
@@ -260,15 +260,15 @@ export function LaterList({ open, onOpenChange, activeFocus }: LaterListProps) {
                     }
                   }}
                   className={cn(
-                    'group p-3 bg-white rounded-lg border border-gray-100',
-                    'hover:border-gray-200 transition-all duration-150',
+                    'group p-3 bg-card rounded-lg border border-border',
+                    'hover:border-border transition-all duration-150',
                     processingId === item.id && 'opacity-50'
                   )}
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex-1">
-                      <p className="text-sm text-gray-700">{item.content}</p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-sm text-foreground">{item.content}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
                         {new Date(item.created_at).toLocaleTimeString()}
                       </p>
                     </div>
@@ -314,9 +314,9 @@ export function LaterList({ open, onOpenChange, activeFocus }: LaterListProps) {
 
         {/* Footer actions */}
         {items.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-gray-100">
+          <div className="mt-6 pt-6 border-t border-border">
             <div className="flex justify-between items-center">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 {items.length} {items.length === 1 ? 'item' : 'items'}
               </p>
               <Button
@@ -332,20 +332,20 @@ export function LaterList({ open, onOpenChange, activeFocus }: LaterListProps) {
         )}
 
         {/* Keyboard shortcuts hint */}
-        <div className="mt-6 p-3 bg-gray-50 rounded-lg">
-          <p className="text-xs font-medium text-gray-600 mb-2">
+        <div className="mt-6 p-3 bg-muted rounded-lg">
+          <p className="text-xs font-medium text-muted-foreground mb-2">
             Keyboard Shortcuts
           </p>
           <div className="space-y-1">
             <div className="flex justify-between text-xs">
-              <span className="text-gray-500">Quick Capture</span>
-              <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-white border border-gray-200 rounded">
+              <span className="text-muted-foreground">Quick Capture</span>
+              <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-card border border-border rounded">
                 ⌘K
               </kbd>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-gray-500">Open Later List</span>
-              <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-white border border-gray-200 rounded">
+              <span className="text-muted-foreground">Open Later List</span>
+              <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-card border border-border rounded">
                 ⌘L
               </kbd>
             </div>

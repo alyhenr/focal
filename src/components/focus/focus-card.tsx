@@ -19,6 +19,7 @@ import {
   Pause,
   Square,
   Edit2,
+  Timer,
 } from 'lucide-react'
 import { Focus } from '@/types/focus'
 import { cn } from '@/lib/utils'
@@ -43,7 +44,7 @@ interface FocusCardProps {
 const energyIcons = {
   high: { icon: Zap, color: 'text-yellow-500', bg: 'bg-yellow-500/10' },
   medium: { icon: Battery, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-  low: { icon: BatteryLow, color: 'text-gray-500', bg: 'bg-gray-500/10' },
+  low: { icon: BatteryLow, color: 'text-muted-foreground', bg: 'bg-muted0/10' },
 }
 
 export function FocusCard({
@@ -65,6 +66,7 @@ export function FocusCard({
   const [isAddingCheckpoint, setIsAddingCheckpoint] = useState(false)
   const [editingCheckpointId, setEditingCheckpointId] = useState<string | null>(null)
   const [deletingCheckpointId, setDeletingCheckpointId] = useState<string | null>(null)
+  const [timedCheckpointId, setTimedCheckpointId] = useState<string | null>(null)
   const [loadingStates, setLoadingStates] = useState({
     start: false,
     pause: false,
@@ -112,7 +114,7 @@ export function FocusCard({
   return (
     <Card className={cn(
       'transition-all duration-150 border-0',
-      'bg-white shadow-sm',
+      'bg-card shadow-sm',
       isFocusMode && 'shadow-lg ring-2 ring-primary/30'
     )}>
       <CardHeader className="pb-4">
@@ -121,17 +123,17 @@ export function FocusCard({
           <div className="flex items-start justify-between">
             <div className="flex-1 space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-gray-500">
+                <span className="text-xs font-medium text-muted-foreground">
                   Session {focus.session_number}
                 </span>
                 {energyConfig && EnergyIcon && (
                   <div className="flex items-center gap-1">
                     <EnergyIcon className={cn('h-3 w-3', energyConfig.color)} />
-                    <span className="text-xs text-gray-500 capitalize">{focus.energy_level}</span>
+                    <span className="text-xs text-muted-foreground capitalize">{focus.energy_level}</span>
                   </div>
                 )}
                 {focus.north_star && (
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Target className="h-3 w-3" />
                     {focus.north_star.title}
                   </div>
@@ -152,7 +154,7 @@ export function FocusCard({
                 {completedCount} of {checkpoints.length} checkpoints
               </span>
             </div>
-            <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-1 bg-muted rounded-full overflow-hidden">
               <div
                 className="h-full bg-primary transition-all duration-300 rounded-full"
                 style={{ width: `${progress}%` }}
@@ -160,11 +162,16 @@ export function FocusCard({
             </div>
           </div>
 
-          {/* Timer Bar */}
+          {/* Timer Section - Enhanced */}
           {isActive && (
-            <div className="bg-gray-50 rounded-md p-3">
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <FocusTimer focusId={focus.id} minimal />
-            </div>
+            </motion.div>
           )}
         </div>
       </CardHeader>
@@ -191,7 +198,7 @@ export function FocusCard({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-6 bg-gray-50 rounded-lg"
+                className="text-center py-6 bg-muted rounded-lg"
               >
                 <p className="text-sm text-muted-foreground mb-3">
                   Break down your focus into smaller steps
@@ -228,7 +235,7 @@ export function FocusCard({
                       placeholder="Checkpoint title..."
                     />
                   ) : (
-                    <div className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center gap-3 p-2 rounded-md hover:bg-muted transition-colors">
                       <button
                         onClick={() => onToggleCheckpoint(checkpoint.id)}
                         className="flex-shrink-0 cursor-pointer transition-all hover:scale-110"
@@ -236,7 +243,7 @@ export function FocusCard({
                         {checkpoint.completed_at ? (
                           <CheckCircle2 className="h-4 w-4 text-success" />
                         ) : (
-                          <Circle className="h-4 w-4 text-gray-400 hover:text-primary" />
+                          <Circle className="h-4 w-4 text-muted-foreground hover:text-primary" />
                         )}
                       </button>
                       <span
@@ -248,24 +255,53 @@ export function FocusCard({
                       >
                         {checkpoint.title}
                       </span>
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                        <button
-                          onClick={() => setEditingCheckpointId(checkpoint.id)}
-                          className="p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-600"
-                        >
-                          <Edit2 className="h-3 w-3" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteCheckpoint(checkpoint.id)}
-                          className={cn(
-                            'p-1 rounded transition-colors',
-                            deletingCheckpointId === checkpoint.id
-                              ? 'bg-destructive/20 text-destructive'
-                              : 'hover:bg-gray-100 text-gray-400 hover:text-destructive'
+                      <div className="flex items-center gap-1">
+                        {/* Checkpoint Timer */}
+                        {isActive && timedCheckpointId === checkpoint.id && (
+                          <motion.div
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: 'auto' }}
+                            exit={{ opacity: 0, width: 0 }}
+                          >
+                            <FocusTimer
+                              focusId={focus.id}
+                              checkpointId={checkpoint.id}
+                              checkpointTitle={checkpoint.title}
+                              onCheckpointComplete={() => {
+                                onToggleCheckpoint(checkpoint.id)
+                                setTimedCheckpointId(null)
+                              }}
+                            />
+                          </motion.div>
+                        )}
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                          {isActive && !checkpoint.completed_at && timedCheckpointId !== checkpoint.id && (
+                            <button
+                              onClick={() => setTimedCheckpointId(checkpoint.id)}
+                              className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-primary"
+                              title="Start timer for this checkpoint"
+                            >
+                              <Timer className="h-3 w-3" />
+                            </button>
                           )}
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
+                          <button
+                            onClick={() => setEditingCheckpointId(checkpoint.id)}
+                            className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-muted-foreground"
+                          >
+                            <Edit2 className="h-3 w-3" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteCheckpoint(checkpoint.id)}
+                            className={cn(
+                              'p-1 rounded transition-colors',
+                              deletingCheckpointId === checkpoint.id
+                                ? 'bg-destructive/20 text-destructive'
+                                : 'hover:bg-muted text-muted-foreground hover:text-destructive'
+                            )}
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}

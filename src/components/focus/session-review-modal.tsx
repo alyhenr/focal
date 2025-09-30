@@ -38,7 +38,7 @@ interface SessionReviewModalProps {
 const energyIcons = {
   high: { icon: Zap, color: 'text-yellow-500', label: 'High Energy' },
   medium: { icon: Battery, color: 'text-blue-500', label: 'Medium Energy' },
-  low: { icon: BatteryLow, color: 'text-gray-500', label: 'Low Energy' },
+  low: { icon: BatteryLow, color: 'text-muted-foreground', label: 'Low Energy' },
 }
 
 export function SessionReviewModal({

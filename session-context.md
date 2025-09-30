@@ -1,6 +1,6 @@
 # Focal - Session Context
 
-## Last Session Summary (History Page Redesign)
+## Last Session Summary (Timer System Complete Redesign)
 
 ### ✅ Completed Setup (Previous Sessions)
 1. **Authentication System** - Magic links + Google OAuth working
@@ -10,63 +10,98 @@
 5. **Later List & Timer** - Quick capture system with Cmd+K, Pomodoro presets
 6. **Sidebar Navigation** - Collapsible with keyboard shortcuts
 7. **Goals Page** - Complete CRUD with grid/list views
+8. **History Page** - Day-grouped list with expandable sections
 
-### 🎯 Recent Improvements (Latest Session - History Page)
+### 🎯 Recent Improvements (Latest Session - Timer System Enhancement)
 
-#### **1. History Page Complete Redesign** ✅
-- **Simplified from complex views** - Removed timeline/calendar/list multi-view approach
-- **Day-grouped list view** - Clean, scannable list organized by day
-- **Expandable sections** - Click day headers or individual focus items for details
-- **Instant UI feedback** - Date range selector updates immediately
-- **Loading states** - Smooth transitions with skeleton loaders
-- **Fixed "Today" filter bug** - Now correctly shows today's sessions
+#### **1. Timer Architecture Fixed** ✅
+- **Multi-timer Support** - Session and checkpoint timers run independently
+- **Fixed Double-Speed Bug** - Each timer has its own ID and tick interval
+- **No State Persistence** - Timers don't persist on reload (intentional design)
+- **Optimistic Updates** - All UI updates instant, DB calls async
+- **Removed revalidatePath** - Eliminated delays from page revalidation
 
-#### **2. Technical Implementation**
-- **HistoryWrapper Component** - Manages all UI state and transitions
-- **useTransition Hook** - Non-blocking UI updates for instant feedback
-- **Server Actions** - New actions for date range queries and stats
-- **Removed Components**: timeline-view, calendar-view, old list-view
-- **New Components**: day-grouped-list, focus-list-item, history-wrapper
+#### **2. UI Components Updated**
+- **Focus Card Timer** - Horizontal progress bar (better space usage) with glow effect
+- **Checkpoint Timers** - Circular mini-timers (40px) with pulsing when paused
+- **InlineEditor Fixed** - Check button now has hover states and tooltips
+- **Timer Presets** - Checkpoints have same options as session (25m, 50m, 90m, custom)
 
-#### **3. Key Fixes Applied**
-- **searchParams async fix** - Updated to await searchParams in Next.js 15
-- **Instant range updates** - UI updates immediately, data loads in background
-- **Supabase client pattern** - Confirmed correct per-request client creation
+#### **3. Timer Page - Brain.fm Inspired Redesign** ✅
+- **Selection Screen**:
+  - Uses same gradient background as dashboard
+  - Fixed card hover effects (rounded corners match)
+  - Gradient icons with shadows
+  - No content overlap issues
+  - Play icon appears on hover
 
-### 📝 Important Implementation Notes
+- **Immersive Timer Mode**:
+  - Full-screen experience with animated backgrounds
+  - Dynamic gradients based on timer type
+  - Floating orbs animation
+  - Large white timer text (9xl)
+  - Glassmorphic controls
+  - Confetti on completion
+  - Keyboard shortcuts (Space/Esc)
 
-1. **Supabase Client Creation** - Creating client per request is CORRECT pattern
-2. **Next.js 15 Changes** - Must await searchParams before accessing properties
-3. **Loading State Pattern** - Use useTransition for instant UI updates
-4. **Day Grouping** - Auto-expands today and yesterday for better UX
-5. **Export Functionality** - CSV/JSON export maintained in new design
+### 📝 Key Technical Details
 
-### 🔧 Technical Decisions
+1. **Timer Store** - Multi-timer via `timers: Record<string, Timer>`
+2. **Timer IDs** - Using `checkpointId || focusId` as unique identifiers
+3. **Circular Progress** - Reusable component with glow effects
+4. **Database Minimal** - Only storing session history, not live state
+5. **Background Animations** - Floating orbs + gradient shifts
 
-- **Simplicity over complexity** - Single list view instead of multiple visualizations
-- **Progressive disclosure** - Expand details on demand
-- **Instant feedback** - UI state separate from data fetching
-- **Mobile-first** - Responsive design that works well on all devices
+### 🔧 Architecture Decisions
+
+- **Horizontal vs Circular** - Horizontal for sessions, circular for checkpoints
+- **Optimistic First** - UI updates immediately, DB async
+- **Non-persistent** - Simpler UX, no sync issues
+- **Immersive Design** - Brain.fm style for deep focus
 
 ### 🚀 Current State
 
-- **Phase 4.2 (Analytics & History)** - History page ✅ COMPLETE
-- **Build Status** ✅ - Clean build, only ESLint warnings for 'any' types
-- **UI/UX** - Polished with smooth animations and transitions
-- **Performance** - Optimized with loading states and pagination support
+- **Phase 4.2 Complete** - History ✅, Timer System ✅
+- **Next: Analytics Dashboard** - Streak widgets, completion charts
+- **Build Status** ✅ - Clean, only 'any' type warnings
+- **Performance** - Optimized, no DB delays
 
-### 🔑 Key Patterns Established
+### 🔑 Patterns Established
 
-- **Day-grouped lists** - Useful pattern for temporal data
-- **Expandable list items** - Clean way to show details without modals
-- **Instant UI updates** - useTransition pattern for responsive feel
-- **Skeleton loaders** - Consistent loading states across app
+- **Multi-timer Pattern** - Using IDs for parallel timers
+- **Immersive Modes** - Full-screen focused experiences
+- **Glassmorphism** - Modern backdrop blur effects
+- **Dynamic Backgrounds** - State-responsive animations
+
+## Latest Session - Theme System Overhaul ✅
+
+### 🎨 Theme Issues Fixed
+1. **Dark Mode Consistency** - Fixed critical bug where dark mode broke when switching pages
+   - Root cause: Hardcoded light colors in dashboard header
+   - Solution: Using theme variables consistently across all components
+
+2. **Nature-Inspired Color Palettes** - Complete redesign
+   - **Light Theme (Forest Morning)**: Soft warm whites with green undertones
+   - **Dark Theme (Forest Night)**: Deep charcoal (#0F1419) with blue undertones
+   - All cards now use solid backgrounds (no transparency)
+   - Subtle gradient effects that don't interfere with content
+
+3. **Select Dropdown Transparency** - Fixed transparency issue in all select components
+   - Changed popover backgrounds to solid RGB values
+   - Added backdrop-blur and higher z-index to Select component
+   - Works perfectly in both light and dark themes
+
+### 🔧 Technical Changes
+- **globals.css**: Complete overhaul of CSS variables for both themes
+- **Card component**: Removed transparency, using solid `bg-card`
+- **Dashboard page**: Fixed header to use theme variables
+- **Select component**: Enhanced with `z-[100]` and `backdrop-blur-xl`
 
 ## Environment Status
-- Dev server: Run with `bun run dev` on port 3000
-- Production test: `bun run build && PORT=3001 bun run start`
-- Database: Supabase configured and working
-- Auth: Both magic links and Google OAuth functional
-- Build: Passing cleanly with warnings for 'any' types
-- TypeScript: Strict mode, all types proper
-- ESLint: Minor warnings for 'any' types in goals components
+- Dev server: `bun run dev` on port 3000
+- Build: `bun run build` - passing
+- Database: Supabase configured
+- Auth: Magic links + Google OAuth
+- TypeScript: Strict mode
+- Theme System: Fully functional with nature-inspired palettes
+- Known issues: ESLint 'any' warnings (non-critical)

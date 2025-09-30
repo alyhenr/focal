@@ -39,7 +39,7 @@ export default async function GoalsPage() {
         </div>
 
         {/* Header - Standard Theme */}
-        <header className="border-b border-gray-100/50 bg-white/70 backdrop-blur-md sticky top-0 z-20">
+        <header className="border-b border-gray-100/50 bg-background/70 backdrop-blur-md sticky top-0 z-20">
           <div className="px-6 lg:pl-4 py-4 flex justify-between items-center">
             <div className="flex items-center gap-6">
               <h1 className="text-xl font-semibold text-foreground tracking-tight">

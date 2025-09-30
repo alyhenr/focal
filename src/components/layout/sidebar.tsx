@@ -23,7 +23,6 @@ import {
   Timer,
   Plus,
 } from 'lucide-react'
-import { toast } from 'sonner'
 
 interface SidebarProps {
   onOpenLaterList?: () => void
@@ -75,15 +74,16 @@ const navigation = [
     shortcut: null,
     action: null,
   },
+  {
+    name: 'Timer',
+    href: '/timer',
+    icon: Timer,
+    shortcut: null,
+    action: null,
+  },
 ]
 
 const tools = [
-  {
-    name: 'Timer',
-    icon: Timer,
-    action: 'timer',
-    shortcut: null,
-  },
   {
     name: 'Command',
     icon: Command,
@@ -117,8 +117,6 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
       onNewFocus?.()
     } else if (action === 'laterList') {
       onOpenLaterList?.()
-    } else if (action === 'timer') {
-      toast.info('Timer shortcuts coming soon!')
     } else if (action === 'command') {
       // Trigger command palette
       const event = new KeyboardEvent('keydown', {
@@ -136,7 +134,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
   const SidebarContent = () => (
     <>
       {/* Logo/Brand */}
-      <div className="px-3 py-4 border-b border-gray-100">
+      <div className="px-3 py-4 border-b border-border">
         <div className="flex items-center justify-between">
           {!collapsed && <motion.div
             initial={false}
@@ -171,7 +169,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="text-xs font-medium text-gray-400 px-3 mb-2"
+              className="text-xs font-medium text-muted-foreground px-3 mb-2"
             >
               NAVIGATION
             </motion.p>
@@ -193,7 +191,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                   'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group relative',
                   isActive
                     ? 'bg-primary/10 text-primary'
-                    : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                    : 'hover:bg-accent hover:text-accent-foreground text-muted-foreground'
                 )}
               >
                 <Icon className={cn(
@@ -228,7 +226,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                 'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group relative',
                 item.accent === 'primary' && 'hover:bg-primary/5 hover:text-primary',
                 item.badge && 'opacity-60 cursor-not-allowed',
-                !item.badge && 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                !item.badge && 'hover:bg-accent hover:text-accent-foreground text-muted-foreground'
               )}
               disabled={!!item.badge}
             >
@@ -245,12 +243,12 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                     <span className="text-sm font-medium">{item.name}</span>
                     <div className="flex items-center gap-2">
                       {item.badge && (
-                        <span className="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded">
+                        <span className="text-[10px] px-1.5 py-0.5 bg-muted text-muted-foreground rounded">
                           {item.badge}
                         </span>
                       )}
                       {item.shortcut && (
-                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
+                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-muted border border-border rounded">
                           {item.shortcut}
                         </kbd>
                       )}
@@ -270,7 +268,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="text-xs font-medium text-gray-400 px-3 mb-2"
+                className="text-xs font-medium text-muted-foreground px-3 mb-2"
               >
                 TOOLS
               </motion.p>
@@ -286,7 +284,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleAction(item.action)}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors hover:bg-gray-50 text-gray-600 hover:text-gray-900"
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground text-muted-foreground"
               >
                 <Icon className="h-4 w-4 flex-shrink-0" />
 
@@ -300,7 +298,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                     >
                       <span className="text-sm font-medium">{item.name}</span>
                       {item.shortcut && (
-                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
+                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-muted border border-border rounded">
                           {item.shortcut}
                         </kbd>
                       )}
@@ -314,7 +312,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="border-t border-gray-100 px-3 py-4 space-y-1">
+      <div className="border-t border-border px-3 py-4 space-y-1">
         {bottomNav.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href
@@ -328,7 +326,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                 'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
                 isActive
                   ? 'bg-primary/10 text-primary'
-                  : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                  : 'hover:bg-accent hover:text-accent-foreground text-muted-foreground'
               )}
             >
               <Icon className="h-4 w-4 flex-shrink-0" />
@@ -343,7 +341,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                   >
                     <span className="text-sm font-medium">{item.name}</span>
                     {item.shortcut && (
-                      <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
+                      <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-muted border border-border rounded">
                         {item.shortcut}
                       </kbd>
                     )}
@@ -363,7 +361,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
       <motion.aside
         initial={false}
         animate={{ width: collapsed ? 64 : 240 }}
-        className="hidden lg:flex lg:flex-col bg-white border-r border-gray-100 h-screen sticky top-0 z-40"
+        className="hidden lg:flex lg:flex-col bg-card border-r border-border h-screen sticky top-0 z-40"
       >
         <SidebarContent />
       </motion.aside>
@@ -394,7 +392,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
               animate={{ x: 0 }}
               exit={{ x: -300 }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="lg:hidden fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-100 z-50 flex flex-col"
+              className="lg:hidden fixed left-0 top-0 h-full w-64 bg-card border-r border-border z-50 flex flex-col"
             >
               <SidebarContent />
             </motion.aside>

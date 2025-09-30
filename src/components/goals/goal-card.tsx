@@ -80,10 +80,10 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
       <motion.div
         whileHover={{ y: -2 }}
         className={cn(
-          'group relative bg-white rounded-xl border transition-all duration-200',
+          'group relative bg-card rounded-xl border transition-all duration-200',
           isCompleted
             ? 'border-primary/30 bg-primary/5'
-            : 'border-gray-100 hover:border-primary/20 hover:shadow-lg',
+            : 'border-border hover:border-primary/20 hover:shadow-lg',
           viewMode === 'list' && 'flex items-center gap-4'
         )}
       >
@@ -107,7 +107,7 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
               <div className="flex items-center gap-2 mb-2">
                 <Target className={cn(
                   'h-4 w-4',
-                  isCompleted ? 'text-primary' : 'text-gray-400'
+                  isCompleted ? 'text-primary' : 'text-muted-foreground'
                 )} />
                 <h3 className={cn(
                   'font-semibold text-lg',
@@ -117,7 +117,7 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
                 </h3>
               </div>
               {goal.description && (
-                <p className="text-sm text-gray-600 line-clamp-2">
+                <p className="text-sm text-muted-foreground line-clamp-2">
                   {goal.description}
                 </p>
               )}
@@ -157,10 +157,10 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
           {progress.total > 0 && (
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex-1 space-y-1 text-center sm:text-left">
-                <div className="text-sm text-gray-600">Journey Progress</div>
+                <div className="text-sm text-muted-foreground">Journey Progress</div>
                 <div className="flex items-center gap-2 justify-center sm:justify-start">
-                  <Focus className="h-3 w-3 text-gray-400" />
-                  <span className="text-xs text-gray-500">
+                  <Focus className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">
                     {progress.completed} of {progress.total} sessions
                   </span>
                 </div>
@@ -189,14 +189,14 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
 
           {/* Target Date */}
           {goal.target_date && (
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Calendar className="h-4 w-4" />
               <span>Target: {format(new Date(goal.target_date), 'MMM d, yyyy')}</span>
             </div>
           )}
 
           {/* Stats */}
-          <div className="pt-3 border-t border-gray-100 flex justify-between text-xs text-gray-500">
+          <div className="pt-3 border-t border-border flex justify-between text-xs text-muted-foreground">
             <span>Created {format(new Date(goal.created_at), 'MMM d')}</span>
             {isCompleted && (
               <span className="text-primary font-medium">
@@ -211,7 +211,7 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 bg-white/90 rounded-xl flex items-center justify-center"
+            className="absolute inset-0 bg-card/90 rounded-xl flex items-center justify-center"
           >
             <motion.div
               animate={{

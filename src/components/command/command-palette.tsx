@@ -111,7 +111,7 @@ export function CommandPalette({ onOpenLaterList, onNewFocus }: CommandPalettePr
               >
                 <Inbox className="mr-2 h-4 w-4" />
                 <span>Quick Capture</span>
-                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-gray-200 bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-600">
+                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                   <span className="text-xs">⇧⌘K</span>
                 </kbd>
               </CommandItem>
@@ -122,7 +122,7 @@ export function CommandPalette({ onOpenLaterList, onNewFocus }: CommandPalettePr
               >
                 <Plus className="mr-2 h-4 w-4" />
                 <span>New Focus Session</span>
-                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-gray-200 bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-600">
+                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                   <span className="text-xs">⌘N</span>
                 </kbd>
               </CommandItem>
@@ -133,7 +133,7 @@ export function CommandPalette({ onOpenLaterList, onNewFocus }: CommandPalettePr
               >
                 <ListTodo className="mr-2 h-4 w-4" />
                 <span>Open Later List</span>
-                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-gray-200 bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-600">
+                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                   <span className="text-xs">⌘L</span>
                 </kbd>
               </CommandItem>

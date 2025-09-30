@@ -14,7 +14,7 @@ export default function GoalsLoading() {
         </div>
 
         {/* Header */}
-        <header className="border-b border-gray-100/50 bg-white/70 backdrop-blur-md sticky top-0 z-20">
+        <header className="border-b border-gray-100/50 bg-background/70 backdrop-blur-md sticky top-0 z-20">
           <div className="px-6 lg:pl-4 py-4 flex justify-between items-center">
             <div className="flex items-center gap-6">
               <h1 className="text-xl font-semibold text-foreground tracking-tight">
@@ -43,7 +43,7 @@ export default function GoalsLoading() {
             {/* Goal Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
+                <div key={i} className="bg-background rounded-xl border border-gray-100 p-6 space-y-4">
                   {/* Header */}
                   <div className="flex items-start justify-between">
                     <div className="flex-1">

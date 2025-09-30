@@ -92,7 +92,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
             <Target className="h-10 w-10 text-primary" />
           </div>
           <h2 className="text-2xl font-semibold">Set Your North Star</h2>
-          <p className="text-gray-600 max-w-md mb-6">
+          <p className="text-muted-foreground max-w-md mb-6">
             Define your long-term goals and let every focus session contribute to something meaningful.
           </p>
           <Button onClick={() => setShowNewGoalModal(true)} size="lg">
@@ -106,11 +106,11 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
       {goals.length > 0 && (
         <>
           {/* Header with Actions */}
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-gray-100 p-4 mb-6">
+          <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-4 mb-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h2 className="text-lg font-semibold">Your Goals</h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   Track your progress toward meaningful objectives
                 </p>
               </div>
@@ -118,12 +118,12 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               {/* Actions */}
               <div className="flex items-center gap-2 w-full sm:w-auto">
                 {/* View Mode Toggle */}
-                <div className="flex items-center bg-gray-100 rounded-lg p-1">
+                <div className="flex items-center bg-muted rounded-lg p-1">
                   <button
                     onClick={() => setViewMode('grid')}
                     className={cn(
                       "p-1.5 rounded transition-colors",
-                      viewMode === 'grid' ? "bg-white text-primary shadow-sm" : "text-gray-600 hover:text-gray-900"
+                      viewMode === 'grid' ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     <LayoutGrid className="h-4 w-4" />
@@ -132,7 +132,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
                     onClick={() => setViewMode('list')}
                     className={cn(
                       "p-1.5 rounded transition-colors",
-                      viewMode === 'list' ? "bg-white text-primary shadow-sm" : "text-gray-600 hover:text-gray-900"
+                      viewMode === 'list' ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     <LayoutList className="h-4 w-4" />
@@ -143,7 +143,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortBy)}
-                  className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="px-3 py-1.5 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
                   <option value="created">Recent</option>
                   <option value="progress">Progress</option>
@@ -168,7 +168,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-lg p-4 border border-gray-100"
+              className="bg-card rounded-lg p-4 border border-border"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
@@ -176,7 +176,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{activeGoals}</p>
-                  <p className="text-xs text-gray-600">Active</p>
+                  <p className="text-xs text-muted-foreground">Active</p>
                 </div>
               </div>
             </motion.div>
@@ -185,7 +185,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="bg-white rounded-lg p-4 border border-gray-100"
+              className="bg-card rounded-lg p-4 border border-border"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-green-50 rounded-lg">
@@ -193,7 +193,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{Math.round(totalProgress)}%</p>
-                  <p className="text-xs text-gray-600">Avg Progress</p>
+                  <p className="text-xs text-muted-foreground">Avg Progress</p>
                 </div>
               </div>
             </motion.div>
@@ -202,7 +202,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-lg p-4 border border-gray-100"
+              className="bg-card rounded-lg p-4 border border-border"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-blue-50 rounded-lg">
@@ -210,7 +210,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{totalSessions}</p>
-                  <p className="text-xs text-gray-600">Sessions</p>
+                  <p className="text-xs text-muted-foreground">Sessions</p>
                 </div>
               </div>
             </motion.div>
@@ -219,7 +219,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
-              className="bg-white rounded-lg p-4 border border-gray-100"
+              className="bg-card rounded-lg p-4 border border-border"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-purple-50 rounded-lg">
@@ -227,7 +227,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{completedGoals}</p>
-                  <p className="text-xs text-gray-600">Completed</p>
+                  <p className="text-xs text-muted-foreground">Completed</p>
                 </div>
               </div>
             </motion.div>
@@ -270,7 +270,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                   <h3 className="font-semibold mb-1">Ready for more goals?</h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     Upgrade to Pro for unlimited goals, advanced analytics, and priority support.
                   </p>
                 </div>
@@ -290,11 +290,11 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
           >
             <button
               disabled
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground bg-muted rounded-lg cursor-not-allowed"
             >
               <span className="text-xs">🌟</span>
               Constellation View
-              <span className="text-xs bg-gray-200 px-1.5 py-0.5 rounded">Coming Soon</span>
+              <span className="text-xs bg-muted px-1.5 py-0.5 rounded">Coming Soon</span>
             </button>
           </motion.div>
         </>

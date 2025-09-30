@@ -153,28 +153,28 @@ export function DayGroupedList({ focuses, onFocusClick }: DayGroupedListProps) {
           <motion.div
             key={group.date}
             variants={dayVariants}
-            className="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 overflow-hidden"
+            className="bg-card/80 backdrop-blur-sm rounded-lg border border-border overflow-hidden"
           >
             {/* Day Header */}
             <button
               onClick={() => toggleDay(group.date)}
-              className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              className="w-full px-4 py-3 flex items-center justify-between hover:bg-muted transition-colors"
             >
               <div className="flex items-center gap-3">
                 <motion.div
                   animate={{ rotate: isExpanded ? 90 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ChevronRight className="h-5 w-5 text-gray-500" />
+                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
                 </motion.div>
 
-                <Calendar className="h-4 w-4 text-gray-400" />
+                <Calendar className="h-4 w-4 text-muted-foreground" />
 
                 <div className="flex items-center gap-4">
                   <h3 className="font-semibold text-foreground">
                     {group.displayDate}
                   </h3>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-muted-foreground">
                     {group.stats.totalSessions} {group.stats.totalSessions === 1 ? 'session' : 'sessions'}
                   </span>
                 </div>
@@ -183,10 +183,10 @@ export function DayGroupedList({ focuses, onFocusClick }: DayGroupedListProps) {
               <div className="flex items-center gap-4">
                 {/* Completion Badge */}
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-600">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {completionRate}% complete
                   </span>
-                  <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${completionRate}%` }}
@@ -197,7 +197,7 @@ export function DayGroupedList({ focuses, onFocusClick }: DayGroupedListProps) {
                 </div>
 
                 {/* Checkpoints Summary */}
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-muted-foreground">
                   {group.stats.completedCheckpoints}/{group.stats.totalCheckpoints} checkpoints
                 </span>
               </div>
@@ -211,7 +211,7 @@ export function DayGroupedList({ focuses, onFocusClick }: DayGroupedListProps) {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="border-t border-gray-100"
+                  className="border-t border-border"
                 >
                   <div className="p-4 space-y-3">
                     {group.focuses.map((focus, index) => (
