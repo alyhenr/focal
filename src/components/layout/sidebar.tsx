@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useSidebar } from '@/contexts/sidebar-context'
 import {
   Home,
   Target,
@@ -17,8 +18,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Command,
-  Menu,
-  X,
   Zap,
   Timer,
   Plus,
@@ -109,7 +108,7 @@ const bottomNav = [
 
 export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const { mobileOpen, setMobileOpen } = useSidebar()
   const pathname = usePathname()
 
   const handleAction = (action: string | null) => {
@@ -366,16 +365,6 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
         <SidebarContent />
       </motion.aside>
 
-      {/* Mobile Menu Button */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setMobileOpen(!mobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50"
-      >
-        {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </Button>
-
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {mobileOpen && (
@@ -392,7 +381,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
               animate={{ x: 0 }}
               exit={{ x: -300 }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="lg:hidden fixed left-0 top-0 h-full w-64 bg-card border-r border-border z-50 flex flex-col"
+              className="lg:hidden fixed left-0 top-0 h-full w-64 bg-background border-r border-border shadow-2xl z-50 flex flex-col"
             >
               <SidebarContent />
             </motion.aside>

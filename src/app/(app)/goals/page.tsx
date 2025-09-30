@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { GoalsContent } from '@/components/goals/goals-content'
 import { AppShell } from '@/components/layout/app-shell'
+import { PageHeader } from '@/components/layout/page-header'
 import { getNorthStarsWithProgress, getNorthStars } from '@/app/actions/focus'
 import { Toaster } from 'sonner'
 
@@ -38,24 +39,18 @@ export default async function GoalsPage() {
           <div className="gradient-mesh" />
         </div>
 
-        {/* Header - Standard Theme */}
-        <header className="border-b border-gray-100/50 bg-background/70 backdrop-blur-md sticky top-0 z-20">
-          <div className="px-6 lg:pl-4 py-4 flex justify-between items-center">
-            <div className="flex items-center gap-6">
-              <h1 className="text-xl font-semibold text-foreground tracking-tight">
-                North Star Goals
-              </h1>
-              <span className="text-sm text-gray-600">
-                Your long-term objectives
-              </span>
-            </div>
-            {profile?.subscription_status === 'free' && northStarsWithProgress.length > 0 && (
-              <span className="text-sm text-gray-500">
+        {/* Header */}
+        <PageHeader
+          title="North Star Goals"
+          subtitle="Your long-term objectives"
+          actions={
+            profile?.subscription_status === 'free' && northStarsWithProgress.length > 0 ? (
+              <span className="text-sm text-muted-foreground">
                 {northStarsWithProgress.length}/3 goals
               </span>
-            )}
-          </div>
-        </header>
+            ) : undefined
+          }
+        />
 
         {/* Main Content */}
         <main className="px-4 lg:px-8 py-8">

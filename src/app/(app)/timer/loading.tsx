@@ -3,13 +3,16 @@ import { Skeleton } from '@/components/ui/skeleton'
 export default function TimerLoading() {
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(255,255,255,0.8)_100%)]" />
+      {/* Flowing Gradient Background */}
+      <div className="gradient-bg">
+        <div className="gradient-orb gradient-orb-1" />
+        <div className="gradient-orb gradient-orb-2" />
+        <div className="gradient-orb gradient-orb-3" />
+        <div className="gradient-mesh" />
       </div>
 
       {/* Header skeleton */}
-      <div className="border-b border-gray-100/50 bg-white/70 backdrop-blur-md sticky top-0 z-20">
+      <div className="border-b border-gray-100/50 bg-background/70 backdrop-blur-md sticky top-0 z-20">
         <div className="px-6 lg:pl-4 py-4">
           <div className="flex items-center gap-6">
             <Skeleton className="h-6 w-32" />
@@ -23,7 +26,7 @@ export default function TimerLoading() {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Timer display skeleton */}
           <div className="text-center">
-            <div className="border-0 shadow-xl bg-white/90 backdrop-blur-sm rounded-lg">
+            <div className="border-0 shadow-xl bg-background/70 backdrop-blur-sm rounded-lg">
               <div className="p-12 space-y-8">
                 <div className="space-y-4">
                   <Skeleton className="h-24 w-64 mx-auto" />

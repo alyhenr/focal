@@ -334,20 +334,30 @@ async function updateUserStreak(userId: string) {
       })
   } else {
     // Update existing streak
-    const lastDate = new Date(streak.last_focus_date || '')
-    const todayDate = new Date(today)
-    const diffTime = Math.abs(todayDate.getTime() - lastDate.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    const lastFocusDate = streak.last_focus_date
 
     let newStreak = streak.current_streak
-    if (diffDays === 1) {
-      // Consecutive day
-      newStreak = streak.current_streak + 1
-    } else if (diffDays > 1) {
-      // Streak broken
+
+    if (!lastFocusDate) {
+      // First focus after account creation
       newStreak = 1
+    } else if (lastFocusDate === today) {
+      // Same day - don't change streak count
+      newStreak = streak.current_streak
+    } else {
+      // Different day - calculate day difference using date strings
+      const lastDate = new Date(lastFocusDate + 'T00:00:00Z')
+      const todayDate = new Date(today + 'T00:00:00Z')
+      const diffDays = Math.floor((todayDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24))
+
+      if (diffDays === 1) {
+        // Consecutive day - increment streak
+        newStreak = streak.current_streak + 1
+      } else if (diffDays > 1) {
+        // Streak broken - reset to 1
+        newStreak = 1
+      }
     }
-    // Same day - don't change streak
 
     await supabase
       .from('streaks')

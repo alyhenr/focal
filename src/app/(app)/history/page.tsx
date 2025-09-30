@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { AppShell } from '@/components/layout/app-shell'
+import { PageHeader } from '@/components/layout/page-header'
 import { HistoryWrapper } from '@/components/history/history-wrapper'
 import { getNorthStars, getFocusesByDateRange, getFocusStats, getStreakData } from '@/app/actions/focus'
 import { Toaster } from 'sonner'
@@ -95,18 +96,10 @@ export default async function HistoryPage({
         </div>
 
         {/* Header */}
-        <header className="border-b border-border bg-background/70 backdrop-blur-md sticky top-0 z-20">
-          <div className="px-6 lg:pl-4 py-4">
-            <div className="flex items-center gap-6">
-              <h1 className="text-xl font-semibold text-foreground tracking-tight">
-                History
-              </h1>
-              <span className="text-sm text-muted-foreground">
-                Your journey of growth and progress
-              </span>
-            </div>
-          </div>
-        </header>
+        <PageHeader
+          title="History"
+          subtitle="Your journey of growth and progress"
+        />
 
         {/* Main Content */}
         <main className="px-4 lg:px-8 py-8">

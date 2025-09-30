@@ -141,13 +141,18 @@ export function TimerContent({ }: TimerContentProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRunning, isPaused, pauseTimer, resumeTimer])
 
-  // Completion effect
+  // Completion effect - only increment session count when timer naturally completes
   useEffect(() => {
     if (currentTime === 0 && isRunning) {
       setShowConfetti(true)
       setTimeout(() => setShowConfetti(false), 3000)
+
+      // Only count focus sessions that complete naturally
+      if (timerType === 'focus') {
+        setSessionCount(prev => prev + 1)
+      }
     }
-  }, [currentTime, isRunning])
+  }, [currentTime, isRunning, timerType])
 
   // Format time display
   const formatTime = (seconds: number) => {
@@ -190,8 +195,15 @@ export function TimerContent({ }: TimerContentProps) {
 
   const handleStop = () => {
     stopTimer()
+    setSelectedPreset(null)
+  }
+
+  const handleComplete = () => {
+    stopTimer()
     if (timerType === 'focus') {
       setSessionCount(prev => prev + 1)
+      setShowConfetti(true)
+      setTimeout(() => setShowConfetti(false), 3000)
     }
     setSelectedPreset(null)
   }
@@ -527,6 +539,18 @@ export function TimerContent({ }: TimerContentProps) {
                       <><Pause className="h-5 w-5" /> Pause</>
                     )}
                   </Button>
+
+                  {timerType === 'focus' && (
+                    <Button
+                      size="lg"
+                      variant="secondary"
+                      onClick={handleComplete}
+                      className="gap-2 bg-primary/20 hover:bg-primary/30 text-white border-0 backdrop-blur-sm"
+                    >
+                      <Target className="h-5 w-5" />
+                      Complete Session
+                    </Button>
+                  )}
 
                   <Button
                     size="lg"

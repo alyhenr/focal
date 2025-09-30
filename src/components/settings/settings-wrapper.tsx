@@ -133,15 +133,7 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
   }
 
   return (
-    <div className="container max-w-4xl mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-foreground">Settings</h1>
-        <p className="text-muted-foreground">
-          Manage your account and configure your Focal experience
-        </p>
-      </div>
-
+    <div className="space-y-6">
       <Tabs defaultValue="account" className="space-y-6">
         <TabsList className="grid grid-cols-6 w-full">
           <TabsTrigger value="account" className="flex items-center gap-2">
