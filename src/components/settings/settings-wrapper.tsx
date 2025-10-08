@@ -133,67 +133,68 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <Tabs defaultValue="account" className="space-y-6">
-        <TabsList className="grid grid-cols-6 w-full">
-          <TabsTrigger value="account" className="flex items-center gap-2">
-            <User className="h-4 w-4" />
+    <div className="space-y-8">
+      <Tabs defaultValue="account" className="space-y-7">
+        <TabsList className="grid grid-cols-6 w-full h-12 p-1 gap-1">
+          <TabsTrigger value="account" className="flex items-center gap-2 text-[0.9375rem]">
+            <User className="h-[1.125rem] w-[1.125rem]" />
             <span className="hidden sm:inline">Account</span>
           </TabsTrigger>
-          <TabsTrigger value="appearance" className="flex items-center gap-2">
-            <Palette className="h-4 w-4" />
+          <TabsTrigger value="appearance" className="flex items-center gap-2 text-[0.9375rem]">
+            <Palette className="h-[1.125rem] w-[1.125rem]" />
             <span className="hidden sm:inline">Appearance</span>
           </TabsTrigger>
-          <TabsTrigger value="timer" className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
+          <TabsTrigger value="timer" className="flex items-center gap-2 text-[0.9375rem]">
+            <Clock className="h-[1.125rem] w-[1.125rem]" />
             <span className="hidden sm:inline">Timer</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-2">
-            <Bell className="h-4 w-4" />
+          <TabsTrigger value="notifications" className="flex items-center gap-2 text-[0.9375rem]">
+            <Bell className="h-[1.125rem] w-[1.125rem]" />
             <span className="hidden sm:inline">Notifications</span>
           </TabsTrigger>
-          <TabsTrigger value="privacy" className="flex items-center gap-2">
-            <Shield className="h-4 w-4" />
+          <TabsTrigger value="privacy" className="flex items-center gap-2 text-[0.9375rem]">
+            <Shield className="h-[1.125rem] w-[1.125rem]" />
             <span className="hidden sm:inline">Privacy</span>
           </TabsTrigger>
-          <TabsTrigger value="billing" className="flex items-center gap-2">
-            <CreditCard className="h-4 w-4" />
+          <TabsTrigger value="billing" className="flex items-center gap-2 text-[0.9375rem]">
+            <CreditCard className="h-[1.125rem] w-[1.125rem]" />
             <span className="hidden sm:inline">Billing</span>
           </TabsTrigger>
         </TabsList>
 
         {/* Account Tab */}
-        <TabsContent value="account" className="space-y-6">
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+        <TabsContent value="account" className="space-y-7">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <User className="h-5 w-5 text-primary" />
                 Profile Information
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 Update your account details and preferences
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="displayName">Display Name</Label>
+                <Label htmlFor="displayName" className="text-[0.9375rem]">Display Name</Label>
                 <Input
                   id="displayName"
                   value={settings.displayName}
                   onChange={(e) => setSettings(prev => ({ ...prev, displayName: e.target.value }))}
                   placeholder="Your name"
+                  className="h-12 text-[0.9375rem]"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email" className="text-[0.9375rem]">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
                   value={settings.email}
                   disabled
-                  className="bg-muted/50"
+                  className="bg-muted/50 h-12 text-[0.9375rem]"
                 />
                 <p className="text-xs text-muted-foreground">
                   Email cannot be changed directly. Contact support if needed.
@@ -202,39 +203,39 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
             </div>
           </Card>
 
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <Key className="h-5 w-5 text-primary" />
                 Security
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 Manage your account security settings
               </p>
             </div>
 
-            <div className="space-y-4">
-              <Button variant="outline" className="w-full sm:w-auto">
-                <Mail className="h-4 w-4 mr-2" />
+            <div className="space-y-5">
+              <Button variant="outline" className="w-full sm:w-auto h-12 text-[0.9375rem]">
+                <Mail className="h-[1.125rem] w-[1.125rem] mr-2" />
                 Change Password
               </Button>
 
               <Separator />
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Sign Out</Label>
-                    <p className="text-sm text-muted-foreground">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <Label className="text-[0.9375rem]">Sign Out</Label>
+                    <p className="text-[0.9375rem] text-muted-foreground">
                       Sign out of your account on this device
                     </p>
                   </div>
                   <Button
                     variant="outline"
                     onClick={handleSignOut}
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive h-12 text-[0.9375rem] shrink-0"
                   >
-                    <LogOut className="h-4 w-4 mr-2" />
+                    <LogOut className="h-[1.125rem] w-[1.125rem] mr-2" />
                     Sign Out
                   </Button>
                 </div>
@@ -244,29 +245,29 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
         </TabsContent>
 
         {/* Appearance Tab */}
-        <TabsContent value="appearance" className="space-y-6">
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+        <TabsContent value="appearance" className="space-y-7">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <Palette className="h-5 w-5 text-primary" />
                 Theme & Colors
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 Customize the look and feel of Focal
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-6">
+            <div className="grid lg:grid-cols-2 gap-7">
               {/* Settings Column */}
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="theme">Theme</Label>
+                  <Label htmlFor="theme" className="text-[0.9375rem]">Theme</Label>
                   <Select
                     value={theme || 'system'}
                     onValueChange={setTheme}
                     disabled={!mounted}
                   >
-                    <SelectTrigger id="theme">
+                    <SelectTrigger id="theme" className="h-12 text-[0.9375rem]">
                       <SelectValue placeholder="Select theme" />
                     </SelectTrigger>
                     <SelectContent>
@@ -293,13 +294,13 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="accentColor">Accent Color</Label>
+                  <Label htmlFor="accentColor" className="text-[0.9375rem]">Accent Color</Label>
                   <Select
                     value={accentColor}
                     onValueChange={(value) => setAccentColor(value as 'sage' | 'teal' | 'rose')}
                     disabled={!mounted}
                   >
-                    <SelectTrigger id="accentColor">
+                    <SelectTrigger id="accentColor" className="h-12 text-[0.9375rem]">
                       <SelectValue placeholder="Select accent color" />
                     </SelectTrigger>
                     <SelectContent>
@@ -329,13 +330,13 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="fontSize">Font Size</Label>
+                  <Label htmlFor="fontSize" className="text-[0.9375rem]">Font Size</Label>
                   <Select
                     value={fontSize}
                     onValueChange={(value) => setFontSize(value as 'small' | 'medium' | 'large')}
                     disabled={!mounted}
                   >
-                    <SelectTrigger id="fontSize">
+                    <SelectTrigger id="fontSize" className="h-12 text-[0.9375rem]">
                       <SelectValue placeholder="Select font size" />
                     </SelectTrigger>
                     <SelectContent>
@@ -361,6 +362,7 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                       toast.success('Reset to default theme')
                     }}
                     disabled={!mounted}
+                    className="h-12 text-[0.9375rem]"
                   >
                     Reset to Defaults
                   </Button>
@@ -376,26 +378,26 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
         </TabsContent>
 
         {/* Timer Tab */}
-        <TabsContent value="timer" className="space-y-6">
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+        <TabsContent value="timer" className="space-y-7">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <Timer className="h-5 w-5 text-primary" />
                 Timer Defaults
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 Set your preferred timer durations and behaviors
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="sessionDuration">Default Session Duration</Label>
+                <Label htmlFor="sessionDuration" className="text-[0.9375rem]">Default Session Duration</Label>
                 <Select
                   value={settings.defaultSessionDuration}
                   onValueChange={(value) => setSettings(prev => ({ ...prev, defaultSessionDuration: value }))}
                 >
-                  <SelectTrigger id="sessionDuration">
+                  <SelectTrigger id="sessionDuration" className="h-12 text-[0.9375rem]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -408,12 +410,12 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="breakDuration">Default Break Duration</Label>
+                <Label htmlFor="breakDuration" className="text-[0.9375rem]">Default Break Duration</Label>
                 <Select
                   value={settings.defaultBreakDuration}
                   onValueChange={(value) => setSettings(prev => ({ ...prev, defaultBreakDuration: value }))}
                 >
-                  <SelectTrigger id="breakDuration">
+                  <SelectTrigger id="breakDuration" className="h-12 text-[0.9375rem]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -426,11 +428,11 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
 
               <Separator />
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label htmlFor="autoStartBreaks">Auto-start Breaks</Label>
-                    <p className="text-sm text-muted-foreground">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <Label htmlFor="autoStartBreaks" className="text-[0.9375rem]">Auto-start Breaks</Label>
+                    <p className="text-[0.9375rem] text-muted-foreground">
                       Automatically start break timer after session ends
                     </p>
                   </div>
@@ -441,10 +443,10 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                   />
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label htmlFor="autoStartNext">Auto-start Next Session</Label>
-                    <p className="text-sm text-muted-foreground">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <Label htmlFor="autoStartNext" className="text-[0.9375rem]">Auto-start Next Session</Label>
+                    <p className="text-[0.9375rem] text-muted-foreground">
                       Automatically start next session after break
                     </p>
                   </div>
@@ -458,22 +460,22 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
             </div>
           </Card>
 
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <Brain className="h-5 w-5 text-primary" />
                 Focus Preferences
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 Customize your focus session behavior
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="confirmDelete">Confirm Deletions</Label>
-                  <p className="text-sm text-muted-foreground">
+            <div className="space-y-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="confirmDelete" className="text-[0.9375rem]">Confirm Deletions</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Ask for confirmation before deleting items
                   </p>
                 </div>
@@ -484,10 +486,10 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="autoSave">Auto-save Changes</Label>
-                  <p className="text-sm text-muted-foreground">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="autoSave" className="text-[0.9375rem]">Auto-save Changes</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Automatically save edits without clicking save
                   </p>
                 </div>
@@ -498,10 +500,10 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="keepLater">Keep Later Items</Label>
-                  <p className="text-sm text-muted-foreground">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="keepLater" className="text-[0.9375rem]">Keep Later Items</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Don&apos;t clear later list at end of day
                   </p>
                 </div>
@@ -516,26 +518,26 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
         </TabsContent>
 
         {/* Notifications Tab */}
-        <TabsContent value="notifications" className="space-y-6">
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+        <TabsContent value="notifications" className="space-y-7">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <Bell className="h-5 w-5 text-primary" />
                 Notification Preferences
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 Control when and how Focal notifies you
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="soundEnabled" className="flex items-center gap-2">
-                    <Volume2 className="h-4 w-4" />
+            <div className="space-y-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="soundEnabled" className="flex items-center gap-2 text-[0.9375rem]">
+                    <Volume2 className="h-[1.125rem] w-[1.125rem]" />
                     Sound Effects
                   </Label>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Play sounds for timers and notifications
                   </p>
                 </div>
@@ -546,10 +548,10 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="desktopNotifications">Desktop Notifications</Label>
-                  <p className="text-sm text-muted-foreground">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="desktopNotifications" className="text-[0.9375rem]">Desktop Notifications</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Show system notifications for important events
                   </p>
                 </div>
@@ -562,10 +564,10 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
 
               <Separator />
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="focusReminders">Focus Reminders</Label>
-                  <p className="text-sm text-muted-foreground">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="focusReminders" className="text-[0.9375rem]">Focus Reminders</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Remind me to take breaks during long sessions
                   </p>
                 </div>
@@ -576,10 +578,10 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="dailyReview">Daily Review</Label>
-                  <p className="text-sm text-muted-foreground">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="dailyReview" className="text-[0.9375rem]">Daily Review</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Send daily summary of your focus sessions
                   </p>
                 </div>
@@ -594,23 +596,23 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
         </TabsContent>
 
         {/* Privacy Tab */}
-        <TabsContent value="privacy" className="space-y-6">
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+        <TabsContent value="privacy" className="space-y-7">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <Shield className="h-5 w-5 text-primary" />
                 Privacy & Data
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 Control your data and privacy settings
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="analytics">Usage Analytics</Label>
-                  <p className="text-sm text-muted-foreground">
+            <div className="space-y-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="analytics" className="text-[0.9375rem]">Usage Analytics</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Help improve Focal by sharing anonymous usage data
                   </p>
                 </div>
@@ -621,10 +623,10 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 />
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="crashReports">Crash Reports</Label>
-                  <p className="text-sm text-muted-foreground">
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <Label htmlFor="crashReports" className="text-[0.9375rem]">Crash Reports</Label>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Automatically send crash reports to help fix issues
                   </p>
                 </div>
@@ -637,26 +639,27 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
 
               <Separator />
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <Button
                   variant="outline"
                   onClick={handleExportData}
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto h-12 text-[0.9375rem]"
                 >
-                  <Download className="h-4 w-4 mr-2" />
+                  <Download className="h-[1.125rem] w-[1.125rem] mr-2" />
                   Export My Data
                 </Button>
 
-                <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/20">
-                  <h3 className="font-semibold text-destructive mb-2">Danger Zone</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
+                <div className="p-5 rounded-xl bg-destructive/10 border border-destructive/20 space-y-4">
+                  <h3 className="font-semibold text-destructive text-[0.9375rem]">Danger Zone</h3>
+                  <p className="text-[0.9375rem] text-muted-foreground">
                     Permanently delete your account and all associated data
                   </p>
                   <Button
                     variant="destructive"
                     onClick={handleDeleteAccount}
+                    className="h-12 text-[0.9375rem]"
                   >
-                    <Trash2 className="h-4 w-4 mr-2" />
+                    <Trash2 className="h-[1.125rem] w-[1.125rem] mr-2" />
                     Delete Account
                   </Button>
                 </div>
@@ -666,24 +669,24 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
         </TabsContent>
 
         {/* Billing Tab */}
-        <TabsContent value="billing" className="space-y-6">
-          <Card className="p-6 space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+        <TabsContent value="billing" className="space-y-7">
+          <Card className="p-7 space-y-7 shadow-md hover:shadow-lg transition-shadow">
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold flex items-center gap-3">
                 <Zap className="h-5 w-5 text-primary" />
                 Current Plan
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[0.9375rem] text-muted-foreground">
                 You&apos;re currently on the free plan
               </p>
             </div>
 
-            <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Free Plan</h3>
-                <span className="text-sm text-muted-foreground">$0/month</span>
+            <div className="p-5 rounded-xl bg-primary/10 border border-primary/20 space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold text-[0.9375rem]">Free Plan</h3>
+                <span className="text-[0.9375rem] text-muted-foreground font-semibold">$0/month</span>
               </div>
-              <ul className="space-y-1 text-sm text-muted-foreground">
+              <ul className="space-y-2 text-[0.9375rem] text-muted-foreground">
                 <li>• 3 focus sessions per day</li>
                 <li>• 3 checkpoints per session</li>
                 <li>• Basic timer and tracking</li>
@@ -691,12 +694,12 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
               </ul>
             </div>
 
-            <div className="p-4 rounded-lg border-2 border-primary">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold text-primary">Pro Plan</h3>
-                <span className="text-sm font-semibold text-primary">$9/month</span>
+            <div className="p-5 rounded-xl border-2 border-primary space-y-5 bg-gradient-to-br from-primary/5 to-primary/10">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold text-primary text-[0.9375rem]">Pro Plan</h3>
+                <span className="text-[0.9375rem] font-semibold text-primary">$9/month</span>
               </div>
-              <ul className="space-y-1 text-sm text-muted-foreground mb-4">
+              <ul className="space-y-2 text-[0.9375rem] text-muted-foreground">
                 <li>• Unlimited focus sessions</li>
                 <li>• Unlimited checkpoints</li>
                 <li>• Advanced analytics</li>
@@ -704,8 +707,8 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
                 <li>• Priority support</li>
                 <li>• Export to CSV/JSON</li>
               </ul>
-              <Button className="w-full" disabled>
-                <CreditCard className="h-4 w-4 mr-2" />
+              <Button className="w-full h-12 text-[0.9375rem]" disabled>
+                <CreditCard className="h-[1.125rem] w-[1.125rem] mr-2" />
                 Upgrade to Pro (Coming Soon)
               </Button>
             </div>
@@ -719,16 +722,16 @@ export function SettingsWrapper({ user: initialUser }: SettingsWrapperProps) {
           onClick={handleSaveSettings}
           disabled={saving}
           size="lg"
-          className="shadow-lg"
+          className="shadow-xl h-14 px-7 text-[0.9375rem]"
         >
           {saving ? (
             <span className="flex items-center gap-2">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />
+              <div className="h-[1.125rem] w-[1.125rem] animate-spin rounded-full border-2 border-background border-t-transparent" />
               Saving...
             </span>
           ) : (
             <span className="flex items-center gap-2">
-              <Save className="h-4 w-4" />
+              <Save className="h-[1.125rem] w-[1.125rem]" />
               Save Settings
             </span>
           )}

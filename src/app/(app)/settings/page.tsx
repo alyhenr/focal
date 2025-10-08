@@ -37,7 +37,7 @@ export default async function SettingsPage() {
 
         {/* Main Content */}
         <main className="px-4 lg:px-8 py-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <SettingsWrapper user={user} />
           </div>
         </main>

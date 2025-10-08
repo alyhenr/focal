@@ -160,7 +160,7 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
 
           {/* Progress Section with Circular Ring - Enhanced */}
           {progress.total > 0 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-5 p-5 bg-muted/30 rounded-xl">
+            <div className="flex flex-col xl:flex-row items-center justify-between gap-5 p-5 bg-muted/30 rounded-xl">
               <div className="flex-1 space-y-2 text-center sm:text-left">
                 <div className="text-sm font-semibold text-muted-foreground">Journey Progress</div>
                 <div className="flex items-center gap-2.5 justify-center sm:justify-start">

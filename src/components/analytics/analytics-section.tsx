@@ -52,7 +52,7 @@ export function AnalyticsSection({
   goals,
   goalsProgress
 }: AnalyticsSectionProps) {
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   // Get sparkline data for streak widget
   const sparklineData = getStreakSparklineData(

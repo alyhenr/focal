@@ -89,29 +89,31 @@ export function CommandPalette({ onOpenLaterList, onNewFocus }: CommandPalettePr
             handleQuickCapture()
           }
         }}
+        className="h-14 text-[0.9375rem]"
       />
-      <CommandList>
+      <CommandList className="max-h-[450px]">
         {isCapturing && search ? (
-          <CommandGroup heading="Quick Capture">
-            <CommandItem onSelect={handleQuickCapture}>
-              <Inbox className="mr-2 h-4 w-4" />
+          <CommandGroup heading="Quick Capture" className="p-2">
+            <CommandItem onSelect={handleQuickCapture} className="py-3 px-3 text-[0.9375rem]">
+              <Inbox className="mr-3 h-[1.125rem] w-[1.125rem]" />
               <span>Add &quot;{search}&quot; to Later List</span>
             </CommandItem>
           </CommandGroup>
         ) : (
           <>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading="Quick Actions">
+            <CommandEmpty className="py-8 text-center text-[0.9375rem]">No results found.</CommandEmpty>
+            <CommandGroup heading="Quick Actions" className="p-2">
               <CommandItem
                 onSelect={() => {
                   runCommand(() => {
                     setIsCapturing(true)
                   })
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <Inbox className="mr-2 h-4 w-4" />
+                <Inbox className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>Quick Capture</span>
-                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                <kbd className="ml-auto pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border border-border bg-muted px-2 font-mono text-[11px] font-medium text-muted-foreground">
                   <span className="text-xs">⇧⌘K</span>
                 </kbd>
               </CommandItem>
@@ -119,10 +121,11 @@ export function CommandPalette({ onOpenLaterList, onNewFocus }: CommandPalettePr
                 onSelect={() => {
                   runCommand(() => onNewFocus?.())
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <Plus className="mr-2 h-4 w-4" />
+                <Plus className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>New Focus Session</span>
-                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                <kbd className="ml-auto pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border border-border bg-muted px-2 font-mono text-[11px] font-medium text-muted-foreground">
                   <span className="text-xs">⌘N</span>
                 </kbd>
               </CommandItem>
@@ -130,59 +133,65 @@ export function CommandPalette({ onOpenLaterList, onNewFocus }: CommandPalettePr
                 onSelect={() => {
                   runCommand(() => onOpenLaterList?.())
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <ListTodo className="mr-2 h-4 w-4" />
+                <ListTodo className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>Open Later List</span>
-                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                <kbd className="ml-auto pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border border-border bg-muted px-2 font-mono text-[11px] font-medium text-muted-foreground">
                   <span className="text-xs">⌘L</span>
                 </kbd>
               </CommandItem>
             </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup heading="Navigation">
+            <CommandSeparator className="my-2" />
+            <CommandGroup heading="Navigation" className="p-2">
               <CommandItem
                 onSelect={() => {
                   runCommand(() => router.push('/dashboard'))
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <Search className="mr-2 h-4 w-4" />
+                <Search className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>Dashboard</span>
               </CommandItem>
               <CommandItem
                 onSelect={() => {
                   runCommand(() => router.push('/goals'))
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <Target className="mr-2 h-4 w-4" />
+                <Target className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>Goals</span>
               </CommandItem>
               <CommandItem
                 onSelect={() => {
                   runCommand(() => router.push('/history'))
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <History className="mr-2 h-4 w-4" />
+                <History className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>History</span>
               </CommandItem>
               <CommandItem
                 onSelect={() => {
                   runCommand(() => router.push('/calendar'))
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <Calendar className="mr-2 h-4 w-4" />
+                <Calendar className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>Calendar</span>
               </CommandItem>
               <CommandItem
                 onSelect={() => {
                   runCommand(() => router.push('/settings'))
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <Settings className="mr-2 h-4 w-4" />
+                <Settings className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>Settings</span>
               </CommandItem>
             </CommandGroup>
-            <CommandSeparator />
-            <CommandGroup heading="Tools">
+            <CommandSeparator className="my-2" />
+            <CommandGroup heading="Tools" className="p-2">
               <CommandItem
                 onSelect={() => {
                   runCommand(() => {
@@ -190,8 +199,9 @@ export function CommandPalette({ onOpenLaterList, onNewFocus }: CommandPalettePr
                     toast.info('Pomodoro timer coming soon!')
                   })
                 }}
+                className="py-3 px-3 text-[0.9375rem]"
               >
-                <Timer className="mr-2 h-4 w-4" />
+                <Timer className="mr-3 h-[1.125rem] w-[1.125rem]" />
                 <span>Start Pomodoro (25 min)</span>
               </CommandItem>
             </CommandGroup>
