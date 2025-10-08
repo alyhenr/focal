@@ -8,6 +8,7 @@ import { NewFocusModal } from '@/components/focus/new-focus-modal'
 import { FocusBlocksGrid } from '@/components/focus/focus-blocks-grid'
 import { FocusCard } from '@/components/focus/focus-card'
 import { SessionReviewModal } from '@/components/focus/session-review-modal'
+import { AnalyticsSection } from '@/components/analytics/analytics-section'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useFocusStore } from '@/stores/focus-store'
@@ -31,6 +32,34 @@ interface DashboardContentProps {
   todayFocuses: Focus[]
   activeFocus: Focus | null
   northStars: NorthStar[]
+  analyticsData?: {
+    streakData: {
+      currentStreak: number
+      longestStreak: number
+      lastFocusDate: string | null
+    }
+    completionData: Array<{
+      date: string
+      total: number
+      completed: number
+      rate: number
+    }>
+    hourlyData: Array<{
+      hour: number
+      count: number
+      label: string
+    }>
+    weeklyStats: {
+      totalSessions: number
+      avgCheckpoints: number
+      mostProductiveDay: string | null
+    }
+    energyDistribution: {
+      high: number
+      medium: number
+      low: number
+    }
+  }
 }
 
 export function DashboardContent({
@@ -38,6 +67,7 @@ export function DashboardContent({
   todayFocuses: initialFocuses,
   activeFocus: initialActiveFocus,
   northStars,
+  analyticsData,
 }: DashboardContentProps) {
   const [showNewFocusModal, setShowNewFocusModal] = useState(false)
   const [reviewModal, setReviewModal] = useState<{ open: boolean; mode: 'complete' | 'stop'; focus?: Focus }>({
@@ -373,7 +403,9 @@ export function DashboardContent({
             <div className="text-center">
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-orange-500"></div>
-                <span className="text-xl font-semibold text-foreground">0</span>
+                <span className="text-xl font-semibold text-foreground">
+                  {analyticsData?.streakData?.currentStreak || 0}
+                </span>
               </div>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Streak</p>
             </div>
@@ -387,6 +419,28 @@ export function DashboardContent({
           </div>
         </div>
       </motion.div>
+
+      {/* Analytics Section */}
+      {analyticsData && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className={cn(
+            'transition-all duration-500',
+            isFocusMode && 'opacity-30 blur-sm pointer-events-none'
+          )}
+        >
+          <AnalyticsSection
+            streakData={analyticsData.streakData}
+            weeklyStats={analyticsData.weeklyStats}
+            completionData={analyticsData.completionData}
+            hourlyData={analyticsData.hourlyData}
+            energyDistribution={analyticsData.energyDistribution}
+            goals={northStars}
+          />
+        </motion.div>
+      )}
 
       {/* Focus Blocks Grid */}
       <motion.div

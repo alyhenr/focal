@@ -14,7 +14,7 @@ export default function DashboardLoading() {
         </div>
 
         {/* Header */}
-        <header className="border-b border-gray-100/50 bg-white/70 backdrop-blur-md sticky top-0 z-20">
+        <header className="border-b border-gray-100/50 bg-background/70 backdrop-blur-md sticky top-0 z-20">
           <div className="px-6 lg:pl-4 py-4 flex justify-between items-center">
             <div className="flex items-center gap-6">
               <span className="text-xl font-semibold text-foreground tracking-tight lg:hidden ml-8 lg:ml-0">
@@ -65,7 +65,7 @@ export default function DashboardLoading() {
             {/* Quick Actions Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="p-4 bg-white/50 rounded-xl border border-gray-100">
+                <div key={i} className="p-4 bg-background/50 rounded-xl border border-gray-100">
                   <Skeleton className="h-10 w-10 mb-3 rounded" />
                   <Skeleton className="h-4 w-20 mb-1" />
                   <Skeleton className="h-3 w-24" />

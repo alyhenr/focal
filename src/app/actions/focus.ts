@@ -897,3 +897,197 @@ export async function getStreakData() {
     lastFocusDate: data.last_focus_date
   }
 }
+
+// Get daily completion data for chart (last N days)
+export async function getDailyCompletionData(days: number = 30) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return []
+  }
+
+  // Calculate date range
+  const endDate = new Date()
+  const startDate = new Date()
+  startDate.setDate(endDate.getDate() - days + 1)
+
+  const startDateStr = startDate.toISOString().split('T')[0]
+  const endDateStr = endDate.toISOString().split('T')[0]
+
+  // Get all focuses in range
+  const { data: focuses } = await supabase
+    .from('focuses')
+    .select('date, completed_at')
+    .eq('user_id', user.id)
+    .gte('date', startDateStr)
+    .lte('date', endDateStr)
+    .order('date')
+
+  if (!focuses || focuses.length === 0) {
+    return []
+  }
+
+  // Group by date and calculate completion rate
+  const dataByDate: Record<string, { total: number; completed: number }> = {}
+
+  focuses.forEach(focus => {
+    const date = focus.date
+    if (!dataByDate[date]) {
+      dataByDate[date] = { total: 0, completed: 0 }
+    }
+    dataByDate[date].total++
+    if (focus.completed_at) {
+      dataByDate[date].completed++
+    }
+  })
+
+  // Fill in missing dates with 0 values
+  const result = []
+  const currentDate = new Date(startDate)
+
+  while (currentDate <= endDate) {
+    const dateStr = currentDate.toISOString().split('T')[0]
+    const data = dataByDate[dateStr] || { total: 0, completed: 0 }
+    const rate = data.total > 0 ? (data.completed / data.total) * 100 : 0
+
+    result.push({
+      date: dateStr,
+      total: data.total,
+      completed: data.completed,
+      rate: Math.round(rate)
+    })
+
+    currentDate.setDate(currentDate.getDate() + 1)
+  }
+
+  return result
+}
+
+// Get hourly activity data for heatmap
+export async function getHourlyActivityData() {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return []
+  }
+
+  // Get all completed focuses with their start times
+  const { data: focuses } = await supabase
+    .from('focuses')
+    .select('started_at')
+    .eq('user_id', user.id)
+    .not('started_at', 'is', null)
+
+  if (!focuses || focuses.length === 0) {
+    return []
+  }
+
+  // Group by hour (0-23)
+  const hourCounts: Record<number, number> = {}
+
+  for (let i = 0; i < 24; i++) {
+    hourCounts[i] = 0
+  }
+
+  focuses.forEach(focus => {
+    if (focus.started_at) {
+      const hour = new Date(focus.started_at).getHours()
+      hourCounts[hour]++
+    }
+  })
+
+  // Convert to array format for chart
+  return Object.entries(hourCounts).map(([hour, count]) => ({
+    hour: parseInt(hour),
+    count,
+    label: formatHour(parseInt(hour))
+  }))
+}
+
+// Get weekly summary statistics
+export async function getWeeklyStats() {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return {
+      totalSessions: 0,
+      avgCheckpoints: 0,
+      mostProductiveDay: null
+    }
+  }
+
+  // Get this week's data (Monday to Sunday)
+  const today = new Date()
+  const dayOfWeek = today.getDay()
+  const monday = new Date(today)
+  monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1))
+  monday.setHours(0, 0, 0, 0)
+
+  const startDateStr = monday.toISOString().split('T')[0]
+  const endDateStr = today.toISOString().split('T')[0]
+
+  // Get this week's focuses
+  const { data: focuses } = await supabase
+    .from('focuses')
+    .select(`
+      *,
+      checkpoints(*)
+    `)
+    .eq('user_id', user.id)
+    .gte('date', startDateStr)
+    .lte('date', endDateStr)
+
+  if (!focuses || focuses.length === 0) {
+    return {
+      totalSessions: 0,
+      avgCheckpoints: 0,
+      mostProductiveDay: null
+    }
+  }
+
+  // Calculate stats
+  const totalSessions = focuses.length
+  let totalCheckpoints = 0
+  const dayOfWeekCounts: Record<number, number> = {}
+
+  focuses.forEach(focus => {
+    if (focus.checkpoints) {
+      totalCheckpoints += focus.checkpoints.length
+    }
+
+    const focusDay = new Date(focus.date).getDay()
+    dayOfWeekCounts[focusDay] = (dayOfWeekCounts[focusDay] || 0) + 1
+  })
+
+  // Find most productive day
+  let mostProductiveDay = null
+  let maxCount = 0
+  Object.entries(dayOfWeekCounts).forEach(([day, count]) => {
+    if (count > maxCount) {
+      maxCount = count
+      mostProductiveDay = getDayName(parseInt(day))
+    }
+  })
+
+  return {
+    totalSessions,
+    avgCheckpoints: totalSessions > 0 ? totalCheckpoints / totalSessions : 0,
+    mostProductiveDay
+  }
+}
+
+// Helper function to format hour (0-23) to readable time
+function formatHour(hour: number): string {
+  const period = hour >= 12 ? 'PM' : 'AM'
+  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
+  return `${displayHour}${period}`
+}
+
+// Helper function to get day name from day number (0 = Sunday)
+function getDayName(day: number): string {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  return days[day]
+}

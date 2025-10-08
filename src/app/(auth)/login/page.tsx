@@ -185,7 +185,7 @@ export default function LoginPage() {
                 >
                   <Button
                     variant="outline"
-                    className="w-full h-10 rounded-md bg-white/50 dark:bg-white/10 border border-border/10 hover:border-border/20 hover:bg-white/70 dark:hover:bg-white/20 transition-all duration-200 shadow-sm"
+                    className="w-full h-10 rounded-md bg-white/60 dark:bg-white/5 border border-border/20 hover:border-border/30 hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-200 shadow-sm"
                     onClick={handleGoogleSignIn}
                     disabled={isGoogleLoading || isLoading}
                   >
@@ -211,7 +211,7 @@ export default function LoginPage() {
                             fill="#EA4335"
                           />
                         </svg>
-                        <span className="text-sm font-medium">Continue with Google</span>
+                        <span className="text-sm font-medium text-foreground">Continue with Google</span>
                       </>
                     )}
                   </Button>
@@ -277,10 +277,10 @@ export default function LoginPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="flex items-start gap-2 px-3 py-2 rounded-md bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/5"
+                  className="flex items-start gap-2 px-3 py-2 rounded-md bg-primary/5 dark:bg-primary/10 border border-primary/10 dark:border-primary/20"
                 >
                   <Shield className="h-3.5 w-3.5 text-primary mt-0.5 flex-shrink-0" />
-                  <p className="text-xs text-foreground/70 leading-relaxed">
+                  <p className="text-xs text-foreground/80 dark:text-foreground/90 leading-relaxed">
                     Passwordless & secure. Stay logged in for 30 days.
                   </p>
                 </motion.div>
@@ -346,9 +346,9 @@ export default function LoginPage() {
               className={`
                 flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium
                 backdrop-blur-sm border transition-all duration-200
-                ${feature.color === 'primary' ? 'bg-primary/10 text-primary border-primary/10 hover:bg-primary/15 hover:border-primary/20' : ''}
-                ${feature.color === 'secondary' ? 'bg-secondary/10 text-secondary border-secondary/10 hover:bg-secondary/15 hover:border-secondary/20' : ''}
-                ${feature.color === 'accent' ? 'bg-accent/10 text-accent-foreground border-accent/10 hover:bg-accent/15 hover:border-accent/20' : ''}
+                ${feature.color === 'primary' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary/90 border-primary/20 dark:border-primary/30 hover:bg-primary/15 dark:hover:bg-primary/25 hover:border-primary/30 dark:hover:border-primary/40' : ''}
+                ${feature.color === 'secondary' ? 'bg-secondary/10 dark:bg-secondary/20 text-secondary dark:text-secondary/90 border-secondary/20 dark:border-secondary/30 hover:bg-secondary/15 dark:hover:bg-secondary/25 hover:border-secondary/30 dark:hover:border-secondary/40' : ''}
+                ${feature.color === 'accent' ? 'bg-accent/10 dark:bg-accent/60 text-accent-foreground border-accent/20 dark:border-accent/30 hover:bg-accent/15 dark:hover:bg-accent/25 hover:border-accent/30 dark:hover:border-accent/40' : ''}
               `}
             >
               <feature.icon className="h-3 w-3" />

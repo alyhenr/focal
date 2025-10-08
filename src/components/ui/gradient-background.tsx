@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { useTheme } from 'next-themes'
 
 interface Particle {
   id: number
@@ -12,8 +13,11 @@ interface Particle {
 
 export function GradientBackground() {
   const [particles, setParticles] = useState<Particle[]>([])
+  const { theme, systemTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     // Generate subtle particles
     const newParticles: Particle[] = []
     for (let i = 0; i < 20; i++) {
@@ -27,36 +31,60 @@ export function GradientBackground() {
     setParticles(newParticles)
   }, [])
 
+  // Determine if dark mode is active
+  const isDark = mounted
+    ? theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
+    : false
+
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden">
-      {/* Base gradient - subtle warm to cool */}
+    <div className="fixed inset-0 -z-10 overflow-hidden bg-background">
+      {/* Base gradient - theme-aware */}
       <div
         className="absolute inset-0"
         style={{
-          background: `
-            radial-gradient(ellipse at top left, oklch(0.70 0.15 250 / 0.5), transparent 50%),
-            radial-gradient(ellipse at top right, oklch(0.75 0.12 145 / 0.4), transparent 50%),
-            radial-gradient(ellipse at bottom left, oklch(0.80 0.10 45 / 0.3), transparent 50%),
-            radial-gradient(ellipse at bottom right, oklch(0.70 0.15 250 / 0.4), transparent 50%),
-            linear-gradient(180deg,
-              oklch(0.96 0.03 250 / 1),
-              oklch(0.94 0.04 145 / 1),
-              oklch(0.96 0.03 250 / 1)
-            )
-          `
+          background: isDark
+            ? `
+              radial-gradient(ellipse at top left, oklch(0.30 0.15 250 / 0.4), transparent 50%),
+              radial-gradient(ellipse at top right, oklch(0.35 0.12 145 / 0.3), transparent 50%),
+              radial-gradient(ellipse at bottom left, oklch(0.32 0.10 45 / 0.25), transparent 50%),
+              radial-gradient(ellipse at bottom right, oklch(0.30 0.15 250 / 0.3), transparent 50%),
+              linear-gradient(180deg,
+                oklch(0.12 0.03 250 / 1),
+                oklch(0.14 0.04 145 / 1),
+                oklch(0.12 0.03 250 / 1)
+              )
+            `
+            : `
+              radial-gradient(ellipse at top left, oklch(0.70 0.15 250 / 0.5), transparent 50%),
+              radial-gradient(ellipse at top right, oklch(0.75 0.12 145 / 0.4), transparent 50%),
+              radial-gradient(ellipse at bottom left, oklch(0.80 0.10 45 / 0.3), transparent 50%),
+              radial-gradient(ellipse at bottom right, oklch(0.70 0.15 250 / 0.4), transparent 50%),
+              linear-gradient(180deg,
+                oklch(0.96 0.03 250 / 1),
+                oklch(0.94 0.04 145 / 1),
+                oklch(0.96 0.03 250 / 1)
+              )
+            `
         }}
       />
 
-      {/* Animated gradient mesh overlay */}
+      {/* Animated gradient mesh overlay - theme-aware */}
       <motion.div
         className="absolute inset-0 opacity-50"
         animate={{
-          background: [
-            'radial-gradient(circle at 20% 50%, oklch(0.80 0.06 250 / 0.3), transparent 50%)',
-            'radial-gradient(circle at 80% 50%, oklch(0.80 0.05 145 / 0.3), transparent 50%)',
-            'radial-gradient(circle at 50% 50%, oklch(0.85 0.04 45 / 0.3), transparent 50%)',
-            'radial-gradient(circle at 20% 50%, oklch(0.80 0.06 250 / 0.3), transparent 50%)',
-          ],
+          background: isDark
+            ? [
+                'radial-gradient(circle at 20% 50%, oklch(0.25 0.08 250 / 0.25), transparent 50%)',
+                'radial-gradient(circle at 80% 50%, oklch(0.28 0.07 145 / 0.25), transparent 50%)',
+                'radial-gradient(circle at 50% 50%, oklch(0.30 0.06 45 / 0.25), transparent 50%)',
+                'radial-gradient(circle at 20% 50%, oklch(0.25 0.08 250 / 0.25), transparent 50%)',
+              ]
+            : [
+                'radial-gradient(circle at 20% 50%, oklch(0.80 0.06 250 / 0.3), transparent 50%)',
+                'radial-gradient(circle at 80% 50%, oklch(0.80 0.05 145 / 0.3), transparent 50%)',
+                'radial-gradient(circle at 50% 50%, oklch(0.85 0.04 45 / 0.3), transparent 50%)',
+                'radial-gradient(circle at 20% 50%, oklch(0.80 0.06 250 / 0.3), transparent 50%)',
+              ],
         }}
         transition={{
           duration: 20,
@@ -65,11 +93,13 @@ export function GradientBackground() {
         }}
       />
 
-      {/* Subtle floating orbs with glow */}
+      {/* Subtle floating orbs with glow - theme-aware */}
       <motion.div
         className="absolute top-1/4 -left-1/4 w-[500px] h-[500px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, oklch(0.55 0.18 250 / 0.15), transparent 70%)',
+          background: isDark
+            ? 'radial-gradient(circle, oklch(0.35 0.18 250 / 0.12), transparent 70%)'
+            : 'radial-gradient(circle, oklch(0.55 0.18 250 / 0.15), transparent 70%)',
           filter: 'blur(40px)',
         }}
         animate={{
@@ -87,7 +117,9 @@ export function GradientBackground() {
       <motion.div
         className="absolute bottom-1/4 -right-1/4 w-[400px] h-[400px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, oklch(0.65 0.12 145 / 0.12), transparent 70%)',
+          background: isDark
+            ? 'radial-gradient(circle, oklch(0.40 0.12 145 / 0.10), transparent 70%)'
+            : 'radial-gradient(circle, oklch(0.65 0.12 145 / 0.12), transparent 70%)',
           filter: 'blur(40px)',
         }}
         animate={{
@@ -105,7 +137,9 @@ export function GradientBackground() {
       <motion.div
         className="absolute top-3/4 left-1/3 w-[350px] h-[350px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, oklch(0.75 0.14 45 / 0.10), transparent 70%)',
+          background: isDark
+            ? 'radial-gradient(circle, oklch(0.38 0.14 45 / 0.08), transparent 70%)'
+            : 'radial-gradient(circle, oklch(0.75 0.14 45 / 0.10), transparent 70%)',
           filter: 'blur(50px)',
         }}
         animate={{
@@ -120,7 +154,7 @@ export function GradientBackground() {
         }}
       />
 
-      {/* Subtle floating particles */}
+      {/* Subtle floating particles - theme-aware */}
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
@@ -130,7 +164,9 @@ export function GradientBackground() {
             top: `${particle.y}%`,
             width: `${particle.size}px`,
             height: `${particle.size}px`,
-            background: 'radial-gradient(circle, oklch(0.6 0.15 250 / 0.8), transparent)',
+            background: isDark
+              ? 'radial-gradient(circle, oklch(0.50 0.15 250 / 0.6), transparent)'
+              : 'radial-gradient(circle, oklch(0.6 0.15 250 / 0.8), transparent)',
           }}
           animate={{
             y: [0, -30, 0],
@@ -153,11 +189,13 @@ export function GradientBackground() {
         }}
       />
 
-      {/* Subtle vignette effect */}
+      {/* Subtle vignette effect - theme-aware */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 0%, oklch(0 0 0 / 0.01) 100%)',
+          background: isDark
+            ? 'radial-gradient(ellipse at center, transparent 0%, oklch(0 0 0 / 0.3) 100%)'
+            : 'radial-gradient(ellipse at center, transparent 0%, oklch(0 0 0 / 0.01) 100%)',
         }}
       />
     </div>

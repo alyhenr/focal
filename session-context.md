@@ -118,12 +118,86 @@
    - Preserved text hierarchy (main → muted → subtle)
    - Build passes successfully with only ESLint 'any' warnings
 
+## Latest Session - Bug Fixes & Architecture Improvements ✅
+
+### 🐛 Critical Fixes Completed
+
+#### **1. Streak Calculation Fixed** (focus.ts:312-372)
+- **Problem**: Streak showing 0 despite daily completed sessions
+- **Root Cause**: Improper date comparison using timestamps with Math.abs + Math.ceil
+- **Solution**:
+  - Switched to date string comparison (YYYY-MM-DD)
+  - Proper null date handling
+  - Accurate day difference calculation using Math.floor
+  - Clear logic: same day (no change), consecutive (+1), broken (reset to 1)
+
+#### **2. Timer Session Count Fixed** (timer-content.tsx)
+- **Problem**: "Today's Sessions" incremented when stopping timer, not completing
+- **Solution**:
+  - Removed increment from `handleStop()`
+  - Added increment to completion effect (when timer reaches 0)
+  - Created new `handleComplete()` function with confetti + count increment
+  - Added "Complete Session" button (only shows for focus sessions, not breaks)
+  - **Behavior**: "End Session" stops without counting, "Complete Session" marks complete + increments
+
+#### **3. Mobile Header Alignment Fixed** - All Pages
+- **Problem**: Page titles overlapping with hamburger menu on mobile
+- **Solution**: Created standardized `PageHeader` component
+- **Implementation**:
+  - Component: `/components/layout/page-header.tsx`
+  - Props: `title`, `subtitle`, `actions`
+  - Used by: Dashboard, Goals, History, Timer, Settings
+  - Consistent `py-4` padding and `ml-8 lg:ml-0` for text spacing
+
+#### **4. Mobile Sidebar Visibility Fixed** (sidebar.tsx:395)
+- **Problem**: Sidebar was transparent/hard to see on mobile
+- **Solution**: Changed `bg-card` → `bg-background` + added `shadow-2xl`
+
+#### **5. Hamburger Menu Architecture Refactor** ✅
+- **Problem**: Fixed positioning causing alignment issues across pages
+- **Solution**: Major architectural improvement
+  - Created `SidebarContext` (`/contexts/sidebar-context.tsx`)
+  - Moved hamburger button INTO `PageHeader` component
+  - Sidebar uses context instead of internal state
+  - AppShell wraps everything in `SidebarProvider`
+- **Benefits**:
+  - Perfect alignment (button in same flex container as title)
+  - No positioning hacks (removed all `fixed` positioning)
+  - Single source of truth for sidebar state
+  - Cleaner, more maintainable code
+
+### 🔧 Files Modified
+- `src/app/actions/focus.ts` - Streak calculation logic
+- `src/components/timer/timer-content.tsx` - Session counting + Complete button
+- `src/components/layout/page-header.tsx` - NEW: Standardized header with hamburger
+- `src/components/layout/sidebar.tsx` - Context integration, removed fixed button
+- `src/components/layout/app-shell.tsx` - Added SidebarProvider
+- `src/contexts/sidebar-context.tsx` - NEW: Sidebar state management
+- `src/app/(app)/dashboard/page.tsx` - Uses PageHeader
+- `src/app/(app)/goals/page.tsx` - Uses PageHeader
+- `src/app/(app)/history/page.tsx` - Uses PageHeader
+- `src/app/(app)/timer/page.tsx` - Uses PageHeader
+- `src/app/(app)/settings/page.tsx` - Uses PageHeader + proper layout
+- `src/components/settings/settings-wrapper.tsx` - Removed duplicate header
+
+### 📝 Key Technical Patterns Established
+
+1. **Context for Shared UI State**: SidebarContext pattern can be reused for other cross-component state
+2. **Standardized Page Headers**: All pages use same header component for consistency
+3. **Component-Owned Controls**: UI elements live with their related components (hamburger in header, not sidebar)
+4. **Date String Comparison**: Use `YYYY-MM-DD` strings for date comparisons, not timestamps
+
+### 🎯 Known Issues
+- TypeScript 'any' warnings (non-critical)
+- None blocking production
+
 ## Environment Status
 - Dev server: `bun run dev` on port 3000
-- Build: `bun run build` - passing
+- Build: `bun run build` - passing ✅
 - Database: Supabase configured
 - Auth: Magic links + Google OAuth
 - TypeScript: Strict mode
 - Theme System: Fully functional with enhanced dark mode readability
 - Accessibility: WCAG compliant text contrast ratios
+- Architecture: Context-based state management for shared UI
 - Known issues: ESLint 'any' warnings (non-critical)

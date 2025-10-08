@@ -69,7 +69,7 @@ export function DateRangeSelector({ currentRange, onRangeChange }: DateRangeSele
             <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-48">
+        <DropdownMenuContent align="start" className="w-48 bg-background">
           {presetRanges.map(range => (
             <DropdownMenuItem
               key={range.value}

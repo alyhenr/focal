@@ -200,7 +200,7 @@ export default function SignupPage() {
                 >
                   <Button
                     variant="outline"
-                    className="w-full h-10 rounded-md bg-white/50 dark:bg-white/10 border border-border/10 hover:border-border/20 hover:bg-white/70 dark:hover:bg-white/20 transition-all duration-200 shadow-sm"
+                    className="w-full h-10 rounded-md bg-white/60 dark:bg-white/5 border border-border/20 hover:border-border/30 hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-200 shadow-sm"
                     onClick={handleGoogleSignIn}
                     disabled={isGoogleLoading || isLoading}
                   >
@@ -226,7 +226,7 @@ export default function SignupPage() {
                             fill="#EA4335"
                           />
                         </svg>
-                        <span className="text-sm font-medium">Get started with Google</span>
+                        <span className="text-sm font-medium text-foreground">Get started with Google</span>
                       </>
                     )}
                   </Button>
@@ -345,13 +345,13 @@ export default function SignupPage() {
                 y: -5,
                 transition: { duration: 0.2 }
               }}
-              className="text-center space-y-2 p-3 rounded-lg bg-card/50 backdrop-blur-sm border border-border/10 hover:border-border/20 transition-all duration-200"
+              className="text-center space-y-2 p-3 rounded-lg bg-card/60 dark:bg-card/40 backdrop-blur-sm border border-border/20 dark:border-border/30 hover:border-border/30 dark:hover:border-border/40 transition-all duration-200"
             >
-              <div className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-gradient-to-br from-primary/10 to-secondary/10">
-                <item.icon className="h-4 w-4 text-primary" />
+              <div className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-primary/10 dark:bg-primary/20">
+                <item.icon className="h-4 w-4 text-primary dark:text-primary/90" />
               </div>
-              <p className="text-xs font-medium text-foreground/90">{item.label}</p>
-              <p className="text-xs text-muted-foreground">{item.description}</p>
+              <p className="text-xs font-medium text-foreground">{item.label}</p>
+              <p className="text-xs text-muted-foreground dark:text-muted-foreground/90">{item.description}</p>
             </motion.div>
           ))}
         </motion.div>

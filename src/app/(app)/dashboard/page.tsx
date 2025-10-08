@@ -4,7 +4,16 @@ import { DashboardContent } from '@/components/dashboard/dashboard-content'
 import { SignOutButton } from '@/components/common/sign-out-button'
 import { AppShell } from '@/components/layout/app-shell'
 import { PageHeader } from '@/components/layout/page-header'
-import { getTodayFocuses, getActiveFocus, getNorthStars } from '@/app/actions/focus'
+import {
+  getTodayFocuses,
+  getActiveFocus,
+  getNorthStars,
+  getStreakData,
+  getDailyCompletionData,
+  getHourlyActivityData,
+  getWeeklyStats,
+  getFocusStats
+} from '@/app/actions/focus'
 import { Toaster } from 'sonner'
 
 export default async function DashboardPage() {
@@ -16,11 +25,28 @@ export default async function DashboardPage() {
     redirect('/login')
   }
 
-  // Get all the data we need
-  const [todayFocuses, activeFocus, northStars] = await Promise.all([
+  // Get all the data we need (including analytics)
+  const [
+    todayFocuses,
+    activeFocus,
+    northStars,
+    streakData,
+    completionData,
+    hourlyData,
+    weeklyStats,
+    statsData
+  ] = await Promise.all([
     getTodayFocuses(),
     getActiveFocus(),
     getNorthStars(),
+    getStreakData(),
+    getDailyCompletionData(30),
+    getHourlyActivityData(),
+    getWeeklyStats(),
+    getFocusStats(
+      new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      new Date().toISOString().split('T')[0]
+    )
   ])
 
   return (
@@ -49,6 +75,13 @@ export default async function DashboardPage() {
               todayFocuses={todayFocuses}
               activeFocus={activeFocus}
               northStars={northStars}
+              analyticsData={{
+                streakData,
+                completionData,
+                hourlyData,
+                weeklyStats,
+                energyDistribution: statsData.energyDistribution
+              }}
             />
           </div>
         </main>
