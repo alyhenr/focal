@@ -86,16 +86,16 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center justify-center min-h-[400px] text-center"
+          className="flex flex-col items-center justify-center min-h-[500px] text-center"
         >
-          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-            <Target className="h-10 w-10 text-primary" />
+          <div className="w-24 h-24 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mb-8 shadow-md">
+            <Target className="h-12 w-12 text-primary" />
           </div>
-          <h2 className="text-2xl font-semibold">Set Your North Star</h2>
-          <p className="text-muted-foreground max-w-md mb-6">
+          <h2 className="text-3xl font-bold mb-3">Set Your North Star</h2>
+          <p className="text-[0.9375rem] text-muted-foreground max-w-md mb-8 leading-relaxed">
             Define your long-term goals and let every focus session contribute to something meaningful.
           </p>
-          <Button onClick={() => setShowNewGoalModal(true)} size="lg">
+          <Button onClick={() => setShowNewGoalModal(true)} size="lg" className="shadow-md hover:shadow-lg">
             <Plus className="h-5 w-5 mr-2" />
             Create Your First Goal
           </Button>
@@ -105,37 +105,37 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
       {/* Goals View */}
       {goals.length > 0 && (
         <>
-          {/* Header with Actions */}
-          <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border p-4 mb-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          {/* Header with Actions - Enhanced */}
+          <div className="bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm rounded-2xl border shadow-md p-6 mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5">
               <div>
-                <h2 className="text-lg font-semibold">Your Goals</h2>
-                <p className="text-sm text-muted-foreground">
+                <h2 className="text-2xl font-bold mb-1">Your Goals</h2>
+                <p className="text-[0.9375rem] text-muted-foreground">
                   Track your progress toward meaningful objectives
                 </p>
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 {/* View Mode Toggle */}
-                <div className="flex items-center bg-muted rounded-lg p-1">
+                <div className="flex items-center bg-muted rounded-lg p-1 shadow-sm">
                   <button
                     onClick={() => setViewMode('grid')}
                     className={cn(
-                      "p-1.5 rounded transition-colors",
-                      viewMode === 'grid' ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
+                      "p-2 rounded-md transition-all",
+                      viewMode === 'grid' ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"
                     )}
                   >
-                    <LayoutGrid className="h-4 w-4" />
+                    <LayoutGrid className="h-[1.125rem] w-[1.125rem]" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
                     className={cn(
-                      "p-1.5 rounded transition-colors",
-                      viewMode === 'list' ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
+                      "p-2 rounded-md transition-all",
+                      viewMode === 'list' ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-card/50"
                     )}
                   >
-                    <LayoutList className="h-4 w-4" />
+                    <LayoutList className="h-[1.125rem] w-[1.125rem]" />
                   </button>
                 </div>
 
@@ -143,7 +143,7 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortBy)}
-                  className="px-3 py-1.5 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="px-4 py-2.5 bg-card border border-border rounded-lg text-[0.9375rem] font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                 >
                   <option value="created">Recent</option>
                   <option value="progress">Progress</option>
@@ -153,8 +153,8 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
 
                 {/* New Goal Button */}
                 {canCreateMore && (
-                  <Button onClick={() => setShowNewGoalModal(true)} className="ml-2">
-                    <Plus className="h-4 w-4 mr-2" />
+                  <Button onClick={() => setShowNewGoalModal(true)} className="ml-2 shadow-md hover:shadow-lg">
+                    <Plus className="h-[1.125rem] w-[1.125rem] mr-2" />
                     New Goal
                   </Button>
                 )}
@@ -162,21 +162,21 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
             </div>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+          {/* Quick Stats - Enhanced */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mb-8">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-card rounded-lg p-4 border border-border"
+              className="bg-gradient-to-br from-card to-primary/5 rounded-xl p-5 border shadow-md hover:shadow-lg transition-all"
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Target className="h-4 w-4 text-primary" />
+              <div className="flex items-center gap-3.5">
+                <div className="p-2.5 bg-primary/10 rounded-xl shadow-sm">
+                  <Target className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{activeGoals}</p>
-                  <p className="text-xs text-muted-foreground">Active</p>
+                  <p className="text-2xl font-bold">{activeGoals}</p>
+                  <p className="text-sm text-muted-foreground font-medium">Active</p>
                 </div>
               </div>
             </motion.div>
@@ -185,15 +185,15 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="bg-card rounded-lg p-4 border border-border"
+              className="bg-gradient-to-br from-card to-success/5 rounded-xl p-5 border shadow-md hover:shadow-lg transition-all"
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-50 rounded-lg">
-                  <TrendingUp className="h-4 w-4 text-green-600" />
+              <div className="flex items-center gap-3.5">
+                <div className="p-2.5 bg-success/10 rounded-xl shadow-sm">
+                  <TrendingUp className="h-5 w-5 text-success" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{Math.round(totalProgress)}%</p>
-                  <p className="text-xs text-muted-foreground">Avg Progress</p>
+                  <p className="text-2xl font-bold">{Math.round(totalProgress)}%</p>
+                  <p className="text-sm text-muted-foreground font-medium">Avg Progress</p>
                 </div>
               </div>
             </motion.div>
@@ -202,15 +202,15 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-card rounded-lg p-4 border border-border"
+              className="bg-gradient-to-br from-card to-secondary/5 rounded-xl p-5 border shadow-md hover:shadow-lg transition-all"
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg">
-                  <Calendar className="h-4 w-4 text-blue-600" />
+              <div className="flex items-center gap-3.5">
+                <div className="p-2.5 bg-secondary/10 rounded-xl shadow-sm">
+                  <Calendar className="h-5 w-5 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{totalSessions}</p>
-                  <p className="text-xs text-muted-foreground">Sessions</p>
+                  <p className="text-2xl font-bold">{totalSessions}</p>
+                  <p className="text-sm text-muted-foreground font-medium">Sessions</p>
                 </div>
               </div>
             </motion.div>
@@ -219,25 +219,25 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
-              className="bg-card rounded-lg p-4 border border-border"
+              className="bg-gradient-to-br from-card to-accent/5 rounded-xl p-5 border shadow-md hover:shadow-lg transition-all"
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-50 rounded-lg">
-                  <Filter className="h-4 w-4 text-purple-600" />
+              <div className="flex items-center gap-3.5">
+                <div className="p-2.5 bg-accent/10 rounded-xl shadow-sm">
+                  <Filter className="h-5 w-5 text-accent" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{completedGoals}</p>
-                  <p className="text-xs text-muted-foreground">Completed</p>
+                  <p className="text-2xl font-bold">{completedGoals}</p>
+                  <p className="text-sm text-muted-foreground font-medium">Completed</p>
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* Goals Grid/List */}
+          {/* Goals Grid/List - Enhanced */}
           <div className={cn(
             viewMode === 'grid'
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-              : "space-y-4"
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+              : "space-y-5"
           )}>
             <AnimatePresence mode="popLayout">
               {sortedGoals.map((goal, index) => (
@@ -260,21 +260,21 @@ export function GoalsContent({ northStars, subscriptionStatus }: GoalsContentPro
             </AnimatePresence>
           </div>
 
-          {/* Upgrade Prompt */}
+          {/* Upgrade Prompt - Enhanced */}
           {subscriptionStatus === 'free' && goals.length >= 3 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-6 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl border border-primary/20"
+              className="mt-10 p-7 bg-gradient-to-r from-primary/10 via-card to-secondary/10 rounded-2xl border shadow-lg"
             >
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
                 <div>
-                  <h3 className="font-semibold mb-1">Ready for more goals?</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="text-xl font-bold mb-2">Ready for more goals?</h3>
+                  <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">
                     Upgrade to Pro for unlimited goals, advanced analytics, and priority support.
                   </p>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="lg" className="shadow-md hover:shadow-lg shrink-0">
                   Upgrade to Pro
                 </Button>
               </div>

@@ -78,12 +78,12 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
   return (
     <>
       <motion.div
-        whileHover={{ y: -2 }}
+        whileHover={{ y: -4 }}
         className={cn(
-          'group relative bg-card rounded-xl border transition-all duration-200',
+          'group relative bg-gradient-to-br from-card to-primary/5 rounded-xl border transition-all duration-200',
           isCompleted
-            ? 'border-primary/30 bg-primary/5'
-            : 'border-border hover:border-primary/20 hover:shadow-lg',
+            ? 'border-primary/40 bg-gradient-to-br from-primary/5 to-success/5 shadow-md'
+            : 'border shadow-md hover:border-primary/30 hover:shadow-xl',
           viewMode === 'list' && 'flex items-center gap-4'
         )}
       >
@@ -100,24 +100,29 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
           </motion.div>
         )}
 
-        <div className="p-6 space-y-4 w-full">
+        <div className="p-7 space-y-5 w-full">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className={cn(
-                  'h-4 w-4',
-                  isCompleted ? 'text-primary' : 'text-muted-foreground'
-                )} />
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className={cn(
+                  'p-1.5 rounded-lg',
+                  isCompleted ? 'bg-primary/10' : 'bg-muted'
+                )}>
+                  <Target className={cn(
+                    'h-[1.125rem] w-[1.125rem]',
+                    isCompleted ? 'text-primary' : 'text-muted-foreground'
+                  )} />
+                </div>
                 <h3 className={cn(
-                  'font-semibold text-lg',
+                  'font-bold text-xl',
                   isCompleted && 'line-through decoration-primary/50'
                 )}>
                   {goal.title}
                 </h3>
               </div>
               {goal.description && (
-                <p className="text-sm text-muted-foreground line-clamp-2">
+                <p className="text-[0.9375rem] text-muted-foreground line-clamp-2 leading-relaxed mt-2">
                   {goal.description}
                 </p>
               )}
@@ -153,14 +158,14 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
             </DropdownMenu>
           </div>
 
-          {/* Progress Section with Circular Ring */}
+          {/* Progress Section with Circular Ring - Enhanced */}
           {progress.total > 0 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex-1 space-y-1 text-center sm:text-left">
-                <div className="text-sm text-muted-foreground">Journey Progress</div>
-                <div className="flex items-center gap-2 justify-center sm:justify-start">
-                  <Focus className="h-3 w-3 text-muted-foreground" />
-                  <span className="text-xs text-muted-foreground">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-5 p-5 bg-muted/30 rounded-xl">
+              <div className="flex-1 space-y-2 text-center sm:text-left">
+                <div className="text-sm font-semibold text-muted-foreground">Journey Progress</div>
+                <div className="flex items-center gap-2.5 justify-center sm:justify-start">
+                  <Focus className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground font-medium">
                     {progress.completed} of {progress.total} sessions
                   </span>
                 </div>
@@ -168,10 +173,10 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-1 mt-2"
+                    className="flex items-center gap-2 mt-2"
                   >
-                    <Zap className="h-3 w-3 text-yellow-400" />
-                    <span className="text-xs text-yellow-400/90 font-medium">
+                    <Zap className="h-4 w-4 text-warning" />
+                    <span className="text-sm text-warning font-semibold">
                       Ready to complete!
                     </span>
                   </motion.div>
@@ -180,26 +185,26 @@ export function GoalCard({ goal, onUpdate, onArchive, viewMode = 'grid' }: GoalC
 
               <CircularProgress
                 value={progress.percentage}
-                size={70}
-                strokeWidth={5}
+                size={80}
+                strokeWidth={6}
                 showValue={true}
               />
             </div>
           )}
 
-          {/* Target Date */}
+          {/* Target Date - Enhanced */}
           {goal.target_date && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Calendar className="h-4 w-4" />
-              <span>Target: {format(new Date(goal.target_date), 'MMM d, yyyy')}</span>
+            <div className="flex items-center gap-2.5 text-[0.9375rem] text-muted-foreground p-3 bg-muted/30 rounded-lg">
+              <Calendar className="h-[1.125rem] w-[1.125rem]" />
+              <span className="font-medium">Target: {format(new Date(goal.target_date), 'MMM d, yyyy')}</span>
             </div>
           )}
 
-          {/* Stats */}
-          <div className="pt-3 border-t border-border flex justify-between text-xs text-muted-foreground">
-            <span>Created {format(new Date(goal.created_at), 'MMM d')}</span>
+          {/* Stats - Enhanced */}
+          <div className="pt-4 border-t border-border flex justify-between text-sm text-muted-foreground">
+            <span className="font-medium">Created {format(new Date(goal.created_at), 'MMM d')}</span>
             {isCompleted && (
-              <span className="text-primary font-medium">
+              <span className="text-primary font-semibold">
                 Completed {format(new Date(goal.completed_at), 'MMM d')}
               </span>
             )}

@@ -53,8 +53,8 @@ export default async function GoalsPage() {
         />
 
         {/* Main Content */}
-        <main className="px-4 lg:px-8 py-8">
-          <div className="max-w-6xl mx-auto">
+        <main className="px-5 lg:px-10 py-10">
+          <div className="max-w-7xl mx-auto">
             <GoalsContent
               northStars={northStarsWithProgress}
               subscriptionStatus={profile?.subscription_status || 'free'}

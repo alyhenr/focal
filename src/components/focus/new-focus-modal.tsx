@@ -96,31 +96,31 @@ export function NewFocusModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[540px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">
+          <DialogTitle className="text-2xl font-bold mb-1">
             Start Focus Session {sessionNumber}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-[0.9375rem]">
             What will you focus on? Remember, one clear focus per session.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6 mt-4">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-7 mt-6">
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">
+                  <FormLabel className="text-[0.9375rem] font-semibold">
                     Focus Title <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       placeholder="e.g., Complete project proposal"
-                      className="h-11"
+                      className="h-12 text-[0.9375rem] shadow-sm"
                       autoFocus
                     />
                   </FormControl>
@@ -134,17 +134,17 @@ export function NewFocusModal({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">
+                  <FormLabel className="text-[0.9375rem] font-semibold">
                     Description <span className="text-muted-foreground">(optional)</span>
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       placeholder="Add any context or details..."
-                      className="min-h-[80px] resize-none"
+                      className="min-h-[90px] resize-none text-[0.9375rem] shadow-sm"
                     />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className="text-sm">
                     Additional context to help you stay focused
                   </FormDescription>
                   <FormMessage />
@@ -157,10 +157,10 @@ export function NewFocusModal({
               name="energy_level"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">
+                  <FormLabel className="text-[0.9375rem] font-semibold">
                     Current Energy Level
                   </FormLabel>
-                  <div className="grid grid-cols-3 gap-3 mt-2">
+                  <div className="grid grid-cols-3 gap-4 mt-3">
                     {energyLevelOptions.map((option) => {
                       const Icon = option.icon
                       const isSelected = field.value === option.value
@@ -172,24 +172,24 @@ export function NewFocusModal({
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           className={`
-                            relative p-3 rounded-lg border-2 transition-all
+                            relative p-4 rounded-xl border-2 transition-all shadow-sm
                             ${
                               isSelected
-                                ? 'border-primary bg-primary/10'
-                                : 'border-border hover:border-primary/50'
+                                ? 'border-primary bg-primary/10 shadow-md'
+                                : 'border-border hover:border-primary/50 hover:shadow-md'
                             }
                           `}
                         >
-                          <div className="flex flex-col items-center gap-2">
-                            <Icon className={`h-5 w-5 ${option.color}`} />
-                            <span className="text-xs font-medium">
+                          <div className="flex flex-col items-center gap-2.5">
+                            <Icon className={`h-6 w-6 ${option.color}`} />
+                            <span className="text-sm font-semibold">
                               {option.label}
                             </span>
                           </div>
                           {isSelected && (
                             <motion.div
                               layoutId="energy-selector"
-                              className="absolute inset-0 border-2 border-primary rounded-lg"
+                              className="absolute inset-0 border-2 border-primary rounded-xl"
                               initial={false}
                               transition={{
                                 type: "spring",
@@ -202,7 +202,7 @@ export function NewFocusModal({
                       )
                     })}
                   </div>
-                  <FormDescription>
+                  <FormDescription className="text-sm">
                     Match your task to your current energy
                   </FormDescription>
                   <FormMessage />
@@ -216,27 +216,27 @@ export function NewFocusModal({
                 name="north_star_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium">
+                    <FormLabel className="text-[0.9375rem] font-semibold">
                       Link to North Star <span className="text-muted-foreground">(optional)</span>
                     </FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger className="h-11">
+                        <SelectTrigger className="h-12 text-[0.9375rem] shadow-sm">
                           <SelectValue placeholder="Select a goal to contribute to" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {northStars.map((star) => (
-                          <SelectItem key={star.id} value={star.id}>
-                            <div className="flex items-center gap-2">
-                              <Target className="h-4 w-4 text-primary" />
+                          <SelectItem key={star.id} value={star.id} className="text-[0.9375rem]">
+                            <div className="flex items-center gap-2.5">
+                              <Target className="h-[1.125rem] w-[1.125rem] text-primary" />
                               <span>{star.title}</span>
                             </div>
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                    <FormDescription>
+                    <FormDescription className="text-sm">
                       Connect this session to a long-term goal
                     </FormDescription>
                     <FormMessage />
@@ -245,24 +245,24 @@ export function NewFocusModal({
               />
             )}
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-4 pt-6">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                className="flex-1"
+                className="flex-1 h-12 text-[0.9375rem] font-semibold shadow-sm hover:shadow-md"
                 disabled={isSubmitting}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1"
+                className="flex-1 h-12 text-[0.9375rem] font-semibold shadow-md hover:shadow-lg"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-[1.125rem] w-[1.125rem] animate-spin" />
                     Creating...
                   </>
                 ) : (

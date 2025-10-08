@@ -12,9 +12,11 @@ import { AnalyticsSection } from '@/components/analytics/analytics-section'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useFocusStore } from '@/stores/focus-store'
+import { useTimerStore } from '@/stores/timer-store'
 import { useLaterListSync } from '@/hooks/use-later-list-sync'
 import {
   createFocusSession,
+  startFocusSession,
   completeFocusSession,
   cancelFocusSession,
   addCheckpoint as addCheckpointAction,
@@ -98,6 +100,9 @@ export function DashboardContent({
     removeCheckpoint,
   } = useFocusStore()
 
+  // Timer store for controlling timers
+  const { pauseTimerFor, resumeTimerFor } = useTimerStore()
+
   const selectedFocus = todayFocuses.find(f => f.id === selectedFocusId)
   const sessionNumber = todayFocuses.length + 1
 
@@ -157,7 +162,7 @@ export function DashboardContent({
       const newFocus = await createFocusSession(data)
       if (newFocus) {
         addFocus({ ...newFocus, checkpoints: [] })
-        setSelectedFocusId(newFocus.id)
+        // Don't auto-select the new focus - let the user click on it to view details
         toast.success('Focus session created!', {
           description: `Session ${sessionNumber} is ready to go`,
         })
@@ -174,18 +179,37 @@ export function DashboardContent({
     const focus = todayFocuses.find(f => f.id === focusId)
     if (!focus) return
 
-    setActiveFocus(focus)
-    setSelectedFocusId(focusId)
-    setFocusMode(true)
-    setPaused(false)
-    toast.success('Focus session started!', {
-      description: 'Time to get in the zone',
-    })
+    try {
+      // Update database to mark session as started
+      await startFocusSession(focusId)
+      
+      // Update local state
+      const updatedFocus = { ...focus, started_at: new Date().toISOString() }
+      updateFocus(focusId, { started_at: updatedFocus.started_at })
+      setActiveFocus(updatedFocus)
+      setSelectedFocusId(focusId)
+      setFocusMode(true)
+      setPaused(false)
+      
+      toast.success('Focus session started!', {
+        description: 'Time to get in the zone',
+      })
+    } catch (error) {
+      toast.error('Failed to start session', {
+        description: error instanceof Error ? error.message : 'Please try again',
+      })
+    }
   }
 
   const handlePauseSession = async () => {
     setPaused(true)
     setFocusMode(false)
+    
+    // Also pause the timer for the active focus
+    if (activeFocus) {
+      pauseTimerFor(activeFocus.id)
+    }
+    
     toast.info('Session paused', {
       description: 'Take a break, your progress is saved'
     })
@@ -194,6 +218,12 @@ export function DashboardContent({
   const handleResumeSession = async () => {
     setPaused(false)
     setFocusMode(true)
+    
+    // Also resume the timer for the active focus
+    if (activeFocus) {
+      resumeTimerFor(activeFocus.id)
+    }
+    
     toast.success('Session resumed', {
       description: 'Welcome back! Let\'s continue'
     })
@@ -375,10 +405,10 @@ export function DashboardContent({
 
   return (
     <div className={cn(
-      'space-y-8 transition-all duration-500',
+      'space-y-10 transition-all duration-500',
       isFocusMode && 'focus-mode'
     )}>
-      {/* Welcome Section with Stats */}
+      {/* Welcome Section with Stats - Enhanced */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -387,34 +417,34 @@ export function DashboardContent({
           isFocusMode && 'opacity-50 blur-sm pointer-events-none'
         )}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 p-6 rounded-2xl bg-gradient-to-br from-card/50 via-card to-primary/5 border shadow-sm">
           <div>
-            <h2 className="text-2xl font-semibold text-foreground mb-1">
+            <h2 className="text-3xl font-semibold text-foreground mb-2">
               Welcome back, {user.email?.split('@')[0]}
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-[0.9375rem] text-muted-foreground">
               {todayFocuses.length === 0
                 ? 'Ready to start your first focus session?'
                 : `${todayFocuses.filter(f => f.completed_at).length} of ${todayFocuses.length} sessions completed today`
               }
             </p>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <div className="text-center">
-              <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-orange-500"></div>
-                <span className="text-xl font-semibold text-foreground">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <div className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-sm"></div>
+                <span className="text-2xl font-bold text-foreground">
                   {analyticsData?.streakData?.currentStreak || 0}
                 </span>
               </div>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Streak</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Streak</p>
             </div>
             <div className="text-center">
-              <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-success"></div>
-                <span className="text-xl font-semibold text-foreground">{todayFocuses.length}</span>
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <div className="w-2.5 h-2.5 rounded-full bg-success shadow-sm"></div>
+                <span className="text-2xl font-bold text-foreground">{todayFocuses.length}</span>
               </div>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Today</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Today</p>
             </div>
           </div>
         </div>
@@ -449,7 +479,7 @@ export function DashboardContent({
           isFocusMode && 'opacity-30 blur-sm pointer-events-none'
         )}
       >
-        <h3 className="text-lg font-semibold mb-4">Today&apos;s Focus Sessions</h3>
+        <h3 className="text-2xl font-semibold mb-6 text-foreground">Today&apos;s Focus Sessions</h3>
         <FocusBlocksGrid
           focuses={todayFocuses}
           activeFocusId={activeFocus?.id || null}
@@ -497,27 +527,27 @@ export function DashboardContent({
         )}
       </AnimatePresence>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Enhanced */}
       <motion.div
         className={cn(
-          'grid grid-cols-2 md:grid-cols-4 gap-4 transition-all duration-500',
+          'grid grid-cols-2 md:grid-cols-4 gap-5 transition-all duration-500',
           isFocusMode && 'opacity-30 blur-sm pointer-events-none'
         )}
       >
-        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card">
-          <CardHeader className="pb-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
-              <Target className="h-5 w-5 text-primary" />
+        <Card className="border shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer group bg-gradient-to-br from-card to-primary/5 hover:-translate-y-1">
+          <CardHeader className="pb-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all shadow-sm">
+              <Target className="h-6 w-6 text-primary" />
             </div>
-            <CardTitle className="text-sm font-medium text-foreground">Goals</CardTitle>
-            <CardDescription className="text-xs text-muted-foreground">
+            <CardTitle className="text-base font-semibold text-foreground">Goals</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground leading-relaxed">
               Set long-term targets
             </CardDescription>
           </CardHeader>
         </Card>
 
         <Card
-          className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card"
+          className="border shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer group bg-gradient-to-br from-card to-secondary/5 hover:-translate-y-1"
           onClick={() => {
             // Trigger Later List from sidebar
             const event = new KeyboardEvent('keydown', {
@@ -527,36 +557,36 @@ export function DashboardContent({
             document.dispatchEvent(event)
           }}
         >
-          <CardHeader className="pb-3">
-            <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mb-3 group-hover:bg-secondary/20 transition-colors">
-              <ListTodo className="h-5 w-5 text-secondary" />
+          <CardHeader className="pb-4">
+            <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-all shadow-sm">
+              <ListTodo className="h-6 w-6 text-secondary" />
             </div>
-            <CardTitle className="text-sm font-medium text-foreground">Later List</CardTitle>
-            <CardDescription className="text-xs text-muted-foreground">
+            <CardTitle className="text-base font-semibold text-foreground">Later List</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground leading-relaxed">
               Review captured items
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card">
-          <CardHeader className="pb-3">
-            <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center mb-3 group-hover:bg-success/20 transition-colors">
-              <Calendar className="h-5 w-5 text-success" />
+        <Card className="border shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer group bg-gradient-to-br from-card to-success/5 hover:-translate-y-1">
+          <CardHeader className="pb-4">
+            <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center mb-4 group-hover:bg-success/20 transition-all shadow-sm">
+              <Calendar className="h-6 w-6 text-success" />
             </div>
-            <CardTitle className="text-sm font-medium text-foreground">Calendar</CardTitle>
-            <CardDescription className="text-xs text-muted-foreground">
+            <CardTitle className="text-base font-semibold text-foreground">Calendar</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground leading-relaxed">
               View weekly progress
             </CardDescription>
           </CardHeader>
         </Card>
 
-        <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer group bg-card">
-          <CardHeader className="pb-3">
-            <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center mb-3 group-hover:bg-warning/20 transition-colors">
-              <History className="h-5 w-5 text-warning" />
+        <Card className="border shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer group bg-gradient-to-br from-card to-warning/5 hover:-translate-y-1">
+          <CardHeader className="pb-4">
+            <div className="w-12 h-12 rounded-xl bg-warning/10 flex items-center justify-center mb-4 group-hover:bg-warning/20 transition-all shadow-sm">
+              <History className="h-6 w-6 text-warning" />
             </div>
-            <CardTitle className="text-sm font-medium text-foreground">History</CardTitle>
-            <CardDescription className="text-xs text-muted-foreground">
+            <CardTitle className="text-base font-semibold text-foreground">History</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground leading-relaxed">
               Past sessions
             </CardDescription>
           </CardHeader>

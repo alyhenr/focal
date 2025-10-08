@@ -132,24 +132,26 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
 
   const SidebarContent = () => (
     <>
-      {/* Logo/Brand */}
-      <div className="px-3 py-4 border-b border-border">
+      {/* Logo/Brand - Enhanced */}
+      <div className="px-4 py-5 border-b border-border">
         <div className="flex items-center justify-between">
           {!collapsed && <motion.div
             initial={false}
             animate={{ opacity: collapsed ? 0 : 1 }}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2.5"
           >
-            <Zap className="h-5 w-5 text-primary" />
+            <div className="p-1.5 rounded-lg bg-primary/10">
+              <Zap className="h-5 w-5 text-primary" />
+            </div>
             {!collapsed && (
-              <span className="font-semibold text-lg tracking-tight">Focal</span>
+              <span className="font-bold text-xl tracking-tight">Focal</span>
             )}
           </motion.div>}
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex"
+            className="hidden lg:flex hover:bg-muted"
           >
             {collapsed ? (
               <ChevronRight className="h-4 w-4" />
@@ -160,15 +162,15 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
         </div>
       </div>
 
-      {/* Main Navigation */}
-      <div className="flex-1 px-3 py-4 space-y-1">
+      {/* Main Navigation - Enhanced */}
+      <div className="flex-1 px-4 py-5 space-y-1.5">
         <AnimatePresence initial={false}>
           {!collapsed && (
             <motion.p
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="text-xs font-medium text-muted-foreground px-3 mb-2"
+              className="text-xs font-semibold text-muted-foreground px-3 mb-3 uppercase tracking-wider"
             >
               NAVIGATION
             </motion.p>
@@ -187,14 +189,14 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group relative',
+                  'flex items-center gap-3.5 px-3.5 py-2.5 rounded-lg transition-all group relative',
                   isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'hover:bg-accent hover:text-accent-foreground text-muted-foreground'
+                    ? 'bg-gradient-to-r from-primary/10 to-primary/5 text-primary shadow-sm'
+                    : 'hover:bg-muted hover:text-foreground text-muted-foreground hover:shadow-sm'
                 )}
               >
                 <Icon className={cn(
-                  'h-4 w-4 flex-shrink-0',
+                  'h-[1.125rem] w-[1.125rem] flex-shrink-0 transition-transform group-hover:scale-110',
                   isActive && 'text-primary'
                 )} />
 
@@ -206,7 +208,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                       exit={{ opacity: 0, width: 0 }}
                       className="flex-1 flex items-center justify-between"
                     >
-                      <span className="text-sm font-medium">{item.name}</span>
+                      <span className="text-[0.9375rem] font-semibold">{item.name}</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -218,18 +220,18 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
           return (
             <motion.button
               key={item.name}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
               onClick={() => handleAction(item.action)}
               className={cn(
-                'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group relative',
-                item.accent === 'primary' && 'hover:bg-primary/5 hover:text-primary',
+                'w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-lg transition-all group relative',
+                item.accent === 'primary' && 'hover:bg-primary/5 hover:text-primary hover:shadow-sm',
                 item.badge && 'opacity-60 cursor-not-allowed',
-                !item.badge && 'hover:bg-accent hover:text-accent-foreground text-muted-foreground'
+                !item.badge && 'hover:bg-muted hover:text-foreground text-muted-foreground hover:shadow-sm'
               )}
               disabled={!!item.badge}
             >
-              <Icon className="h-4 w-4 flex-shrink-0" />
+              <Icon className="h-[1.125rem] w-[1.125rem] flex-shrink-0 transition-transform group-hover:scale-110" />
 
               <AnimatePresence initial={false}>
                 {!collapsed && (
@@ -239,15 +241,15 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                     exit={{ opacity: 0, width: 0 }}
                     className="flex-1 flex items-center justify-between"
                   >
-                    <span className="text-sm font-medium">{item.name}</span>
+                    <span className="text-[0.9375rem] font-semibold">{item.name}</span>
                     <div className="flex items-center gap-2">
                       {item.badge && (
-                        <span className="text-[10px] px-1.5 py-0.5 bg-muted text-muted-foreground rounded">
+                        <span className="text-xs px-2 py-0.5 bg-muted text-muted-foreground rounded-md font-medium">
                           {item.badge}
                         </span>
                       )}
                       {item.shortcut && (
-                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-muted border border-border rounded">
+                        <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold bg-muted/80 border border-border rounded-md shadow-sm">
                           {item.shortcut}
                         </kbd>
                       )}
@@ -259,15 +261,15 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
           )
         })}
 
-        {/* Tools Section */}
-        <div className="pt-4">
+        {/* Tools Section - Enhanced */}
+        <div className="pt-5">
           <AnimatePresence initial={false}>
             {!collapsed && (
               <motion.p
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="text-xs font-medium text-muted-foreground px-3 mb-2"
+                className="text-xs font-semibold text-muted-foreground px-3 mb-3 uppercase tracking-wider"
               >
                 TOOLS
               </motion.p>
@@ -280,12 +282,12 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
             return (
               <motion.button
                 key={item.name}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
                 onClick={() => handleAction(item.action)}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground text-muted-foreground"
+                className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-lg transition-all hover:bg-muted hover:text-foreground text-muted-foreground hover:shadow-sm group"
               >
-                <Icon className="h-4 w-4 flex-shrink-0" />
+                <Icon className="h-[1.125rem] w-[1.125rem] flex-shrink-0 transition-transform group-hover:scale-110" />
 
                 <AnimatePresence initial={false}>
                   {!collapsed && (
@@ -295,9 +297,9 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                       exit={{ opacity: 0, width: 0 }}
                       className="flex-1 flex items-center justify-between"
                     >
-                      <span className="text-sm font-medium">{item.name}</span>
+                      <span className="text-[0.9375rem] font-semibold">{item.name}</span>
                       {item.shortcut && (
-                        <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-muted border border-border rounded">
+                        <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold bg-muted/80 border border-border rounded-md shadow-sm">
                           {item.shortcut}
                         </kbd>
                       )}
@@ -310,8 +312,8 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="border-t border-border px-3 py-4 space-y-1">
+      {/* Bottom Navigation - Enhanced */}
+      <div className="border-t border-border px-4 py-5 space-y-1.5">
         {bottomNav.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href
@@ -322,13 +324,16 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors',
+                'flex items-center gap-3.5 px-3.5 py-2.5 rounded-lg transition-all group',
                 isActive
-                  ? 'bg-primary/10 text-primary'
-                  : 'hover:bg-accent hover:text-accent-foreground text-muted-foreground'
+                  ? 'bg-gradient-to-r from-primary/10 to-primary/5 text-primary shadow-sm'
+                  : 'hover:bg-muted hover:text-foreground text-muted-foreground hover:shadow-sm'
               )}
             >
-              <Icon className="h-4 w-4 flex-shrink-0" />
+              <Icon className={cn(
+                'h-[1.125rem] w-[1.125rem] flex-shrink-0 transition-transform group-hover:scale-110',
+                isActive && 'text-primary'
+              )} />
 
               <AnimatePresence initial={false}>
                 {!collapsed && (
@@ -338,9 +343,9 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                     exit={{ opacity: 0, width: 0 }}
                     className="flex-1 flex items-center justify-between"
                   >
-                    <span className="text-sm font-medium">{item.name}</span>
+                    <span className="text-[0.9375rem] font-semibold">{item.name}</span>
                     {item.shortcut && (
-                      <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-semibold bg-muted border border-border rounded">
+                      <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold bg-muted/80 border border-border rounded-md shadow-sm">
                         {item.shortcut}
                       </kbd>
                     )}

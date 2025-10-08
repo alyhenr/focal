@@ -102,7 +102,7 @@ export default async function HistoryPage({
         />
 
         {/* Main Content */}
-        <main className="px-4 lg:px-8 py-8">
+        <main className="px-5 lg:px-10 py-10">
           <div className="max-w-7xl mx-auto">
             <HistoryWrapper
               initialFocuses={focusData.focuses}

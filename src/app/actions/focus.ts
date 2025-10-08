@@ -85,6 +85,30 @@ export async function updateFocusSession(
   revalidatePath('/dashboard')
 }
 
+export async function startFocusSession(focusId: string) {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  const { error } = await supabase
+    .from('focuses')
+    .update({
+      started_at: new Date().toISOString(),
+    })
+    .eq('id', focusId)
+    .eq('user_id', user.id)
+
+  if (error) {
+    throw new Error('Failed to start focus session: ' + error.message)
+  }
+
+  // Don't revalidate immediately - let optimistic updates handle the UI
+  // The page will revalidate naturally on navigation or manual refresh
+}
+
 export async function completeFocusSession(focusId: string) {
   const supabase = await createClient()
 
@@ -655,7 +679,7 @@ export async function getTodayFocuses() {
   return data || []
 }
 
-// Get active focus (current incomplete session)
+// Get active focus (current session that has been started but not completed)
 export async function getActiveFocus() {
   const supabase = await createClient()
 
@@ -676,6 +700,7 @@ export async function getActiveFocus() {
     .eq('user_id', user.id)
     .eq('date', today)
     .is('completed_at', null)
+    .not('started_at', 'is', null)  // Only return if session has been started
     .order('session_number', { ascending: false })
     .limit(1)
     .single()

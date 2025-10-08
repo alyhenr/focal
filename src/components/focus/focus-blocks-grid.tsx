@@ -56,7 +56,7 @@ export function FocusBlocksGrid({
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
     >
       {focuses.map((focus) => {
         const isActive = focus.id === activeFocusId
@@ -78,38 +78,38 @@ export function FocusBlocksGrid({
             whileTap={{ scale: 0.98 }}
             onClick={() => onSelectFocus(isSelected ? null : focus.id)}
             className={cn(
-              'relative cursor-pointer rounded-lg p-5 transition-all duration-150 h-24',
-              'bg-card',
-              // Base shadow
-              'shadow-sm hover:shadow-md',
-              // Selected state
-              isSelected && !isCompleted && 'ring-2 ring-primary/40 shadow-md',
-              // Active state (pulsing replaced with breathing scale)
-              isActive && !isCompleted && 'ring-2 ring-success/50 shadow-lg',
+              'relative cursor-pointer rounded-xl p-6 transition-all duration-200 h-fit',
+              'bg-card border',
+              // Base shadow - enhanced
+              'shadow-md hover:shadow-lg',
+              // Selected state - more prominent
+              isSelected && !isCompleted && 'ring-2 ring-primary/50 shadow-lg border-primary/30',
+              // Active state - premium look
+              isActive && !isCompleted && 'ring-2 ring-success/60 shadow-xl border-success/40',
               // Completed state
-              isCompleted && 'opacity-75 bg-muted',
+              isCompleted && 'opacity-75 bg-muted/50',
               isCompleted && isSelected && 'opacity-100',
-              isCompleted && allCheckpointsComplete && 'bg-gradient-to-br from-white to-success/5'
+              isCompleted && allCheckpointsComplete && 'bg-gradient-to-br from-card to-success/5 border-success/20'
             )}
             style={{
               transform: isActive && !isCompleted ? 'scale(1.01)' : undefined,
             }}
           >
             {/* Session Number - More subtle */}
-            <div className="absolute top-3 right-3">
-              <span className="text-[10px] font-medium text-muted-foreground">
+            <div className="absolute top-4 right-4">
+              <span className="text-xs font-semibold text-muted-foreground/70 px-2 py-0.5 rounded-md bg-muted/50">
                 {focus.session_number}
               </span>
             </div>
 
             {/* Status Indicator - Minimal dot */}
             {(isActive || isCompleted) && (
-              <div className="absolute top-3 left-3">
+              <div className="absolute top-4 left-4">
                 <div className={cn(
-                  'w-2 h-2 rounded-full',
-                  isActive && !isCompleted && 'bg-success animate-pulse',
+                  'w-2.5 h-2.5 rounded-full',
+                  isActive && !isCompleted && 'bg-success animate-pulse shadow-sm',
                   isCompleted && !allCheckpointsComplete && 'bg-gray-400',
-                  isCompleted && allCheckpointsComplete && 'bg-success'
+                  isCompleted && allCheckpointsComplete && 'bg-success shadow-sm'
                 )} />
               </div>
             )}
@@ -117,25 +117,25 @@ export function FocusBlocksGrid({
 
             {/* Content */}
             <div className="flex flex-col justify-between h-fit">
-              <h3 className="font-semibold text-sm line-clamp-2 text-foreground">{focus.title}</h3>
+              <h3 className="font-semibold text-[0.9375rem] leading-snug line-clamp-2 text-foreground mb-1">{focus.title}</h3>
 
               {focus.description && (
-                <p className="text-xs text-muted-foreground line-clamp-1 md:line-clamp-2">
+                <p className="text-sm text-muted-foreground line-clamp-1 md:line-clamp-2 leading-relaxed">
                   {focus.description}
                 </p>
               )}
 
               {/* Stats */}
-              <div className="flex items-center justify-between mt-3">
-                <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-2.5">
                   {EnergyIcon && (
-                    <EnergyIcon className={cn('h-3 w-3', energyColor)} />
+                    <EnergyIcon className={cn('h-3.5 w-3.5', energyColor)} />
                   )}
                   <span className={cn(
-                    'text-xs',
+                    'text-sm font-medium',
                     isCompleted
                       ? allCheckpointsComplete
-                        ? 'text-success font-medium'
+                        ? 'text-success'
                         : 'text-muted-foreground'
                       : 'text-muted-foreground'
                   )}>
@@ -148,13 +148,13 @@ export function FocusBlocksGrid({
                       e.stopPropagation()
                       onStartSession(focus.id)
                     }}
-                    className="text-xs text-primary hover:text-primary/80 font-medium cursor-pointer hover:underline"
+                    className="text-sm text-primary hover:text-primary/80 font-semibold cursor-pointer hover:underline transition-all"
                   >
                     Start →
                   </button>
                 )}
                 {isCompleted && (
-                  <CheckCircle2 className="h-3 w-3 text-success" />
+                  <CheckCircle2 className="h-4 w-4 text-success" />
                 )}
               </div>
             </div>
@@ -163,19 +163,19 @@ export function FocusBlocksGrid({
         )
       })}
 
-      {/* New Focus Block */}
+      {/* New Focus Block - Enhanced */}
       <motion.div
         variants={itemVariants}
         whileHover={{ scale: 1.02, y: -2 }}
         whileTap={{ scale: 0.98 }}
         onClick={onNewFocus}
-        className="relative cursor-pointer rounded-lg p-5 transition-all duration-150 bg-muted hover:bg-muted h-24 flex items-center justify-center group"
+        className="relative cursor-pointer rounded-xl p-6 transition-all duration-200 bg-gradient-to-br from-muted/50 to-primary/5 border-2 border-dashed border-muted-foreground/20 hover:border-primary/40 hover:shadow-md h-28 flex items-center justify-center group"
       >
-        <div className="text-center space-y-2">
-          <div className="w-10 h-10 mx-auto rounded-full bg-muted group-hover:bg-primary/20 flex items-center justify-center transition-colors">
-            <Plus className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
+        <div className="text-center space-y-3">
+          <div className="w-12 h-12 mx-auto rounded-xl bg-muted/80 group-hover:bg-primary/15 flex items-center justify-center transition-all shadow-sm group-hover:shadow-md">
+            <Plus className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
           </div>
-          <p className="text-xs font-medium text-muted-foreground group-hover:text-primary">New Focus</p>
+          <p className="text-sm font-semibold text-muted-foreground group-hover:text-primary transition-colors">New Focus</p>
         </div>
       </motion.div>
     </motion.div>

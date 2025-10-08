@@ -320,12 +320,12 @@ export function TimerContent({ }: TimerContentProps) {
                 transition={{ duration: 0.3 }}
                 className="space-y-8"
               >
-                <div className="text-center space-y-2">
+                <div className="text-center space-y-3">
                   <h2 className="text-4xl font-bold text-foreground">Start Your Focus Session</h2>
-                  <p className="text-lg text-muted-foreground">Choose a timer that fits your workflow</p>
+                  <p className="text-xl text-muted-foreground">Choose a timer that fits your workflow</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
                   {presets.map((preset) => {
                     const Icon = preset.icon
                     return (
@@ -336,42 +336,42 @@ export function TimerContent({ }: TimerContentProps) {
                         onClick={() => handleStartPreset(preset)}
                         className="group relative text-left"
                       >
-                        <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 p-6 bg-card/90 backdrop-blur-sm">
+                        <Card className="relative overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 p-7 bg-gradient-to-br from-card to-primary/5 backdrop-blur-sm">
                           {/* Gradient overlay on hover */}
                           <div className={cn(
-                            "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-lg",
+                            "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl",
                             preset.gradient
                           )} />
 
-                          <div className="relative space-y-4">
+                          <div className="relative space-y-5">
                             <div className="flex items-start justify-between">
                               <div className={cn(
-                                "p-3 rounded-xl bg-gradient-to-br text-white shadow-lg",
+                                "p-3.5 rounded-xl bg-gradient-to-br text-white shadow-md",
                                 preset.gradient
                               )}>
                                 <Icon className="h-6 w-6" />
                               </div>
                               <div className="text-right">
-                                <span className="text-3xl font-bold text-foreground">
+                                <span className="text-4xl font-bold text-foreground">
                                   {preset.duration}
                                 </span>
-                                <span className="text-sm text-muted-foreground ml-1">min</span>
+                                <span className="text-[0.9375rem] text-muted-foreground ml-1.5">min</span>
                               </div>
                             </div>
 
                             <div>
-                              <h3 className="font-semibold text-xl text-foreground mb-1">
+                              <h3 className="font-bold text-xl text-foreground mb-2">
                                 {preset.name}
                               </h3>
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-[0.9375rem] text-muted-foreground leading-relaxed">
                                 {preset.description}
                               </p>
                             </div>
 
                             {/* Play button on hover */}
-                            <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <div className="p-2 rounded-full bg-primary/10">
-                                <Play className="h-4 w-4 text-primary" />
+                            <div className="absolute bottom-7 right-7 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <div className="p-2.5 rounded-full bg-primary/15 shadow-sm">
+                                <Play className="h-5 w-5 text-primary" />
                               </div>
                             </div>
                           </div>
@@ -380,23 +380,23 @@ export function TimerContent({ }: TimerContentProps) {
                     )
                   })}
 
-                  {/* Custom Timer */}
-                  <Card className="border-0 shadow-lg bg-card/90 backdrop-blur-sm p-6">
-                    <div className="space-y-4">
+                  {/* Custom Timer - Enhanced */}
+                  <Card className="shadow-md bg-gradient-to-br from-card to-muted/30 backdrop-blur-sm p-7">
+                    <div className="space-y-5">
                       <div className="flex items-start justify-between">
-                        <div className="p-3 rounded-xl bg-gradient-to-br from-gray-500 to-gray-600 text-white shadow-lg">
+                        <div className="p-3.5 rounded-xl bg-gradient-to-br from-muted-foreground to-muted-foreground/80 text-white shadow-md">
                           <Plus className="h-6 w-6" />
                         </div>
                       </div>
 
                       <div>
-                        <h3 className="font-semibold text-xl text-foreground mb-1">
+                        <h3 className="font-bold text-xl text-foreground mb-2">
                           Custom Timer
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-4">
+                        <p className="text-[0.9375rem] text-muted-foreground mb-5 leading-relaxed">
                           Set your own duration
                         </p>
-                        <div className="flex gap-2">
+                        <div className="flex gap-3">
                           <input
                             type="number"
                             min="1"
@@ -404,7 +404,7 @@ export function TimerContent({ }: TimerContentProps) {
                             placeholder="Minutes"
                             value={customMinutes}
                             onChange={(e) => setCustomMinutes(e.target.value)}
-                            className="flex-1 px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
+                            className="flex-1 px-4 py-3 text-[0.9375rem] font-medium border border-border rounded-lg bg-card shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') handleStartCustom()
                             }}
@@ -412,7 +412,7 @@ export function TimerContent({ }: TimerContentProps) {
                           <Button
                             onClick={handleStartCustom}
                             disabled={!customMinutes || parseInt(customMinutes) <= 0}
-                            className="px-6"
+                            className="px-7 shadow-md hover:shadow-lg"
                           >
                             Start
                           </Button>
@@ -422,17 +422,17 @@ export function TimerContent({ }: TimerContentProps) {
                   </Card>
                 </div>
 
-                {/* Session counter */}
+                {/* Session counter - Enhanced */}
                 {sessionCount > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="flex justify-center"
                   >
-                    <div className="inline-flex items-center gap-3 px-6 py-3 bg-card/80 backdrop-blur-sm rounded-full shadow-lg">
-                      <Sun className="h-5 w-5 text-amber-500" />
-                      <span className="text-sm text-muted-foreground">Today&apos;s Sessions</span>
-                      <span className="text-2xl font-bold text-foreground">{sessionCount}</span>
+                    <div className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-card via-card to-warning/10 backdrop-blur-sm rounded-2xl shadow-lg border">
+                      <Sun className="h-6 w-6 text-warning" />
+                      <span className="text-[0.9375rem] font-medium text-muted-foreground">Today&apos;s Sessions</span>
+                      <span className="text-3xl font-bold text-foreground">{sessionCount}</span>
                     </div>
                   </motion.div>
                 )}

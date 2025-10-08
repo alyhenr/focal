@@ -98,24 +98,24 @@ export function HistoryStats({ stats, streakData }: HistoryStatsProps) {
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+      className="grid grid-cols-2 lg:grid-cols-4 gap-5"
     >
       {statCards.map((stat) => (
         <motion.div
           key={stat.title}
           variants={itemVariants}
-          className="bg-card/80 backdrop-blur-sm rounded-lg border border-border p-4"
+          className="bg-gradient-to-br from-card to-primary/5 backdrop-blur-sm rounded-xl border shadow-md hover:shadow-lg transition-all p-5"
         >
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <p className="text-xs text-muted-foreground mb-1">{stat.title}</p>
-              <p className="text-xl font-semibold text-foreground">
+              <p className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wider">{stat.title}</p>
+              <p className="text-2xl font-bold text-foreground mb-1">
                 {stat.value}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">{stat.subValue}</p>
+              <p className="text-sm text-muted-foreground font-medium">{stat.subValue}</p>
             </div>
-            <div className={cn('p-2 rounded-lg', stat.bgColor)}>
-              <stat.icon className={cn('h-4 w-4', stat.color)} />
+            <div className={cn('p-2.5 rounded-xl shadow-sm', stat.bgColor)}>
+              <stat.icon className={cn('h-5 w-5', stat.color)} />
             </div>
           </div>
         </motion.div>

@@ -191,55 +191,55 @@ export function LaterList({ open, onOpenChange, activeFocus }: LaterListProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[400px] sm:w-[540px]">
+      <SheetContent className="w-[420px] sm:w-[560px]">
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <Inbox className="h-5 w-5" />
+          <SheetTitle className="flex items-center gap-2.5 text-2xl">
+            <Inbox className="h-6 w-6" />
             Later List
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="text-[0.9375rem]">
             Capture thoughts and tasks to process later
           </SheetDescription>
         </SheetHeader>
 
-        {/* Quick add form */}
-        <form onSubmit={handleAddItem} className="mt-6">
-          <div className="flex gap-2">
+        {/* Quick add form - Enhanced */}
+        <form onSubmit={handleAddItem} className="mt-8">
+          <div className="flex gap-3">
             <Input
               placeholder="What's on your mind?"
               value={newItem}
               onChange={(e) => setNewItem(e.target.value)}
               disabled={loading}
               autoFocus
-              className="flex-1"
+              className="flex-1 h-12 text-[0.9375rem] shadow-sm"
             />
-            <Button type="submit" disabled={loading || !newItem.trim()}>
-              <Plus className="h-4 w-4" />
+            <Button type="submit" disabled={loading || !newItem.trim()} size="default" className="px-5 shadow-md hover:shadow-lg">
+              <Plus className="h-[1.125rem] w-[1.125rem]" />
             </Button>
           </div>
         </form>
 
-        {/* Items list */}
-        <div className="mt-6 space-y-2 max-h-[60vh] overflow-y-auto">
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-sm text-muted-foreground">Things I want to think about later...</p>
-            <Button variant="ghost" size="sm" onClick={loadItems}>
-              <RefreshCcw className="h-3 w-3 text-primary" />
+        {/* Items list - Enhanced */}
+        <div className="mt-8 space-y-3 max-h-[60vh] overflow-y-auto">
+          <div className="flex justify-between items-center mb-3">
+            <p className="text-[0.9375rem] font-semibold text-muted-foreground">Things I want to think about later...</p>
+            <Button variant="ghost" size="sm" onClick={loadItems} className="hover:bg-muted/50">
+              <RefreshCcw className="h-4 w-4 text-primary" />
             </Button>
           </div>
           <AnimatePresence>
             {loading ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <Loader2 className="h-12 w-12 mx-auto mb-3 opacity-30 animate-spin" />
-                <p className="text-sm">Loading your notes...</p>
+              <div className="text-center py-16 text-muted-foreground">
+                <Loader2 className="h-14 w-14 mx-auto mb-4 opacity-30 animate-spin" />
+                <p className="text-[0.9375rem] font-medium">Loading your notes...</p>
               </div>
             ) : items.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <Inbox className="h-12 w-12 mx-auto mb-3 opacity-30" />
-                <p className="text-sm">Your Later List is empty</p>
-                <p className="text-xs mt-1">
+              <div className="text-center py-16 text-muted-foreground">
+                <Inbox className="h-14 w-14 mx-auto mb-4 opacity-30" />
+                <p className="text-[0.9375rem] font-medium">Your Later List is empty</p>
+                <p className="text-sm mt-2">
                   Press{' '}
-                  <kbd className="px-1.5 py-0.5 text-xs font-semibold bg-muted border border-border rounded">
+                  <kbd className="px-2 py-1 text-xs font-semibold bg-muted border border-border rounded-md shadow-sm">
                     ⌘K
                   </kbd>{' '}
                   to quick capture
@@ -260,15 +260,15 @@ export function LaterList({ open, onOpenChange, activeFocus }: LaterListProps) {
                     }
                   }}
                   className={cn(
-                    'group p-3 bg-card rounded-lg border border-border',
-                    'hover:border-border transition-all duration-150',
+                    'group p-4 bg-gradient-to-br from-card to-primary/5 rounded-xl border shadow-sm',
+                    'hover:shadow-md hover:border-primary/30 transition-all duration-200',
                     processingId === item.id && 'opacity-50'
                   )}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-4">
                     <div className="flex-1">
-                      <p className="text-sm text-foreground">{item.content}</p>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-[0.9375rem] text-foreground font-medium leading-relaxed">{item.content}</p>
+                      <p className="text-sm text-muted-foreground mt-1.5">
                         {new Date(item.created_at).toLocaleTimeString()}
                       </p>
                     </div>

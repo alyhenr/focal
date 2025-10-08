@@ -61,21 +61,21 @@ export function AnalyticsSection({
   )
 
   return (
-    <div className="space-y-4">
-      {/* Section Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-primary/10">
+    <div className="space-y-5">
+      {/* Section Header - Enhanced */}
+      <div className="flex items-center justify-between p-5 rounded-xl bg-gradient-to-br from-card via-card to-primary/5 border shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-primary/10 shadow-sm">
             <BarChart3 className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-foreground">Analytics</h3>
-            <p className="text-xs text-muted-foreground">Your productivity insights</p>
+            <h3 className="text-xl font-semibold text-foreground">Analytics</h3>
+            <p className="text-sm text-muted-foreground mt-0.5">Your productivity insights</p>
           </div>
         </div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
         >
           {isExpanded ? (
             <>
@@ -99,10 +99,10 @@ export function AnalyticsSection({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="space-y-6"
+            className="space-y-7"
           >
             {/* Top Row - Streak + Weekly Summary */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               <div className="lg:col-span-1">
                 <StreakWidget
                   streakData={streakData}
@@ -118,7 +118,7 @@ export function AnalyticsSection({
             <CompletionChart data={completionData} />
 
             {/* Bottom Row - Time Heatmap + Energy Donut */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <TimeHeatmap data={hourlyData} />
               <EnergyDonut energyDistribution={energyDistribution} />
             </div>

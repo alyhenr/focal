@@ -142,36 +142,36 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Stats Cards */}
+    <div className="space-y-8">
+      {/* Stats Cards - Enhanced */}
       {isPending ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24 rounded-lg bg-card/80" />
+            <Skeleton key={i} className="h-28 rounded-xl bg-card/80" />
           ))}
         </div>
       ) : (
         <HistoryStats stats={props.stats} streakData={props.streakData} />
       )}
 
-      {/* Controls Bar */}
-      <div className="bg-card/80 backdrop-blur-sm rounded-lg border border-border p-4">
-        <div className="flex flex-col gap-4">
+      {/* Controls Bar - Enhanced */}
+      <div className="bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm rounded-2xl border shadow-md p-6">
+        <div className="flex flex-col gap-5">
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-[1.125rem] w-[1.125rem] text-muted-foreground" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search focus sessions..."
-              className="pl-10"
+              className="pl-12 h-12 text-[0.9375rem] shadow-sm"
               disabled={isPending}
             />
           </div>
 
           {/* Filters Row */}
-          <div className="flex flex-wrap gap-3 items-center justify-between">
-            <div className="flex flex-wrap gap-3 items-center">
+          <div className="flex flex-wrap gap-4 items-center justify-between">
+            <div className="flex flex-wrap gap-4 items-center">
               {/* Date Range - This now updates instantly */}
               <DateRangeSelector
                 currentRange={currentRange}
@@ -179,12 +179,12 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
               />
 
               {/* Goal Filter */}
-              <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-muted-foreground" />
+              <div className="flex items-center gap-2.5">
+                <Filter className="h-[1.125rem] w-[1.125rem] text-muted-foreground" />
                 <select
                   value={selectedGoalId || ''}
                   onChange={(e) => setSelectedGoalId(e.target.value || null)}
-                  className="text-sm border border-border rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="text-[0.9375rem] font-medium border border-border rounded-lg px-4 py-2.5 bg-card shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   disabled={isPending}
                 >
                   <option value="">All Goals</option>
@@ -199,20 +199,20 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
 
             {/* Export Button */}
             <div className="relative group">
-              <Button variant="outline" size="sm" className="gap-2" disabled={isPending}>
-                <Download className="h-4 w-4" />
+              <Button variant="outline" size="default" className="gap-2.5 shadow-md hover:shadow-lg" disabled={isPending}>
+                <Download className="h-[1.125rem] w-[1.125rem]" />
                 Export
               </Button>
-              <div className="absolute right-0 top-full mt-1 bg-card rounded-lg shadow-lg border border-border py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+              <div className="absolute right-0 top-full mt-2 bg-card rounded-xl shadow-xl border py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[180px]">
                 <button
                   onClick={() => handleExport('csv')}
-                  className="px-4 py-2 text-sm hover:bg-muted w-full text-left whitespace-nowrap"
+                  className="px-5 py-2.5 text-[0.9375rem] font-medium hover:bg-muted w-full text-left whitespace-nowrap transition-colors"
                 >
                   Export as CSV
                 </button>
                 <button
                   onClick={() => handleExport('json')}
-                  className="px-4 py-2 text-sm hover:bg-muted w-full text-left whitespace-nowrap"
+                  className="px-5 py-2.5 text-[0.9375rem] font-medium hover:bg-muted w-full text-left whitespace-nowrap transition-colors"
                 >
                   Export as JSON
                 </button>
@@ -221,7 +221,7 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
           </div>
 
           {/* Results Count */}
-          <div className="text-sm text-muted-foreground">
+          <div className="text-[0.9375rem] text-muted-foreground font-medium">
             {isPending ? (
               <span className="animate-pulse">Loading sessions...</span>
             ) : (
@@ -235,21 +235,21 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
         </div>
       </div>
 
-      {/* Day Grouped List with Loading State */}
+      {/* Day Grouped List with Loading State - Enhanced */}
       {isPending ? (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-card/80 backdrop-blur-sm rounded-lg border border-border">
-              <div className="px-4 py-3 flex items-center justify-between">
+            <div key={i} className="bg-card/80 backdrop-blur-sm rounded-xl border shadow-md">
+              <div className="px-6 py-4 flex items-center justify-between">
                 <div>
-                  <Skeleton className="h-5 w-32 mb-2" />
-                  <Skeleton className="h-4 w-48" />
+                  <Skeleton className="h-6 w-36 mb-2" />
+                  <Skeleton className="h-5 w-52" />
                 </div>
-                <Skeleton className="h-8 w-24" />
+                <Skeleton className="h-9 w-28" />
               </div>
-              <div className="border-t border-border p-4 space-y-3">
-                <Skeleton className="h-20 w-full" />
-                <Skeleton className="h-20 w-full" />
+              <div className="border-t border-border p-6 space-y-4">
+                <Skeleton className="h-24 w-full rounded-lg" />
+                <Skeleton className="h-24 w-full rounded-lg" />
               </div>
             </div>
           ))}
