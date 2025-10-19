@@ -6,6 +6,7 @@ import { CommandPalette } from '@/components/command/command-palette'
 import { LaterList } from '@/components/later/later-list'
 import { NewFocusModal } from '@/components/focus/new-focus-modal'
 import { SidebarProvider } from '@/contexts/sidebar-context'
+import { FocusModalProvider, useFocusModal } from '@/contexts/focus-modal-context'
 import { createFocusSession } from '@/app/actions/focus'
 import { toast } from 'sonner'
 import { useFocusStore } from '@/stores/focus-store'
@@ -16,10 +17,11 @@ interface AppShellProps {
   northStars?: NorthStar[]
 }
 
-export function AppShell({ children, northStars = [] }: AppShellProps) {
+function AppShellContent({ northStars = [], children }: AppShellProps) {
   const [showLaterList, setShowLaterList] = useState(false)
   const [showNewFocusModal, setShowNewFocusModal] = useState(false)
   const { activeFocus, todayFocuses, addFocus } = useFocusStore()
+  const { showNewFocusModal: contextShowModal, setShowNewFocusModal: setContextShowModal } = useFocusModal()
 
   const handleCreateFocus = async (data: {
     title: string
@@ -38,42 +40,61 @@ export function AppShell({ children, northStars = [] }: AppShellProps) {
     }
   }
 
+  // Use context or local state - context takes precedence
+  const isModalOpen = contextShowModal || showNewFocusModal
+  const handleModalOpen = () => {
+    setContextShowModal(true)
+    setShowNewFocusModal(true)
+  }
+  const handleModalClose = () => {
+    setContextShowModal(false)
+    setShowNewFocusModal(false)
+  }
+
+  return (
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
+      <Sidebar
+        onOpenLaterList={() => setShowLaterList(true)}
+        onNewFocus={handleModalOpen}
+      />
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto">
+        {children}
+      </div>
+
+      {/* Command Palette */}
+      <CommandPalette
+        onOpenLaterList={() => setShowLaterList(true)}
+        onNewFocus={handleModalOpen}
+      />
+
+      {/* Later List */}
+      <LaterList
+        open={showLaterList}
+        onOpenChange={setShowLaterList}
+        activeFocus={activeFocus}
+      />
+
+      {/* New Focus Modal */}
+      <NewFocusModal
+        open={isModalOpen}
+        onOpenChange={handleModalClose}
+        onSubmit={handleCreateFocus}
+        sessionNumber={todayFocuses.length + 1}
+        northStars={northStars}
+      />
+    </div>
+  )
+}
+
+export function AppShell({ children, northStars = [] }: AppShellProps) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen overflow-hidden">
-        {/* Sidebar */}
-        <Sidebar
-          onOpenLaterList={() => setShowLaterList(true)}
-          onNewFocus={() => setShowNewFocusModal(true)}
-        />
-
-        {/* Main Content */}
-        <div className="flex-1 overflow-auto">
-          {children}
-        </div>
-
-        {/* Command Palette */}
-        <CommandPalette
-          onOpenLaterList={() => setShowLaterList(true)}
-          onNewFocus={() => setShowNewFocusModal(true)}
-        />
-
-        {/* Later List */}
-        <LaterList
-          open={showLaterList}
-          onOpenChange={setShowLaterList}
-          activeFocus={activeFocus}
-        />
-
-        {/* New Focus Modal */}
-        <NewFocusModal
-          open={showNewFocusModal}
-          onOpenChange={setShowNewFocusModal}
-          onSubmit={handleCreateFocus}
-          sessionNumber={todayFocuses.length + 1}
-          northStars={northStars}
-        />
-      </div>
+      <FocusModalProvider>
+        <AppShellContent northStars={northStars}>{children}</AppShellContent>
+      </FocusModalProvider>
     </SidebarProvider>
   )
 }

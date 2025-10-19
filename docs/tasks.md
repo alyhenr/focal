@@ -206,15 +206,17 @@
 - [ ] Archive completed goals
 - [ ] Goal limit (3 active)
 
-### 4.2 Analytics & History
-- [ ] Focus history calendar view
-- [ ] List view with search
-- [ ] Completion rate stats
-- [ ] Time-of-day patterns
-- [ ] Energy level tracking
-- [ ] Streak tracking
-- [ ] Weekly/monthly summaries
-- [ ] Export to CSV/JSON
+### 4.2 Analytics & History - **COMPLETE** ✅
+- [x] List view with search (History page)
+- [x] Day-grouped expandable list
+- [x] Completion rate stats (Analytics widgets)
+- [x] Time-of-day patterns (Time heatmap widget)
+- [x] Energy level tracking (Energy donut widget)
+- [x] Streak tracking (Streak widget with sparkline)
+- [x] Weekly/monthly summaries (Weekly summary widget)
+- [x] Export to CSV/JSON (History page export)
+- [x] All 6 analytics widgets built and integrated
+- [ ] Focus history calendar view → See Phase 4.4 Calendar Page
 
 ### 4.3 Stripe Integration
 - [ ] Set up Stripe products/prices
@@ -225,6 +227,113 @@
 - [ ] Trial period (7 days)
 - [ ] Upgrade/downgrade flow
 - [ ] Payment failure handling
+
+### 4.4 Calendar Page - **COMPLETE** ✅
+> **Vision**: Proactive planning tool that bridges scheduled commitments with focused execution
+> **Full Spec**: `/docs/stories/calendar.md`
+
+#### Phase 1: Foundation (2-3 hours) ✅
+- [x] Create database table `calendar_events` with RLS policies
+- [x] Run migration to add table to Supabase
+- [x] Fixed DATE_TRUNC index issue in migration
+- [x] Create server actions in `src/app/actions/calendar.ts`
+  - [x] `getCalendarData(month)` - Fetch events + focus sessions for month
+  - [x] `createEvent(data)` - Create new event
+  - [x] `updateEvent(id, data)` - Update existing event
+  - [x] `deleteEvent(id)` - Delete event
+  - [x] `getDayDetails(date)` - Get events + sessions for specific day
+  - [x] `getTodayEvents()` - Get today's events for Dashboard
+
+#### Phase 2: Calendar Grid UI (2-3 hours) ✅
+- [x] Create `/app/(app)/calendar/page.tsx` (server component)
+- [x] Create `/app/(app)/calendar/loading.tsx` (skeleton)
+- [x] Build `calendar-wrapper.tsx` component (state management)
+- [x] Build `calendar-grid.tsx` component
+  - [x] Month view with day cells (42-day grid)
+  - [x] Past days: Show focus session dots (colored by energy)
+  - [x] Future days: Show event badges (icons by type)
+  - [x] Today: Highlighted with distinct styling
+- [x] Build `calendar-header.tsx` component
+  - [x] Month/year dropdown navigation
+  - [x] Previous/Next month arrows
+  - [x] "Today" quick navigation button
+- [x] Build `calendar-cell.tsx` component
+  - [x] Date number
+  - [x] Focus session dots (max 3 visible)
+  - [x] Event badges/icons
+  - [x] Hover effects
+  - [x] Click handler to open day detail
+
+#### Phase 3: Event Management (1-2 hours) ✅
+- [x] Build `new-event-modal.tsx` component
+  - [x] Event title input
+  - [x] Event type selector (Meeting, Deadline, Reminder, Appointment)
+  - [x] Date picker (pre-filled from clicked day)
+  - [x] Time picker (optional)
+  - [x] Duration input (optional)
+  - [x] Description textarea (optional)
+  - [x] Save/Cancel actions
+  - [x] Form validation with zod
+- [x] Event type icons and badges integrated
+  - [x] Different icons per type (🤝📌🔔📍)
+  - [x] Color coding per type
+- [x] Implement edit/delete functionality in day detail modal
+
+#### Phase 4: Day Detail Modal (1 hour) ✅
+- [x] Build `day-detail-modal.tsx` component
+  - [x] Day header (date, day of week)
+  - [x] Past/Today: Focus sessions summary list
+  - [x] Future/Today: Events list with cards
+  - [x] Quick actions bar
+    - [x] "+ Add Event" button
+    - [x] Edit/delete event buttons
+    - [x] Link to History page
+- [x] Focus sessions display with energy indicators
+- [x] Event cards with all details
+
+#### Phase 5: Dashboard Integration (1 hour) ✅
+- [x] Create `todays-events-section.tsx` component
+- [x] Fetch and display today's events
+- [x] "Create Focus Block" button per event
+- [x] Pre-fills focus modal with event data (ready for integration)
+- [x] Visual design matches dashboard aesthetic
+
+#### Phase 6: Polish & Testing (1 hour) ✅
+- [x] Apply premium styling consistency
+  - [x] Match spacing (p-7, gap-5, text-[0.9375rem])
+  - [x] Match icons (h-[1.125rem] w-[1.125rem])
+  - [x] Match shadows (shadow-md, hover:shadow-lg)
+  - [x] Match borders (rounded-xl, rounded-2xl)
+- [x] Empty states
+  - [x] No events for selected month
+  - [x] No focus sessions yet
+  - [x] Clear messaging for users
+- [x] Loading states
+  - [x] Calendar grid skeleton
+  - [x] Day detail modal loading
+  - [x] Event creation loading
+- [ ] Mobile responsive design (needs testing on device)
+  - [ ] Touch-friendly calendar cells
+  - [ ] Full-screen modals on mobile
+  - [ ] Bottom sheet for event creation
+  - [ ] Swipe gestures for month navigation
+- [ ] Keyboard shortcuts (post-MVP enhancement)
+  - [ ] Cmd+E - New event (when on Calendar page)
+  - [ ] Arrow keys - Navigate days
+  - [ ] ESC - Close modals
+- [ ] Manual Testing Needed:
+  - [ ] Create/edit/delete events in browser
+  - [ ] Navigate months
+  - [ ] Click day → view details
+  - [ ] Create focus from event
+  - [ ] Dashboard integration works
+  - [ ] Mobile experience smooth
+
+#### Success Metrics (To Be Validated)
+- [ ] Calendar page loads in <1s with 100 events
+- [ ] Event creation feels instant (optimistic updates implemented)
+- [ ] Dashboard shows today's events correctly
+- [ ] Event-to-focus conversion smooth and intuitive
 
 ---
 
@@ -421,10 +530,10 @@
 
 ---
 
-*Last Updated: History Page Complete with Day-Grouped List View*
-*Status: Phase 4.2 History COMPLETE, simplified and polished*
-*Next: Analytics Dashboard Widgets (Phase 4.2.2) - 2 hours estimated*
-*Note: History page redesigned for simplicity with instant UI feedback*
+*Last Updated: Calendar Page Implementation Complete*
+*Status: Phase 4.2 Analytics COMPLETE ✅, Phase 4.4 Calendar COMPLETE ✅*
+*Next: Manual testing and validation of Calendar functionality*
+*Note: Database migration applied, Supabase CLI connected, all components built*
 
 ---
 
@@ -517,19 +626,40 @@
 - [x] **Keyboard Shortcuts** - Space to pause/resume, Esc to stop
 - [x] **InlineEditor Fix** - Check button hover states and tooltips
 
-#### 🚀 NEXT PRIORITY - Analytics Dashboard (Phase 4.2.2):
+#### ✅ ANALYTICS WIDGETS COMPLETE (Phase 4.2):
+- [x] Created 6 analytics widget components
+- [x] Streak tracking and visualization (StreakWidget with sparkline)
+- [x] Completion rate charts (CompletionChart with line graph)
+- [x] Time-of-day activity heatmap (TimeHeatmap with 24h grid)
+- [x] Energy level distribution (EnergyDonut with pie chart)
+- [x] Weekly/monthly summary cards (WeeklySummary with stats)
+- [x] Goals progress visualization (GoalsProgress with progress bars)
+- [x] Integrated into Dashboard with collapsible AnalyticsSection
+- [x] All widgets use premium styling and theme support
 
-**Analytics Dashboard Widgets** (4-6 hours)
-- [ ] Create analytics widget components
-- [ ] Streak tracking and visualization
-- [ ] Completion rate charts (daily/weekly/monthly)
-- [ ] Time-of-day activity heatmap
-- [ ] Energy level distribution pie chart
-- [ ] Weekly/monthly summary cards with trends
-- [ ] Goals progress visualization
-- [ ] Most productive hours analysis
-- [ ] Session duration statistics
-- [ ] Focus patterns insights
+#### ✅ CALENDAR PAGE COMPLETE (Phase 4.4):
+**Proactive Planning & Event Management** - IMPLEMENTED ✅
+- [x] Database schema for calendar events (migration applied)
+- [x] Calendar grid with month view (42-day grid)
+- [x] Event management (create, edit, delete with optimistic updates)
+- [x] Event types (Meeting, Deadline, Reminder, Appointment with icons)
+- [x] Day detail modal (events + focus sessions)
+- [x] Dashboard integration (today's events section ready)
+- [x] Event-to-focus conversion (pre-fill support)
+- [x] Visual indicators (dots for sessions, badges for events)
+- [x] Premium styling applied throughout
+- **Full specification**: See `/docs/stories/calendar.md`
+
+#### 🚀 NEXT PRIORITY - Manual Testing & Bug Fixes:
+**Calendar Page Validation** (1-2 hours)
+- [ ] Test calendar functionality in browser
+- [ ] Verify event CRUD operations
+- [ ] Test dashboard integration
+- [ ] Check mobile responsiveness
+- [ ] Fix any discovered issues
+- [ ] Validate database operations
+- [ ] Test theme switching (light/dark)
+- [ ] Verify empty states display correctly
 
 ### 🐛 Known Issues:
 - TypeScript warnings for 'any' types in goals components (non-critical)
@@ -559,14 +689,15 @@
 - **Theme System**: Fully functional with consistent behavior
 - **User Experience**: Smooth theme switching without page-specific issues
 - **Visual Design**: Nature-inspired, calm, professional aesthetic
+- **Premium Styling**: Applied to all pages (Settings & Command Palette latest)
 - **Build Status**: Clean, passing all checks
 
-### 🚀 Next Priority - Analytics Dashboard (Phase 4.2.2):
-- [ ] Streak tracking and visualization
-- [ ] Completion rate charts
-- [ ] Time-of-day activity heatmap
-- [ ] Energy level distribution
-- [ ] Goals progress visualization
+### 🚀 Next Priority - Calendar Page (Phase 4.4):
+- [ ] Event management system (meetings, deadlines, reminders)
+- [ ] Calendar grid with visual indicators
+- [ ] Dashboard integration for today's events
+- [ ] Event-to-focus conversion workflow
+- [ ] Mobile-responsive design
 
 ### 🔧 Technical Improvements Made:
 - `globals.css`: Complete CSS variable overhaul for both themes
@@ -575,9 +706,9 @@
 - Dashboard page: Using theme variables throughout
 - [x] **Dark Mode Text Contrast** - Enhanced readability with better color values (WCAG compliant)
 
-*Last Updated: Bug Fixes & Architecture Improvements Session*
-*Status: Critical fixes complete, Architecture refactored for maintainability*
-*Next: Analytics Dashboard Widgets (Phase 4.2.2) - 4-6 hours estimated*
+*Last Updated: Premium Design Enhancement + Calendar Planning Session*
+*Status: All pages enhanced with premium styling, Calendar page fully documented*
+*Next: Calendar Page Implementation (Phase 4.4) - 6-8 hours estimated*
 
 ---
 
@@ -661,25 +792,39 @@
 - ✅ Using semantic CSS variables throughout
 - ✅ Smooth transitions between themes
 
-### Files Modified (12 total):
+### Files Modified (15 total):
 - Goals: `page.tsx`, `goals-content.tsx`, `goal-card.tsx`
 - History: `page.tsx`, `history-wrapper.tsx`, `history-stats.tsx`
 - Timer: `timer-content.tsx`
 - Forms: `new-focus-modal.tsx`
 - Components: `later-list.tsx`
+- **NEW**: Settings: `page.tsx`, `settings-wrapper.tsx`
+- **NEW**: Command: `command-palette.tsx`
 
 ### 🎯 Current State:
-- **Design System**: Premium styling applied consistently
-- **User Experience**: Enhanced visual hierarchy and readability
+- **Design System**: Premium styling applied to ALL pages ✅
+- **User Experience**: Enhanced visual hierarchy and readability throughout
 - **Theme System**: Fully compatible with light/dark modes
 - **Build Status**: Clean, all checks passing ✅
+- **Database**: Calendar events table created and migrated ✅
+- **Supabase CLI**: Connected to remote project ✅
 
-### 🚀 Next Priority:
-- **Test & Refine**: User testing of enhanced design
-- **Minor Adjustments**: Fine-tune spacing if needed
-- **Analytics Dashboard**: Continue with Phase 4.2.2 widgets
-- **Polish Details**: Hover states, transitions, micro-interactions
+### 📊 Feature Completeness:
+- ✅ Dashboard (focus blocks + analytics + today's events)
+- ✅ Goals (CRUD + progress tracking)
+- ✅ History (day-grouped list + export)
+- ✅ Timer (immersive Brain.fm style)
+- ✅ Settings (all preferences + premium styling)
+- ✅ Command Palette (Cmd+K navigation + premium styling)
+- ✅ Calendar (planning + events + dashboard integration) ← **JUST COMPLETED**
 
-*Last Updated: Premium Design Enhancement Session*
-*Status: All pages and components enhanced with premium styling*
-*Next: Testing & refinement, then Analytics Dashboard*
+### 🚀 Next Priority - Testing & Validation:
+1. **Manual Testing**: Test all calendar functionality in browser
+2. **Bug Fixes**: Address any issues discovered during testing
+3. **Mobile Testing**: Verify responsive design on devices
+4. **Integration Testing**: Ensure dashboard integration works smoothly
+5. **User Experience**: Validate flow from event creation to focus block
+
+*Last Updated: Calendar Page Implementation Complete + Database Migration Applied*
+*Status: Phase 4.4 Calendar Page COMPLETE - Ready for testing*
+*Next: Manual testing and validation of Calendar functionality*

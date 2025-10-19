@@ -64,7 +64,6 @@ const navigation = [
     icon: Calendar,
     shortcut: null,
     action: null,
-    badge: 'Soon',
   },
   {
     name: 'History',
@@ -182,9 +181,9 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
           const Icon = item.icon
 
           // For items with href, use Link for better performance
-          if (item.href && !item.badge) {
-            return (
-              <Link
+          if (item.href) {
+          return (
+            <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
@@ -226,10 +225,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
               className={cn(
                 'w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-lg transition-all group relative',
                 item.accent === 'primary' && 'hover:bg-primary/5 hover:text-primary hover:shadow-sm',
-                item.badge && 'opacity-60 cursor-not-allowed',
-                !item.badge && 'hover:bg-muted hover:text-foreground text-muted-foreground hover:shadow-sm'
               )}
-              disabled={!!item.badge}
             >
               <Icon className="h-[1.125rem] w-[1.125rem] flex-shrink-0 transition-transform group-hover:scale-110" />
 
@@ -242,12 +238,7 @@ export function Sidebar({ onOpenLaterList, onNewFocus }: SidebarProps) {
                     className="flex-1 flex items-center justify-between"
                   >
                     <span className="text-[0.9375rem] font-semibold">{item.name}</span>
-                    <div className="flex items-center gap-2">
-                      {item.badge && (
-                        <span className="text-xs px-2 py-0.5 bg-muted text-muted-foreground rounded-md font-medium">
-                          {item.badge}
-                        </span>
-                      )}
+                    <div className="flex items-center gap-2" >
                       {item.shortcut && (
                         <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold bg-muted/80 border border-border rounded-md shadow-sm">
                           {item.shortcut}

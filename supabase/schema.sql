@@ -78,6 +78,32 @@ CREATE TABLE IF NOT EXISTS public.timer_sessions (
   session_type TEXT CHECK (session_type IN ('work', 'break'))
 );
 
+-- Calendar Events (for planning and scheduling)
+CREATE TABLE IF NOT EXISTS public.calendar_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  
+  -- Event details
+  title TEXT NOT NULL,
+  description TEXT,
+  event_type TEXT NOT NULL CHECK (event_type IN ('meeting', 'deadline', 'reminder', 'appointment')),
+  
+  -- Timing
+  event_date DATE NOT NULL,
+  event_time TIME,
+  duration INTEGER,
+  
+  -- Status
+  is_completed BOOLEAN DEFAULT FALSE,
+  
+  -- Relationships
+  linked_focus_id UUID REFERENCES public.focuses(id) ON DELETE SET NULL,
+  
+  -- Metadata
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Streaks
 CREATE TABLE IF NOT EXISTS public.streaks (
   user_id UUID PRIMARY KEY REFERENCES public.profiles(id) ON DELETE CASCADE,
@@ -104,6 +130,7 @@ CREATE INDEX IF NOT EXISTS idx_checkpoints_focus ON public.checkpoints(focus_id,
 CREATE INDEX IF NOT EXISTS idx_later_items_user_date ON public.later_items(user_id, date);
 CREATE INDEX IF NOT EXISTS idx_timer_sessions_focus ON public.timer_sessions(focus_id);
 CREATE INDEX IF NOT EXISTS idx_north_stars_user ON public.north_stars(user_id, display_order);
+CREATE INDEX IF NOT EXISTS idx_calendar_events_user_date ON public.calendar_events(user_id, event_date);
 
 -- Row Level Security (RLS)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
@@ -112,6 +139,7 @@ ALTER TABLE public.focuses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.checkpoints ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.later_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.timer_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.calendar_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.streaks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
 
@@ -237,6 +265,19 @@ CREATE POLICY "Users can insert own streak" ON public.streaks
 
 CREATE POLICY "Users can update own streak" ON public.streaks
   FOR UPDATE USING (auth.uid() = user_id);
+
+-- Calendar Events: Users can only manage their own events
+CREATE POLICY "Users can view own calendar events" ON public.calendar_events
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own calendar events" ON public.calendar_events
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own calendar events" ON public.calendar_events
+  FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own calendar events" ON public.calendar_events
+  FOR DELETE USING (auth.uid() = user_id);
 
 -- Analytics Events: Users can only manage their own events
 CREATE POLICY "Users can view own events" ON public.analytics_events

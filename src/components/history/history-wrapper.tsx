@@ -203,16 +203,16 @@ export function HistoryWrapper(props: HistoryWrapperProps) {
                 <Download className="h-[1.125rem] w-[1.125rem]" />
                 Export
               </Button>
-              <div className="absolute right-0 top-full mt-2 bg-card rounded-xl shadow-xl border py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[180px]">
+              <div className="absolute left-0 sm:right-0 sm:left-auto top-full mt-2 bg-card rounded-xl shadow-xl border py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[50] min-w-[180px]">
                 <button
                   onClick={() => handleExport('csv')}
-                  className="px-5 py-2.5 text-[0.9375rem] font-medium hover:bg-muted w-full text-left whitespace-nowrap transition-colors"
+                  className="px-5 py-2.5 text-[0.9375rem] font-medium bg-muted w-full text-left whitespace-nowrap transition-colors"
                 >
                   Export as CSV
                 </button>
                 <button
                   onClick={() => handleExport('json')}
-                  className="px-5 py-2.5 text-[0.9375rem] font-medium hover:bg-muted w-full text-left whitespace-nowrap transition-colors"
+                  className="px-5 py-2.5 text-[0.9375rem] font-medium bg-muted w-full text-left whitespace-nowrap transition-colors"
                 >
                   Export as JSON
                 </button>
